@@ -1,1 +1,3 @@
-pub mod Originals;
+pub mod artist;
+pub mod work;
+pub mod original;
