@@ -3,6 +3,13 @@ name = "tars"
 version = "0.1.0"
 edition = "2024"
 
+[lib]
+path = "src/lib.rs"
+
+[[bin]]
+path = "src/main.rs"
+name = "tars"
+
 [dependencies]
 axum = "0.8.8"
 chrono = { version = "0.4.44", features = ["serde"] }
@@ -14,3 +21,6 @@ sqlx = { version = "0.8.6", features = ["runtime-tokio", "postgres", "macros", "
 thiserror = "2.0.18"
 tokio = { version = "1.49.0", features = ["full"] }
 uuid = { version = "1.21.0", features = ["serde","v4"] }
+
+[dev-dependencies]
+reqwest = "0.13.2"
