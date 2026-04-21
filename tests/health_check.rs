@@ -1,5 +1,7 @@
 use reqwest::Client;
-use tokio::net::TcpListener;
+mod utils;
+
+use utils::spawn_app;
 
 #[tokio::test]
 async fn health_check_test() {
@@ -14,14 +16,4 @@ async fn health_check_test() {
     // Assert
     assert!(response.status().is_success());
     assert_eq!(Some(0), response.content_length());
-}
-
-async fn spawn_app() -> String {
-    let listener = TcpListener::bind("127.0.0.1:0").await.unwrap();
-    let port = listener.local_addr().unwrap().port();
-    let server = tars::run(listener).await.expect("Failed to bind address");
-    let _ = tokio::spawn(async move {
-        let _ = server.await;
-    });
-    format!("http://127.0.0.1:{}", port)
 }

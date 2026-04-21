@@ -1,0 +1,1 @@
+1. **Add profile image column in profiles tables**
