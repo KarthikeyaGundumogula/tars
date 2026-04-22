@@ -15,7 +15,7 @@ async fn upload_edit_return_200_on_correct_data() {
         "originals": ["550e8400-e29b-41d4-a716-446655440000"]
     });
     let response: Response = client
-        .post(&format!("{}/works/edits/new ", address))
+        .post(&format!("{}/works/new/edit", address))
         .json(&body)
         .send()
         .await
@@ -35,7 +35,7 @@ async fn upload_edit_return_error_on_incorrect_data() {
         "originals": ["550e8400-e29b-41d4-a716-446655440000"]
     });
     let response: Response = client
-        .post(&format!("{}/works/edits/new ", address))
+        .post(&format!("{}/works/new/edit", address))
         .json(&body)
         .send()
         .await
