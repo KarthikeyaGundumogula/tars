@@ -8,7 +8,7 @@ use axum::{
 use sqlx::postgres::PgPoolOptions;
 use tokio::net::TcpListener;
 
-use crate::{create_new_work_handler, health_check_handler};
+use crate::routes::{create_new_work_handler, health_check_handler};
 
 pub async fn run(
     listner: TcpListener,
