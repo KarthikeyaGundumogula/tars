@@ -1,16 +1,36 @@
-use axum::Json;
+use std::sync::Arc;
+
+use axum::{Json, extract::State};
+use chrono::Utc;
+use sqlx::PgPool;
+use uuid::Uuid;
 
 use crate::{
+    db::artists::register_new_artist,
     errors::ApiError,
-    types::{requests::auth::ProfileSignup, response::ApiResponse},
-    utils::password::{get_password_hash, verify_password},
+    types::{artist::Artist, requests::auth::ProfileSignup, response::ApiResponse},
+    utils::password::get_password_hash,
 };
 
 pub async fn register_artist_handler(
-    Json(body): Json<ProfileSignup>,
+    State(pool): State<Arc<PgPool>>,
+    Json(data): Json<ProfileSignup>,
 ) -> Result<ApiResponse, ApiError> {
-    let password = body.password;
+    let password = data.password;
     let password_hash = get_password_hash(&password)?;
-    verify_password(&password, &password_hash)?;
+    let artist = Artist {
+        user_name: data.user_name,
+        is_claimed: Some(false),
+        id: Uuid::new_v4(),
+        tag_line: data.tag_line,
+        profile_picture: data.profile_picture,
+        youtube_profile: data.youtube_profile,
+        twitter_profile: data.twitter_profile,
+        instagram_profile: data.instagram_profile,
+        password_hash: password_hash,
+        created_at: Utc::now(),
+    };
+    register_new_artist(&pool, artist).await?;
+    // verify_password(&password, &password_hash)?;
     Ok(ApiResponse::OK)
 }
