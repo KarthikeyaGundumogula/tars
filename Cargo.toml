@@ -11,7 +11,7 @@ path = "src/main.rs"
 name = "tars"
 
 [dependencies]
-argon2 = "0.5.3"
+argon2 = {version = "0.5.3",features = ["std"]}
 axum = "0.8.8"
 axum-extra = { version = "0.12.6", features = ["cookie"] }
 chrono = { version = "0.4.44", features = ["serde"] }

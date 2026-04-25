@@ -9,7 +9,8 @@ use sqlx::postgres::PgPoolOptions;
 use tokio::net::TcpListener;
 
 use crate::routes::{
-    artists::register_artist, health_check::health_check_handler, works::create_new_work_handler,
+    artists::register_artist_handler, health_check::health_check_handler,
+    works::create_new_work_handler,
 };
 
 pub async fn run(
@@ -24,7 +25,7 @@ pub async fn run(
         .expect("failed to connect to the database");
     let app_state = Arc::new(pool);
     let app = Router::new()
-        .route("/artist/register", post(register_artist))
+        .route("/artist/register", post(register_artist_handler))
         .route("/health_check", get(health_check_handler))
         // .route("/artists", get(get_artist_handler))
         .route("/works/new/{work_type}", post(create_new_work_handler))

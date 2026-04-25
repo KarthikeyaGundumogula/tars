@@ -9,6 +9,8 @@ pub enum ApiError {
     Serailization(#[from] JsonRejection),
     #[error("There is an error at the database")]
     DbError(#[from] sqlx::Error),
+    #[error("password hashing failed")]
+    Argon2Error(#[from] argon2::password_hash::Error)
 }
 
 impl IntoResponse for ApiError {
@@ -17,6 +19,7 @@ impl IntoResponse for ApiError {
             Self::NotFound => (StatusCode::INTERNAL_SERVER_ERROR).into_response(),
             Self::Serailization(_) => (StatusCode::UNPROCESSABLE_ENTITY).into_response(),
             Self::DbError(_) => (StatusCode::INTERNAL_SERVER_ERROR).into_response(),
+            Self::Argon2Error(_) => (StatusCode::INTERNAL_SERVER_ERROR).into_response()
         }
     }
 }
