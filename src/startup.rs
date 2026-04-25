@@ -8,7 +8,9 @@ use axum::{
 use sqlx::postgres::PgPoolOptions;
 use tokio::net::TcpListener;
 
-use crate::routes::{create_new_work_handler, health_check_handler};
+use crate::routes::{
+    artists::register_artist, health_check::health_check_handler, works::create_new_work_handler,
+};
 
 pub async fn run(
     listner: TcpListener,
@@ -22,11 +24,11 @@ pub async fn run(
         .expect("failed to connect to the database");
     let app_state = Arc::new(pool);
     let app = Router::new()
-        // .route("/", get(home_handler))
+        .route("/artist/register", post(register_artist))
         .route("/health_check", get(health_check_handler))
         // .route("/artists", get(get_artist_handler))
         .route("/works/new/{work_type}", post(create_new_work_handler))
-        .with_state(app_state);
+        .with_state(app_state.clone());
     println!(
         "Server started successfully at {}",
         listner.local_addr().unwrap()

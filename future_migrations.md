@@ -1,8 +1,8 @@
-1. **Add profile image column in profiles tables**
-   ```sql
-    ALTER TABLE profiles ADD COLUMN profile_image_url VARCHAR(255);
-   ```
-2. **Add text arrays for each image in the scripts table**
-   ```sql
-    ALTER TABLE scripts ADD COLUMN image_urls TEXT[];
-   ```
+1. **Add profile image column in profiles tables** ✅
+2. **Convert thoughts from single TEXT block to Text Array** ✅
+3. **Add a beta whitelisted users table** ✅
+4. **Add a table for Admins** ✅
+5. **Add a column on Profiles table to store the users password hash** ✅
+6. **Add a column on Originals table to store the password_hash** ✅
+7. **Create a watchlist table** ✅
+8. **Add a column to the Originals table that contains the releases from the table** -- let's say if we consider every release as a work from teh original where artis_id andOriginal_ID is is the same then we can get the releases right and this releases will be considered as the works of the origianls right? -- this concludes we dont need another table or column about releases for the original right ah ✅ 

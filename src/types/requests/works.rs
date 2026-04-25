@@ -1,4 +1,4 @@
-use serde::{Deserialize, };
+use serde::Deserialize;
 use uuid::Uuid;
 
 #[derive(Deserialize)]
@@ -23,7 +23,15 @@ pub struct UploadScriptData {
     pub title: Option<String>,
     pub src_ids: Vec<String>,
     pub originals: Vec<Uuid>,
-    pub thoughts: Option<String>,
+    pub thoughts: Vec<Option<String>>,
+}
+
+#[derive(sqlx::Type,Deserialize)]
+#[sqlx(type_name = "work_type", rename_all = "PascalCase")]
+pub enum WorkType {
+    Edit,
+    Poster,
+    Script,
 }
 
 #[derive(Deserialize)]

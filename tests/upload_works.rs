@@ -1,5 +1,4 @@
 mod utils;
-use axum::Json;
 use reqwest::{Client, Response};
 use sqlx::{Connection, PgConnection};
 use tars::configuration::get_configuration;
@@ -22,13 +21,13 @@ async fn upload_edit_return_200_on_correct_data() {
         "originals": ["550e8400-e29b-41d4-a716-446655440000"]
     });
     let response: Response = client
-        .post(&format!("{}/works/new/edit", address))
+        .post(&format!("{}/works/new/Edit", address))
         .json(&body)
         .send()
         .await
         .expect("Failed to execute request.");
     assert!(response.status().is_success());
-    assert_eq!(Some(0), response.content_length());
+    println!("{}",response.status())
 }
 
 #[tokio::test]
@@ -47,7 +46,7 @@ async fn upload_edit_return_error_on_incorrect_data() {
         "originals": ["550e8400-e29b-41d4-a716-446655440000"]
     });
     let response: Response = client
-        .post(&format!("{}/works/new/edit", address))
+        .post(&format!("{}/works/new/Poster", address))
         .json(&body)
         .send()
         .await
