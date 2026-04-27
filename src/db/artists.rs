@@ -1,7 +1,7 @@
 use sqlx::PgPool;
 use uuid::Uuid;
 
-use crate::{errors::ApiError, types::artist::Artist};
+use crate::{errors::ApiError, types::db::artist::Artist};
 
 pub async fn register_new_artist(pool: &PgPool, data: Artist) -> Result<Option<Artist>, ApiError> {
     Ok(sqlx::query_as!(Artist,

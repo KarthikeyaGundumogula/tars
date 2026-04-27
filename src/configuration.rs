@@ -1,6 +1,3 @@
-use config::Config;
-use serde::{self, Deserialize};
-
 #[derive(serde::Deserialize)]
 pub struct Settings {
     pub application_port: u16,

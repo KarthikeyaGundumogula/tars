@@ -8,7 +8,7 @@ use uuid::Uuid;
 use crate::{
     db::artists::register_new_artist,
     errors::ApiError,
-    types::{artist::Artist, requests::auth::ProfileSignup, response::ApiResponse},
+    types::{db::artist::Artist, requests::auth::ProfileSignup, response::ApiResponse},
     utils::password::get_password_hash,
 };
 

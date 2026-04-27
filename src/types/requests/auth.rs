@@ -13,6 +13,13 @@ pub struct ProfileSignup {
 
 #[derive(Serialize,Deserialize)]
 pub struct ProfileLogin {
-    user_name: String,
-    password: String
+   pub user_name: String,
+   pub password: String
+}
+
+#[derive(Serialize,Deserialize)]
+pub struct Claims{
+    pub user_name: String,
+    pub role: String,
+    pub exp: usize,
 }
