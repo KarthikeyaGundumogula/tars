@@ -5,6 +5,4 @@ pub struct Original{
   pub title: String,
   pub description: String,
   pub cover_image: String,
-  pub presence: i64,
-  pub releases: i64,
 }

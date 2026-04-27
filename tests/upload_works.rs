@@ -6,7 +6,7 @@ use utils::spawn_app;
 
 #[tokio::test]
 async fn upload_edit_return_200_on_correct_data() {
-    let address = spawn_app().await;
+    let app = spawn_app::spawn().await;
     let config = get_configuration().expect("unable to get the config");
     let connection_string = config.database.connection_string();
     let _connection = PgConnection::connect(&connection_string)
@@ -21,7 +21,7 @@ async fn upload_edit_return_200_on_correct_data() {
         "originals": ["550e8400-e29b-41d4-a716-446655440000"]
     });
     let response: Response = client
-        .post(&format!("{}/works/new/Edit", address))
+        .post(&format!("{}/works/new/Edit", app.address))
         .json(&body)
         .send()
         .await
@@ -32,7 +32,7 @@ async fn upload_edit_return_200_on_correct_data() {
 
 #[tokio::test]
 async fn upload_edit_return_error_on_incorrect_data() {
-    let address = spawn_app().await;
+    let app = spawn_app::spawn().await;
     let config = get_configuration().expect("unable to get the config");
     let connection_string = config.database.connection_string();
     let _connection = PgConnection::connect(&connection_string)
@@ -46,7 +46,7 @@ async fn upload_edit_return_error_on_incorrect_data() {
         "originals": ["550e8400-e29b-41d4-a716-446655440000"]
     });
     let response: Response = client
-        .post(&format!("{}/works/new/Poster", address))
+        .post(&format!("{}/works/new/Poster", app.address))
         .json(&body)
         .send()
         .await

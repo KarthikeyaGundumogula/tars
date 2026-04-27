@@ -5,7 +5,7 @@ use axum::{
     routing::{get, post},
     serve::Serve,
 };
-use sqlx::postgres::PgPoolOptions;
+use sqlx::{PgPool};
 use tokio::net::TcpListener;
 
 use crate::routes::{
@@ -15,14 +15,8 @@ use crate::routes::{
 
 pub async fn run(
     listner: TcpListener,
+    pool: PgPool,
 ) -> Result<Serve<TcpListener, Router, Router>, std::io::Error> {
-    dotenvy::dotenv().ok();
-    let db_url = std::env::var("DATABASE_URL").expect("database url must be set");
-    let pool = PgPoolOptions::new()
-        .max_connections(5)
-        .connect(&db_url)
-        .await
-        .expect("failed to connect to the database");
     let app_state = Arc::new(pool);
     let app = Router::new()
         .route("/artist/register", post(register_artist_handler))

@@ -5,11 +5,11 @@ use utils::spawn_app;
 
 #[tokio::test]
 async fn health_check_test() {
-    let address = spawn_app().await;
-    println!("out test is running at address {}", address);
+    let app = spawn_app::spawn().await;
+    println!("out test is running at address {}",app.address);
     let client = Client::new();
     let response = client
-        .get(&format!("{}/health_check", address))
+        .get(&format!("{}/health_check", app.address))
         .send()
         .await
         .expect("Failed to execute request.");
