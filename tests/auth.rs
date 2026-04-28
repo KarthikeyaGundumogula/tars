@@ -1,8 +1,7 @@
 mod utils;
 
+use chrono::Utc;
 use reqwest::{Client, Response};
-use sqlx::{Connection, PgConnection};
-use tars::configuration::get_configuration;
 use utils::spawn_app;
 
 #[tokio::test]
@@ -51,14 +50,17 @@ async fn register_profile_return_error_on_incorrect_data() {
 }
 
 #[tokio::test]
-async fn register_original_return_success_on_correct_data() {
+async fn create_original_return_success_on_correct_data() {
     let app = spawn_app::spawn().await;
     let client = Client::new();
     let body = serde_json::json!({
         "title":"They Call him Og",
+        "description":"fuck you staya dada",
         "password": "1234",
-        "associated_with":"DVV Entertainments",
-        "actors":[{
+        "associated_with":"DVV Entertainments", // this is an uuid that can be set
+        "release_date":Utc::now(),
+        "genere":["action","drama"],
+        "stars":[{
             "role":"Ojas Ghambheera",
             "artist":"Pawan Kalyan"
         },{
@@ -72,6 +74,13 @@ async fn register_original_return_success_on_correct_data() {
             "role":"Director",
             "artist":"Sujeet"
         }]
-        
     });
+    let response: Response = client
+        .post(&format!("{}/originals/new", app.address))
+        .json(&body)
+        .send()
+        .await
+        .expect("failed to execute request");
+    println!("{}",response.status());
+    assert!(response.status().is_success())
 }

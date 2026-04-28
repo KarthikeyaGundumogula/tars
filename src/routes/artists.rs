@@ -10,7 +10,7 @@ use crate::{
     errors::ApiError,
     types::{
         db::profile::{Profile, ProfileType},
-        requests::auth::ProfileSignup,
+        requests::auth::ProfileSignupReq,
         response::ApiResponse,
     },
     utils::password::get_password_hash,
@@ -18,14 +18,14 @@ use crate::{
 
 pub async fn register_artist_handler(
     State(pool): State<Arc<PgPool>>,
-    Json(data): Json<ProfileSignup>,
+    Json(data): Json<ProfileSignupReq>,
 ) -> Result<ApiResponse, ApiError> {
     let password = data.password;
     let password_hash = get_password_hash(&password)?;
     let artist = Profile {
         user_name: data.user_name,
         is_claimed: false,
-        presence:100,
+        presence: 100,
         id: Uuid::new_v4(),
         tag_line: data.tag_line,
         profile_picture: data.profile_picture,
