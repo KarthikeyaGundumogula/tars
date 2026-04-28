@@ -3,7 +3,7 @@ use uuid::Uuid;
 
 use crate::{
     errors::ApiError,
-    types::requests::works::{UploadEditData, WorkType},
+    types::{db::work::WorkType, requests::works::UploadEditData},
 };
 
 pub async fn create_edit_work(pool: &PgPool, data: UploadEditData) -> Result<Uuid, ApiError> {

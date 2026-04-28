@@ -8,7 +8,11 @@ use uuid::Uuid;
 use crate::{
     db::artists::register_new_artist,
     errors::ApiError,
-    types::{db::artist::Artist, requests::auth::ProfileSignup, response::ApiResponse},
+    types::{
+        db::profile::{Profile, ProfileType},
+        requests::auth::ProfileSignup,
+        response::ApiResponse,
+    },
     utils::password::get_password_hash,
 };
 
@@ -18,12 +22,14 @@ pub async fn register_artist_handler(
 ) -> Result<ApiResponse, ApiError> {
     let password = data.password;
     let password_hash = get_password_hash(&password)?;
-    let artist = Artist {
+    let artist = Profile {
         user_name: data.user_name,
-        is_claimed: Some(false),
+        is_claimed: false,
+        presence:100,
         id: Uuid::new_v4(),
         tag_line: data.tag_line,
         profile_picture: data.profile_picture,
+        profile_type: ProfileType::ARTIST,
         youtube_profile: data.youtube_profile,
         twitter_profile: data.twitter_profile,
         instagram_profile: data.instagram_profile,

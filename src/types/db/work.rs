@@ -1,3 +1,4 @@
+use serde::Deserialize;
 use uuid::Uuid;
 
 /// for thumbnails
@@ -32,6 +33,14 @@ pub enum WorkCategory {
         img_id: String,
         format: PosterFormat,
     },
+    Script,
+}
+
+#[derive(sqlx::Type,Deserialize)]
+#[sqlx(type_name = "work_type", rename_all = "PascalCase")]
+pub enum WorkType {
+    Edit,
+    Poster,
     Script,
 }
 

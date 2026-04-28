@@ -6,8 +6,7 @@ use uuid::Uuid;
 
 use crate::{
     db::works::create_edit_work, errors::ApiError, types::{
-        requests::works::{UploadEditData, UploadPosterData, UploadScriptData, WorkType},
-        response::ApiResponse,
+        db::work::WorkType, requests::works::{UploadEditData, UploadPosterData, UploadScriptData}, response::ApiResponse
     }
 };
 

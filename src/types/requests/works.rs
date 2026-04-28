@@ -26,14 +26,6 @@ pub struct UploadScriptData {
     pub thoughts: Vec<Option<String>>,
 }
 
-#[derive(sqlx::Type,Deserialize)]
-#[sqlx(type_name = "work_type", rename_all = "PascalCase")]
-pub enum WorkType {
-    Edit,
-    Poster,
-    Script,
-}
-
 #[derive(Deserialize)]
 pub enum SupportedPlatforms {
     Youtube,
