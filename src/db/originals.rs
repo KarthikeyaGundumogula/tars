@@ -1,33 +1,32 @@
-use sqlx::PgPool;
 use uuid::Uuid;
 
-use crate::{errors::ApiError, types::db::original::Original};
+use crate::{
+    errors::ApiError,
+    types::db::{
+        original::Original,
+        profile::{Role, RoleType},
+    },
+};
 
-pub async fn create_new_original(pool: &PgPool, data: Original) -> Result<Uuid, ApiError> {
+pub async fn insert_new_original(
+    txn: &mut sqlx::Transaction<'_, sqlx::Postgres>,
+    data: Original,
+) -> Result<Uuid, ApiError> {
     Ok(sqlx::query_scalar!(
         r#"
-
-INSERT INTO originals (
-    id,
-    title,
-    description,
-    cover_img,
-    presence,
-    created_at,
-    password_hash,
-    associated_with
-  )
-VALUES (
-    $1,
-$2,
-$3,
-$4,
-$5,
-$6,
-$7,
-$8
-  ) RETURNING id;
-      "#,
+        INSERT INTO originals (
+            id,
+            title,
+            description,
+            cover_img,
+            presence,
+            created_at,
+            password_hash,
+            associated_with
+        )
+        VALUES ($1, $2, $3, $4, $5, $6, $7, $8)
+        RETURNING id;
+        "#,
         data.id,
         data.title,
         data.description,
@@ -37,8 +36,32 @@ $8
         data.password_hash,
         data.associated_with
     )
-    .fetch_one(pool)
+    .fetch_one(&mut **txn)
     .await?)
 }
 
-// pub async fn create_new_role(pool:&PgPool,data:Role)
+pub async fn insert_new_role(
+    txn: &mut sqlx::Transaction<'_, sqlx::Postgres>,
+    data: Role,
+) -> Result<String, ApiError> {
+    Ok(sqlx::query_scalar!(
+        r#"
+    INSERT INTO roles (
+        profile_id,
+        original_id,
+        category,
+        role_name,
+        created_at
+    )
+    VALUES ($1, $2, $3, $4, $5)
+    RETURNING role_name;
+    "#,
+        data.profile_id,
+        data.original_id,
+        data.category as RoleType,
+        data.role_name,
+        data.created_at
+    )
+    .fetch_one(&mut **txn)
+    .await?)
+}

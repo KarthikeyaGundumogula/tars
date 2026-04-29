@@ -14,5 +14,5 @@ async fn main() -> Result<(), std::io::Error> {
         .connect(&db_url)
         .await
         .expect("failed to connect to the database");
-    run(listener,pool).await?.await
+    run(listener, pool).await?.await
 }

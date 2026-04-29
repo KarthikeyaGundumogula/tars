@@ -4,7 +4,7 @@ use uuid::Uuid;
 
 #[derive(Debug, Serialize, Deserialize)]
 pub struct Crew {
-    pub artist: String,
+    pub artist: Uuid,
     pub role: String,
 }
 
@@ -12,8 +12,9 @@ pub struct Crew {
 pub struct CreateOriginalReq {
     pub title: String,
     pub description: String,
+    pub cover_img: String,
     pub password: String,
-    pub associated_with:String,
+    pub associated_with: Uuid,
     pub release_date: DateTime<Utc>,
     pub genere: Vec<String>,
     pub stars: Vec<Crew>,

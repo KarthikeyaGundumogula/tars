@@ -27,7 +27,7 @@ async fn upload_edit_return_200_on_correct_data() {
         .await
         .expect("Failed to execute request.");
     assert!(response.status().is_success());
-    println!("{}",response.status())
+    println!("{}", response.status())
 }
 
 #[tokio::test]

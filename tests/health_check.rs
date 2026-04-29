@@ -6,7 +6,7 @@ use utils::spawn_app;
 #[tokio::test]
 async fn health_check_test() {
     let app = spawn_app::spawn().await;
-    println!("out test is running at address {}",app.address);
+    println!("out test is running at address {}", app.address);
     let client = Client::new();
     let response = client
         .get(&format!("{}/health_check", app.address))

@@ -6,7 +6,7 @@ use sqlx::PgPool;
 use uuid::Uuid;
 
 use crate::{
-    db::artists::register_new_artist,
+    db::artists::insert_new_artist,
     errors::ApiError,
     types::{
         db::profile::{Profile, ProfileType},
@@ -33,10 +33,10 @@ pub async fn register_artist_handler(
         youtube_profile: data.youtube_profile,
         twitter_profile: data.twitter_profile,
         instagram_profile: data.instagram_profile,
-        password_hash: password_hash,
+        password_hash,
         created_at: Utc::now(),
     };
-    register_new_artist(&pool, artist).await?;
+    insert_new_artist(&pool, artist).await?;
     // verify_password(&password, &password_hash)?;
     Ok(ApiResponse::OK)
 }
