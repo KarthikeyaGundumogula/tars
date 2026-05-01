@@ -18,7 +18,6 @@ use crate::{
     },
     utils::password::get_password_hash,
 };
-
 pub async fn create_new_original_handler(
     State(pool): State<Arc<PgPool>>,
     Json(data): Json<CreateOriginalReq>,

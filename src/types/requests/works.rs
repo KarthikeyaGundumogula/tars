@@ -5,8 +5,8 @@ use uuid::Uuid;
 pub struct UploadEditData {
     pub title: Option<String>,
     pub src_id: String,
-    pub platform: SupportedPlatforms,
-    pub format: SupportedEditFormats,
+    pub platform: String,
+    pub format: String,
     pub originals: Vec<Uuid>,
 }
 
@@ -14,7 +14,7 @@ pub struct UploadEditData {
 pub struct UploadPosterData {
     pub title: Option<String>,
     pub src_id: String,
-    pub format: SupportedPosterFormats,
+    pub format: String,
     pub originals: Vec<Uuid>,
 }
 
@@ -24,27 +24,4 @@ pub struct UploadScriptData {
     pub src_ids: Vec<String>,
     pub originals: Vec<Uuid>,
     pub thoughts: Vec<Option<String>>,
-}
-
-#[derive(Deserialize)]
-pub enum SupportedPlatforms {
-    Youtube,
-    Twitter,
-    Native,
-}
-
-#[derive(Deserialize)]
-pub enum SupportedEditFormats {
-    Imax,
-    Academy,
-    Vertical,
-    Square,
-}
-
-#[derive(Deserialize)]
-pub enum SupportedPosterFormats {
-    Canvas,
-    Standard,
-    Square,
-    Vertical,
 }
