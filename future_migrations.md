@@ -22,3 +22,5 @@
 20. **Add a OriginalType to watchlist** (SERIES,MOVIE,SEASON,EPISODE) - ✅
 21. **Create a new column for type with check constraint on watchlist** - ✅
     --- completed migration 4 & 5 ---
+22. **Rename Poster and Edit format TYPE in the DB to get rid of hyphens**
+23. **ADD Work_views and work_likes tables**

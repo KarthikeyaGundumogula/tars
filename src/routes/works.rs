@@ -24,15 +24,15 @@ pub async fn create_new_work_handler(
     body: Bytes,
 ) -> Result<ApiResponse, ApiError> {
     let res = match work_type {
-        WorkType::Edit => {
+        WorkType::EDIT => {
             let Json(data) = Json::<UploadEditData>::from_bytes(&body)?;
             upload_edit_handler(data, &app).await
         }
-        WorkType::Poster => {
+        WorkType::POSTER => {
             let Json(data) = Json::<UploadPosterData>::from_bytes(&body)?;
             upload_poster_handler(data).await
         }
-        WorkType::Script => {
+        WorkType::SCRIPT => {
             let Json(data) = Json::<UploadScriptData>::from_bytes(&body)?;
             upload_script_handler(data).await
         }

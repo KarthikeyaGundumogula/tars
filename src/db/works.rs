@@ -16,7 +16,7 @@ pub async fn create_edit_work(pool: &PgPool, data: UploadEditData) -> Result<Uui
     id,
     data.title,
     Uuid::new_v4(),
-    WorkType::Edit as WorkType
+    WorkType::EDIT as WorkType
    ).fetch_one(pool).await?
   )
 }
