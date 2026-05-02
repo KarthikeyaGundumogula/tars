@@ -2,28 +2,24 @@ use std::sync::Arc;
 
 use axum::{Json, extract::State};
 use chrono::Utc;
-use sqlx::PgPool;
 use uuid::Uuid;
 
 use crate::{
-    db::originals::{insert_new_original, insert_new_role},
-    errors::ApiError,
-    types::{
+    AppState, db::originals::{insert_new_original, insert_new_role}, errors::ApiError, types::{
         db::{
             original::Original,
             profile::{Role, RoleType},
         },
         requests::originals::CreateOriginalReq,
         response::ApiResponse,
-    },
-    utils::password::get_password_hash,
+    }, utils::auth::get_password_hash
 };
 pub async fn create_new_original_handler(
-    State(pool): State<Arc<PgPool>>,
+    State(app): State<Arc<AppState>>,
     Json(data): Json<CreateOriginalReq>,
 ) -> Result<ApiResponse, ApiError> {
     let password_hash = get_password_hash(&data.password)?;
-    let mut txn = pool.begin().await?;
+    let mut txn = app.pool.begin().await?;
     let orignal_data = Original {
         id: Uuid::new_v4(),
         title: data.title,

@@ -24,7 +24,7 @@ async fn register_profile_return_200_on_correct_data() {
         r#"SELECT youtube_profile FROM profiles WHERE user_name=$1"#,
         "kapten"
     )
-    .fetch_one(&app.db_pool)
+    .fetch_one(&app.state.pool)
     .await
     .expect("db query failed");
     assert_eq!(saved, Some("aojojfosjf".to_string()));

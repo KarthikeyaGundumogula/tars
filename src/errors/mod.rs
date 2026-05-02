@@ -32,6 +32,8 @@ pub enum ApiError {
     DbError(#[from] sqlx::Error),
     #[error("password hashing failed")]
     Argon2Error(#[from] argon2::password_hash::Error),
+    #[error("jwt failure")]
+    JWTError(#[from] jsonwebtoken::errors::Error),
 }
 
 impl IntoResponse for ApiError {
@@ -63,6 +65,14 @@ impl IntoResponse for ApiError {
             )
                 .into_response(),
             Self::Argon2Error(_) => (
+                StatusCode::INTERNAL_SERVER_ERROR,
+                Json(ErrorResponse::new(
+                    StatusCode::INTERNAL_SERVER_ERROR.to_string(),
+                    message,
+                )),
+            )
+                .into_response(),
+            Self::JWTError(_) => (
                 StatusCode::INTERNAL_SERVER_ERROR,
                 Json(ErrorResponse::new(
                     StatusCode::INTERNAL_SERVER_ERROR.to_string(),

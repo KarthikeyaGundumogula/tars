@@ -2,7 +2,7 @@ use serde::Deserialize;
 use uuid::Uuid;
 
 #[derive(Deserialize)]
-pub struct UploadEditData {
+pub struct UploadEditReq {
     pub title: Option<String>,
     pub src_id: String,
     pub platform: String,
@@ -11,7 +11,7 @@ pub struct UploadEditData {
 }
 
 #[derive(Deserialize)]
-pub struct UploadPosterData {
+pub struct UploadPosterReq {
     pub title: Option<String>,
     pub src_id: String,
     pub format: String,
@@ -19,7 +19,7 @@ pub struct UploadPosterData {
 }
 
 #[derive(Deserialize)]
-pub struct UploadScriptData {
+pub struct UploadScriptReq {
     pub title: Option<String>,
     pub src_ids: Vec<String>,
     pub originals: Vec<Uuid>,

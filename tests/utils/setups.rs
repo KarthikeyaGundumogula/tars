@@ -3,7 +3,7 @@ use uuid::Uuid;
 
 use crate::utils::spawn_app::{self, TestApp};
 
-pub async fn setup_original_registration() -> (Vec<Uuid>,TestApp) {
+pub async fn setup_original_registration() -> (Vec<Uuid>, TestApp) {
     let mut artists = Vec::new();
     let app = spawn_app::spawn().await;
     let client = Client::new();
@@ -25,11 +25,11 @@ pub async fn setup_original_registration() -> (Vec<Uuid>,TestApp) {
         assert!(response.status().is_success());
         let artist =
             sqlx::query_scalar!(r#"SELECT id FROM profiles WHERE user_name=$1"#, user_name)
-                .fetch_one(&app.db_pool)
+                .fetch_one(&app.state.pool)
                 .await
                 .expect("db query failed");
-        println!("artist created {}",i);
+        println!("artist created {}", i);
         artists.push(artist);
     }
-    (artists,app)
+    (artists, app)
 }

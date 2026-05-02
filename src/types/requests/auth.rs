@@ -19,7 +19,7 @@ pub struct ProfileLogin {
 
 #[derive(Serialize, Deserialize)]
 pub struct Claims {
-    pub user_name: String,
+    pub sub:String,
     pub role: String,
     pub exp: usize,
 }

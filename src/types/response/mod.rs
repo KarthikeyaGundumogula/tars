@@ -1,9 +1,11 @@
-use axum::{http::StatusCode, response::IntoResponse};
+use axum::{Json, http::StatusCode, response::IntoResponse};
+use axum_extra::extract::CookieJar;
 use uuid::Uuid;
 
 pub enum ApiResponse {
     OK,
     WorkCreated(Uuid),
+    ProfileLoggedIn(CookieJar),
 }
 
 impl IntoResponse for ApiResponse {
@@ -11,6 +13,12 @@ impl IntoResponse for ApiResponse {
         match self {
             Self::OK => (StatusCode::OK).into_response(),
             Self::WorkCreated(_) => (StatusCode::ACCEPTED).into_response(),
+            Self::ProfileLoggedIn(jar) => (
+                StatusCode::OK,
+                jar,
+                Json(serde_json::json!({"message":"logged_in"})),
+            )
+                .into_response(),
         }
     }
 }

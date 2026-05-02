@@ -42,18 +42,16 @@ async fn create_original_return_success_on_correct_data() {
         r#"SELECT description FROM originals WHERE title=$1"#,
         "They Call him Og"
     )
-    .fetch_one(&app.db_pool)
+    .fetch_one(&app.state.pool)
     .await
     .expect("db query failed");
-    let actors:Vec<String> = sqlx::query_scalar!(
-        r#"SELECT role_name FROM roles;"#
-    )
-    .fetch_all(&app.db_pool)
-    .await
-    .expect("db query failed");
+    let actors: Vec<String> = sqlx::query_scalar!(r#"SELECT role_name FROM roles;"#)
+        .fetch_all(&app.state.pool)
+        .await
+        .expect("db query failed");
     assert!(response.status().is_success());
     assert_eq!(description, "fuck you staya dada".to_string());
     assert_eq!(actors[0], "Ojas Ghambheera".to_string());
     assert_eq!(actors[1], "Kanmani".to_string());
-    println!("{:?}",actors);
+    println!("{:?}", actors);
 }

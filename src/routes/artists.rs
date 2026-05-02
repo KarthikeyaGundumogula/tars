@@ -1,23 +1,20 @@
 use std::sync::Arc;
 
 use axum::{Json, extract::State};
+use axum_extra::extract::{CookieJar, cookie::Cookie};
 use chrono::Utc;
-use sqlx::PgPool;
 use uuid::Uuid;
 
 use crate::{
-    db::artists::insert_new_artist,
-    errors::ApiError,
-    types::{
+    AppState, db::artists::{get_profile_auth_details, insert_new_profile}, errors::ApiError, types::{
         db::profile::{Profile, ProfileType},
-        requests::auth::ProfileSignupReq,
+        requests::auth::{ProfileLogin, ProfileSignupReq},
         response::ApiResponse,
-    },
-    utils::password::get_password_hash,
+    }, utils::auth::{create_jwt, get_password_hash, verify_password}
 };
 
-pub async fn register_artist_handler(
-    State(pool): State<Arc<PgPool>>,
+pub async fn sign_up_artist_handler(
+    State(app): State<Arc<AppState>>,
     Json(data): Json<ProfileSignupReq>,
 ) -> Result<ApiResponse, ApiError> {
     let password = data.password;
@@ -36,7 +33,24 @@ pub async fn register_artist_handler(
         password_hash,
         created_at: Utc::now(),
     };
-    insert_new_artist(&pool, artist).await?;
-    // verify_password(&password, &password_hash)?;
+    insert_new_profile(&app.pool, artist).await?;
     Ok(ApiResponse::OK)
+}
+
+pub async fn log_in_artist_handler(
+    State(app): State<Arc<AppState>>,
+    jar: CookieJar,
+    Json(data): Json<ProfileLogin>,
+) -> Result<ApiResponse, ApiError> {
+    let password = data.password;
+    let (password_hash, user_id) = get_profile_auth_details(&app.pool, data.user_name).await?;
+    verify_password(&password, &password_hash)?;
+    let token = create_jwt(&user_id, "USER", app.secret.as_bytes())?;
+     let cookie = Cookie::build(("auth_token", token))
+        .http_only(true)
+        .secure(true)
+        .path("/")
+        .max_age(time::Duration::days(7))
+        .build();
+    Ok(ApiResponse::ProfileLoggedIn(jar.add(cookie)))
 }

@@ -5,3 +5,4 @@ database:
   username: "postgres"
   password: "Kap10"
   database_name: "aera"
+jwt_secret: "i dont give a fuck"

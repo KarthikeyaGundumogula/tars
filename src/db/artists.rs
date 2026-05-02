@@ -5,7 +5,7 @@ use crate::{
     types::db::profile::{Profile, ProfileType},
 };
 
-pub async fn insert_new_artist(pool: &PgPool, data: Profile) -> Result<Option<Profile>, ApiError> {
+pub async fn insert_new_profile(pool: &PgPool, data: Profile) -> Result<Option<Profile>, ApiError> {
     Ok(sqlx::query_as!(
         Profile,
         r#"
@@ -50,4 +50,17 @@ pub async fn insert_new_artist(pool: &PgPool, data: Profile) -> Result<Option<Pr
     )
     .fetch_optional(pool)
     .await?)
+}
+
+pub async fn get_profile_auth_details(
+    pool: &PgPool,
+    user_name: String,
+) -> Result<(String, String), ApiError> {
+    Ok(sqlx::query!(
+        r#"SELECT password_hash,id FROM profiles WHERE user_name=$1"#,
+        user_name
+    )
+    .fetch_one(pool)
+    .await
+    .map(|r| (r.password_hash, r.id.to_string()))?)
 }

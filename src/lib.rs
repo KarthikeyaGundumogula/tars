@@ -1,3 +1,5 @@
+use sqlx::{Pool, Postgres};
+
 pub mod configuration;
 pub mod db;
 pub mod errors;
@@ -6,6 +8,8 @@ pub mod startup;
 pub mod types;
 pub mod utils;
 
-// async fn home_handler() {}
-
-// async fn get_artist_handler() {}
+#[derive(Clone)]
+pub struct AppState{
+    pub pool:Pool<Postgres>,
+    pub secret:String
+}

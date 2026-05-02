@@ -1,19 +1,19 @@
 use chrono::{DateTime, Utc};
-use serde::Deserialize;
+use serde::{Deserialize, Serialize};
 use uuid::Uuid;
 
 /// for thumbnails
 /// youtube - free thumbnail api
 /// twitter display a poster from official releases / a movie poster
-#[derive(Deserialize,sqlx::Type)]
+#[derive(Deserialize, sqlx::Type, Serialize)]
 #[sqlx(type_name = "supported_platforms")]
 pub enum SupportedPlatforms {
     YOUTUBE,
     TWITTER,
-    NATIVE
+    NATIVE,
 }
 
-#[derive(Deserialize,sqlx::Type)]
+#[derive(Deserialize, sqlx::Type, Serialize)]
 #[sqlx(type_name = "edit_format")]
 pub enum EditFormat {
     IMAX,     // 2.35:1
@@ -22,6 +22,8 @@ pub enum EditFormat {
     VERTICAL, // 9:16
 }
 
+#[derive(Deserialize, sqlx::Type, Serialize)]
+#[sqlx(type_name = "poster_format")]
 pub enum PosterFormat {
     CANVAS,   // 2.35:1
     STANDARD, // 2:3
@@ -29,7 +31,7 @@ pub enum PosterFormat {
     VERTICAL, // 9:16
 }
 
-#[derive(sqlx::Type, Deserialize)]
+#[derive(sqlx::Type, Deserialize, Serialize)]
 #[sqlx(type_name = "work_type")]
 pub enum WorkType {
     EDIT,
@@ -37,18 +39,37 @@ pub enum WorkType {
     SCRIPT,
 }
 
+#[derive(sqlx::FromRow, Serialize)]
 pub struct Work {
     pub id: Uuid,
     pub artist_id: Uuid,
     pub title: String,
     pub credits: i64,
-    pub created_at:DateTime<Utc>,
-    pub category:WorkType
+    pub created_at: DateTime<Utc>,
+    pub category: WorkType,
 }
 
+#[derive(sqlx::FromRow, Serialize)]
 pub struct Edit {
     pub work_id: Uuid,
     pub src_id: String,
     pub platform: SupportedPlatforms,
-    pub format:EditFormat
+    pub format: EditFormat,
+    pub created_at: DateTime<Utc>,
+}
+
+#[derive(sqlx::FromRow, Serialize)]
+pub struct Poster {
+    pub work_id: Uuid,
+    pub src_id: String,
+    pub format: PosterFormat,
+    pub created_at: DateTime<Utc>,
+}
+
+#[derive(sqlx::FromRow, Serialize)]
+pub struct Script {
+    pub work_id: Uuid,
+    pub img_src_ids: Vec<String>,
+    pub thoughts: Vec<String>,
+    pub created_at: DateTime<Utc>,
 }
