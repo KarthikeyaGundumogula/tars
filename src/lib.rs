@@ -9,7 +9,7 @@ pub mod types;
 pub mod utils;
 
 #[derive(Clone)]
-pub struct AppState{
-    pub pool:Pool<Postgres>,
-    pub secret:String
+pub struct AppState {
+    pub pool: Pool<Postgres>,
+    pub secret: String,
 }

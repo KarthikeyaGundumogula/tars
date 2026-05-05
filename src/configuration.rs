@@ -1,6 +1,6 @@
 #[derive(serde::Deserialize)]
 pub struct Settings {
-    pub application_port: u16,
+    pub application: ApplicationSettings,
     pub database: DatabaseSettings,
     pub jwt_secret: String,
 }
@@ -12,6 +12,12 @@ pub struct DatabaseSettings {
     pub port: u16,
     pub host: String,
     pub database_name: String,
+}
+
+#[derive(serde::Deserialize)]
+pub struct ApplicationSettings {
+    pub port: u16,
+    pub host: String
 }
 
 impl DatabaseSettings {
@@ -30,8 +36,10 @@ impl DatabaseSettings {
 }
 
 pub fn get_configuration() -> Result<Settings, config::ConfigError> {
+    let run_mode = std::env::var("APP_ENV").unwrap_or_else(|_| "local".into());
     let settings = config::Config::builder()
-        .add_source(config::File::with_name("configuration"))
+        .add_source(config::File::with_name("configuration/base"))
+        .add_source(config::File::with_name(&format!("configuration/{run_mode}")))
         .build()
         .unwrap();
     settings.try_deserialize()

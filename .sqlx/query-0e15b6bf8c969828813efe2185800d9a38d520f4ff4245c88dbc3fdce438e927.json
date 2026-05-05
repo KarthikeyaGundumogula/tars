@@ -1,0 +1,119 @@
+{
+  "db_name": "PostgreSQL",
+  "query": "\n      INSERT INTO profiles(\n          id,\n          user_name,\n          tag_line,\n          is_claimed,\n          youtube_profile,\n          twitter_profile,\n          instagram_profile,\n          created_at,\n          profile_picture,\n          password_hash,\n          profile_type,\n          presence\n        )\n      VALUES ($1, $2, $3, false, $4, $5, $6, NOW (), $7, $8, $9, $10)\n      RETURNING id,\n        user_name,\n        tag_line,\n        is_claimed,\n        youtube_profile,\n        twitter_profile,\n        instagram_profile,\n        created_at,\n        profile_picture,\n        password_hash,\n        profile_type as \"profile_type: ProfileType\",\n        presence \n        ",
+  "describe": {
+    "columns": [
+      {
+        "ordinal": 0,
+        "name": "id",
+        "type_info": "Uuid"
+      },
+      {
+        "ordinal": 1,
+        "name": "user_name",
+        "type_info": "Varchar"
+      },
+      {
+        "ordinal": 2,
+        "name": "tag_line",
+        "type_info": "Text"
+      },
+      {
+        "ordinal": 3,
+        "name": "is_claimed",
+        "type_info": "Bool"
+      },
+      {
+        "ordinal": 4,
+        "name": "youtube_profile",
+        "type_info": "Text"
+      },
+      {
+        "ordinal": 5,
+        "name": "twitter_profile",
+        "type_info": "Text"
+      },
+      {
+        "ordinal": 6,
+        "name": "instagram_profile",
+        "type_info": "Text"
+      },
+      {
+        "ordinal": 7,
+        "name": "created_at",
+        "type_info": "Timestamptz"
+      },
+      {
+        "ordinal": 8,
+        "name": "profile_picture",
+        "type_info": "Text"
+      },
+      {
+        "ordinal": 9,
+        "name": "password_hash",
+        "type_info": "Text"
+      },
+      {
+        "ordinal": 10,
+        "name": "profile_type: ProfileType",
+        "type_info": {
+          "Custom": {
+            "name": "profile_type",
+            "kind": {
+              "Enum": [
+                "STAR",
+                "MAKER",
+                "ARTIST"
+              ]
+            }
+          }
+        }
+      },
+      {
+        "ordinal": 11,
+        "name": "presence",
+        "type_info": "Int8"
+      }
+    ],
+    "parameters": {
+      "Left": [
+        "Uuid",
+        "Varchar",
+        "Text",
+        "Text",
+        "Text",
+        "Text",
+        "Text",
+        "Text",
+        {
+          "Custom": {
+            "name": "profile_type",
+            "kind": {
+              "Enum": [
+                "STAR",
+                "MAKER",
+                "ARTIST"
+              ]
+            }
+          }
+        },
+        "Int8"
+      ]
+    },
+    "nullable": [
+      false,
+      false,
+      false,
+      false,
+      true,
+      true,
+      true,
+      false,
+      false,
+      false,
+      false,
+      false
+    ]
+  },
+  "hash": "0e15b6bf8c969828813efe2185800d9a38d520f4ff4245c88dbc3fdce438e927"
+}

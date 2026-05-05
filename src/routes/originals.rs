@@ -5,14 +5,18 @@ use chrono::Utc;
 use uuid::Uuid;
 
 use crate::{
-    AppState, db::originals::{insert_new_original, insert_new_role}, errors::ApiError, types::{
+    AppState,
+    db::originals::{insert_new_original, insert_new_role},
+    errors::ApiError,
+    types::{
         db::{
             original::Original,
             profile::{Role, RoleType},
         },
         requests::originals::CreateOriginalReq,
         response::ApiResponse,
-    }, utils::auth::get_password_hash
+    },
+    utils::auth::get_password_hash,
 };
 pub async fn create_new_original_handler(
     State(app): State<Arc<AppState>>,

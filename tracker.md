@@ -68,6 +68,14 @@ This document tracks the implementation status of the **TARS** (Rust/Axum) backe
 4. [ ] **Watchlist Engine**: Create `watchlist` table and basic CRUD handlers.
 5. [ ] **Cluster Builder**: Port `clusterBuilder.ts` logic to Rust for deterministic `/api/works` payload.
 
+Auth          → signup, login, logout
+Users         → profile page, edit profile
+Follows       → follow/unfollow, followers/following lists
+Posts         → create post (with image), delete post
+Feed          → same for everyone (global feed, cursor paginated)
+Likes         → like/unlike a post, like count
+Uploads       → images to S3/R2
+
 ---
 
 ## 🛠️ Tools Used

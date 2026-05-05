@@ -6,11 +6,15 @@ use chrono::Utc;
 use uuid::Uuid;
 
 use crate::{
-    AppState, db::artists::{get_profile_auth_details, insert_new_profile}, errors::ApiError, types::{
+    AppState,
+    db::artists::{get_profile_auth_details, insert_new_profile},
+    errors::ApiError,
+    types::{
         db::profile::{Profile, ProfileType},
         requests::auth::{ProfileLogin, ProfileSignupReq},
         response::ApiResponse,
-    }, utils::auth::{create_jwt, get_password_hash, verify_password}
+    },
+    utils::auth::{create_jwt, get_password_hash, verify_password},
 };
 
 pub async fn sign_up_artist_handler(
@@ -46,7 +50,7 @@ pub async fn log_in_artist_handler(
     let (password_hash, user_id) = get_profile_auth_details(&app.pool, data.user_name).await?;
     verify_password(&password, &password_hash)?;
     let token = create_jwt(&user_id, "USER", app.secret.as_bytes())?;
-     let cookie = Cookie::build(("auth_token", token))
+    let cookie = Cookie::build(("auth_token", token))
         .http_only(true)
         .secure(true)
         .path("/")

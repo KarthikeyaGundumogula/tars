@@ -1,0 +1,36 @@
+{
+  "db_name": "PostgreSQL",
+  "query": "\n    INSERT INTO roles (\n        profile_id,\n        original_id,\n        category,\n        role_name,\n        created_at\n    )\n    VALUES ($1, $2, $3, $4, $5)\n    RETURNING role_name;\n    ",
+  "describe": {
+    "columns": [
+      {
+        "ordinal": 0,
+        "name": "role_name",
+        "type_info": "Text"
+      }
+    ],
+    "parameters": {
+      "Left": [
+        "Uuid",
+        "Uuid",
+        {
+          "Custom": {
+            "name": "role_type",
+            "kind": {
+              "Enum": [
+                "STAR",
+                "MAKER"
+              ]
+            }
+          }
+        },
+        "Text",
+        "Timestamptz"
+      ]
+    },
+    "nullable": [
+      false
+    ]
+  },
+  "hash": "c42a5de38222af6b2395d6a7bb81e5f24a3d5258546810f4044653a0162f801a"
+}
