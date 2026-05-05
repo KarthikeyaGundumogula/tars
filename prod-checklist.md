@@ -1,1 +1,0 @@
-1. **change the jwt secret before deployment**

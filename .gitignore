@@ -1,3 +1,6 @@
 /target
 rules.md
 /agents
+.env
+.sqlx
+.vscode
