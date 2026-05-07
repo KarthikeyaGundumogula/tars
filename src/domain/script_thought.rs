@@ -1,0 +1,33 @@
+use serde::{Deserialize, Deserializer};
+
+#[derive(Debug)]
+pub struct ScriptThought(String);
+
+impl ScriptThought {
+    pub fn parse(script_thought: String) -> Result<Self, String> {
+        if script_thought.len() > 500 {
+            return Err("Script thought cannot be more than 500 characters".to_string());
+        }
+        Ok(Self(script_thought))
+    }
+
+    pub fn as_str(&self) -> &str {
+        &self.0
+    }
+}
+
+impl AsRef<str> for ScriptThought {
+    fn as_ref(&self) -> &str {
+        &self.0
+    }
+}
+
+impl<'de> Deserialize<'de> for ScriptThought {
+    fn deserialize<D>(deserializer: D) -> Result<Self, D::Error>
+    where
+        D: Deserializer<'de>,
+    {
+        let s = String::deserialize(deserializer)?;
+        Self::parse(s).map_err(serde::de::Error::custom)
+    }
+}

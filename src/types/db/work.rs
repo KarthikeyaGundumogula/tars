@@ -5,7 +5,7 @@ use uuid::Uuid;
 /// for thumbnails
 /// youtube - free thumbnail api
 /// twitter display a poster from official releases / a movie poster
-#[derive(Deserialize, sqlx::Type, Serialize)]
+#[derive(Deserialize, sqlx::Type, Serialize,Debug)]
 #[sqlx(type_name = "supported_platforms")]
 pub enum SupportedPlatforms {
     YOUTUBE,
@@ -13,7 +13,7 @@ pub enum SupportedPlatforms {
     NATIVE,
 }
 
-#[derive(Deserialize, sqlx::Type, Serialize)]
+#[derive(Deserialize, sqlx::Type, Serialize, Debug)]
 #[sqlx(type_name = "edit_format")]
 pub enum EditFormat {
     IMAX,     // 2.35:1
@@ -22,7 +22,7 @@ pub enum EditFormat {
     VERTICAL, // 9:16
 }
 
-#[derive(Deserialize, sqlx::Type, Serialize)]
+#[derive(Deserialize, sqlx::Type, Serialize, Debug)]
 #[sqlx(type_name = "poster_format")]
 pub enum PosterFormat {
     CANVAS,   // 2.35:1
@@ -31,7 +31,7 @@ pub enum PosterFormat {
     VERTICAL, // 9:16
 }
 
-#[derive(sqlx::Type, Deserialize, Serialize)]
+#[derive(sqlx::Type, Deserialize, Serialize, Debug)]
 #[sqlx(type_name = "work_type")]
 pub enum WorkType {
     EDIT,
@@ -39,7 +39,7 @@ pub enum WorkType {
     SCRIPT,
 }
 
-#[derive(sqlx::FromRow, Serialize)]
+#[derive(sqlx::FromRow, Serialize, Debug)]
 pub struct Work {
     pub id: Uuid,
     pub artist_id: Uuid,
@@ -49,7 +49,7 @@ pub struct Work {
     pub category: WorkType,
 }
 
-#[derive(sqlx::FromRow, Serialize)]
+#[derive(sqlx::FromRow, Serialize, Debug)]
 pub struct Edit {
     pub work_id: Uuid,
     pub src_id: String,
@@ -58,7 +58,7 @@ pub struct Edit {
     pub created_at: DateTime<Utc>,
 }
 
-#[derive(sqlx::FromRow, Serialize)]
+#[derive(sqlx::FromRow, Serialize, Debug)]
 pub struct Poster {
     pub work_id: Uuid,
     pub src_id: String,
@@ -66,7 +66,7 @@ pub struct Poster {
     pub created_at: DateTime<Utc>,
 }
 
-#[derive(sqlx::FromRow, Serialize)]
+#[derive(sqlx::FromRow, Serialize, Debug)]
 pub struct Script {
     pub work_id: Uuid,
     pub img_src_ids: Vec<String>,

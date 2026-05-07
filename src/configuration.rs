@@ -40,6 +40,11 @@ pub fn get_configuration() -> Result<Settings, config::ConfigError> {
     let settings = config::Config::builder()
         .add_source(config::File::with_name("configuration/base"))
         .add_source(config::File::with_name(&format!("configuration/{run_mode}")))
+        .add_source(
+            config::Environment::with_prefix("APP")
+                .prefix_separator("_")
+                .separator("__"),
+        )
         .build()
         .unwrap();
     settings.try_deserialize()

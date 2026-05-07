@@ -25,6 +25,8 @@
 22. **Rename Poster and Edit format TYPE in the DB to get rid of hyphens** - ✅
 23. **ADD Work_views and work_likes tables** - ✅
     --- completed migration 6 --
-24. **Add a column for storing the total views and likes on the Originals table** 
+24. **Add a column for storing the total views and likes on the Originals table**
 25. **Drop the created at column in the Works table** - since anyways we are storing the created_at on individual work tables we dont need to store it in the works table
-26. 
+26. **Add a Stage name column to the Works table**
+27. **Add Stage_color and Stage_bg columns to the profiles table**
+28. **Add a table for favorites**

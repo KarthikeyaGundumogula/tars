@@ -11,6 +11,6 @@ pub struct Original {
     pub password_hash: String,
     pub associated_with: Uuid,
     pub release_date: DateTime<Utc>,
-    pub generes: Vec<String>,
+    pub genres: Vec<String>,
     pub created_at: DateTime<Utc>,
 }

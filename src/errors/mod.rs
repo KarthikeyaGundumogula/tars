@@ -26,14 +26,16 @@ impl ErrorResponse {
 pub enum ApiError {
     #[error("Server responded with nothing")]
     NotFound,
-    #[error("Uploads are missing some feild")]
-    Serailization(#[from] JsonRejection),
+    #[error("Unble to process the incoming request")]
+    Serialization(#[from] JsonRejection),
     #[error("There is an error at the database")]
     DbError(#[from] sqlx::Error),
     #[error("password hashing failed")]
     Argon2Error(#[from] argon2::password_hash::Error),
     #[error("jwt failure")]
     JWTError(#[from] jsonwebtoken::errors::Error),
+    #[error("json parsing failed")]
+    JsonError(#[from] serde_json::Error),
 }
 
 impl IntoResponse for ApiError {
@@ -48,7 +50,7 @@ impl IntoResponse for ApiError {
                 )),
             )
                 .into_response(),
-            Self::Serailization(_) => (
+            Self::Serialization(_) => (
                 StatusCode::UNPROCESSABLE_ENTITY,
                 Json(ErrorResponse::new(
                     StatusCode::UNPROCESSABLE_ENTITY.to_string(),
@@ -76,6 +78,14 @@ impl IntoResponse for ApiError {
                 StatusCode::INTERNAL_SERVER_ERROR,
                 Json(ErrorResponse::new(
                     StatusCode::INTERNAL_SERVER_ERROR.to_string(),
+                    message,
+                )),
+            )
+                .into_response(),
+            Self::JsonError(_) => (
+                StatusCode::BAD_REQUEST,
+                Json(ErrorResponse::new(
+                    StatusCode::BAD_REQUEST.to_string(),
                     message,
                 )),
             )

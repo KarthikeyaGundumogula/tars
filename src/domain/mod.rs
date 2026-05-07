@@ -1,0 +1,21 @@
+pub mod genre;
+pub mod handle;
+pub mod original_description;
+pub mod original_title;
+pub mod password;
+pub mod role;
+pub mod script_thought;
+pub mod stage_name;
+pub mod tagline;
+pub mod work_title;
+
+pub use genre::Genre;
+pub use handle::Handle;
+pub use original_description::OriginalDescription;
+pub use original_title::OriginalTitle;
+pub use password::Password;
+pub use role::Role;
+pub use script_thought::ScriptThought;
+pub use stage_name::StageName;
+pub use tagline::TagLine;
+pub use work_title::WorkTitle;

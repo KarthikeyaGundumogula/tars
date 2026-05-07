@@ -13,10 +13,10 @@ async fn create_original_return_success_on_correct_data() {
         "title":"They Call him Og",
         "description":"fuck you staya dada",
         "cover_img":"canada is fucked",
-        "password": "1234",
+        "password": "Kap@123456",
         "associated_with":artists[0], // this is an uuid that can be set
         "release_date":Utc::now(),
-        "genere":["action","drama"],
+        "genres":["action","drama"],
         "stars":[{
             "role":"Ojas Ghambheera",
             "artist":artists[1] // this is also a uuid
@@ -38,6 +38,8 @@ async fn create_original_return_success_on_correct_data() {
         .send()
         .await
         .expect("failed to execute request");
+    println!("Response: {:#?}", response);
+    assert!(response.status().is_success());
     let description = sqlx::query_scalar!(
         r#"SELECT description FROM originals WHERE title=$1"#,
         "They Call him Og"
@@ -49,7 +51,6 @@ async fn create_original_return_success_on_correct_data() {
         .fetch_all(&app.state.pool)
         .await
         .expect("db query failed");
-    assert!(response.status().is_success());
     assert_eq!(description, "fuck you staya dada".to_string());
     assert_eq!(actors[0], "Ojas Ghambheera".to_string());
     assert_eq!(actors[1], "Kanmani".to_string());

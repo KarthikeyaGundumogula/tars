@@ -9,7 +9,7 @@ async fn register_profile_return_200_on_correct_data() {
     let body = serde_json::json!({
       "user_name":"kapten",
       "tag_line":"I dont give a dmn about your opinion",
-      "password":"kapten@1023",
+      "password":"kApten@1023",
       "profile_picture":"aofdjosfjosf",
       "youtube_profile":"aojojfosjf"
     });

@@ -1,0 +1,5464 @@
+[
+  {
+    "title": "K.G.F: Chapter 1",
+    "year": 2018,
+    "stars": [
+      {
+        "role": "Rocky",
+        "actor": "Yash"
+      },
+      {
+        "role": "Reena Desai",
+        "actor": "Srinidhi Shetty"
+      },
+      {
+        "role": "Garuda",
+        "actor": "Ramachandra Raju"
+      }
+    ],
+    "directors": ["Prashanth Neel"],
+    "duration_min": 154,
+    "description": "A high-ranking mercenary, Rocky, rises from poverty to become a formidable underworld don at the Kolar Gold Fields."
+  },
+  {
+    "title": "Jai Bhim",
+    "year": 2021,
+    "stars": [
+      {
+        "role": "Advocate Chandru",
+        "actor": "Suriya"
+      },
+      {
+        "role": "Sengani",
+        "actor": "Lijo Mol Jose"
+      },
+      {
+        "role": "Rajakannu",
+        "actor": "Manikandan K."
+      }
+    ],
+    "directors": ["T.J. Gnanavel"],
+    "duration_min": 164,
+    "description": "A human-rights lawyer fights for justice for a tribal man falsely arrested for theft and killed in custody."
+  },
+  {
+    "title": "Baahubali: The Beginning",
+    "year": 2015,
+    "stars": [
+      {
+        "role": "Shivudu / Baahubali",
+        "actor": "Prabhas"
+      },
+      {
+        "role": "Bhallaladeva",
+        "actor": "Rana Daggubati"
+      },
+      {
+        "role": "Devasena",
+        "actor": "Anushka Shetty"
+      }
+    ],
+    "directors": ["S.S. Rajamouli"],
+    "duration_min": 159,
+    "description": "A historical epic about two brothers fighting for the throne of the kingdom of Mahishmati."
+  },
+  {
+    "title": "Baahubali 2: The Conclusion",
+    "year": 2017,
+    "stars": [
+      {
+        "role": "Amarendra Baahubali",
+        "actor": "Prabhas"
+      },
+      {
+        "role": "Bhallaladeva",
+        "actor": "Rana Daggubati"
+      },
+      {
+        "role": "Devasena",
+        "actor": "Anushka Shetty"
+      }
+    ],
+    "directors": ["S.S. Rajamouli"],
+    "duration_min": 167,
+    "description": "Mahendra Baahubali avenges his father Amarendra Baahubali's death and reclaims his rightful throne."
+  },
+  {
+    "title": "Asuran",
+    "year": 2019,
+    "stars": [
+      {
+        "role": "Sivasamy",
+        "actor": "Dhanush"
+      },
+      {
+        "role": "Pachaiyammal",
+        "actor": "Manju Warrier"
+      },
+      {
+        "role": "Venugopal Seshadri",
+        "actor": "Prakash Raj"
+      }
+    ],
+    "directors": ["Vetrimaaran"],
+    "duration_min": 141,
+    "description": "A farmer from an oppressed community fights against powerful landlords to protect his family and land."
+  },
+  {
+    "title": "Vada Chennai",
+    "year": 2018,
+    "stars": [
+      {
+        "role": "Anbu",
+        "actor": "Dhanush"
+      },
+      {
+        "role": "Rajan",
+        "actor": "Ameer Sultan"
+      },
+      {
+        "role": "Muthu",
+        "actor": "Radha Ravi"
+      }
+    ],
+    "directors": ["Vetrimaaran"],
+    "duration_min": 164,
+    "description": "A skilled carrom player becomes a reluctant participant in a gang war in North Madras."
+  },
+  {
+    "title": "Sarileru Neekevvaru",
+    "year": 2020,
+    "stars": [
+      {
+        "role": "Mahesh Babu",
+        "actor": "Mahesh Babu"
+      },
+      {
+        "role": "Rashmika Mandanna",
+        "actor": "Rashmika Mandanna"
+      },
+      {
+        "role": "Vijayashanti",
+        "actor": "Vijayashanti"
+      }
+    ],
+    "directors": ["Anil Ravipudi"],
+    "duration_min": 169,
+    "description": "An army major goes on a mission to protect a professor's family from a corrupt politician in Kurnool."
+  },
+  {
+    "title": "Ghajini",
+    "year": 2005,
+    "stars": [
+      {
+        "role": "Sanjay Ramasamy",
+        "actor": "Suriya"
+      },
+      {
+        "role": "Kalpana Shetty",
+        "actor": "Asin"
+      },
+      {
+        "role": "Chitra",
+        "actor": "Nayanthara"
+      }
+    ],
+    "directors": ["A.R. Murugadoss"],
+    "duration_min": 175,
+    "description": "A businessman suffering from anterograde amnesia seeks revenge for the murder of his fianc\u00e9e."
+  },
+  {
+    "title": "Tughlaq Durbar",
+    "year": 2021,
+    "stars": [
+      {
+        "role": "Vijay Sethupathi",
+        "actor": "Vijay Sethupathi"
+      },
+      {
+        "role": "Raashi Khanna",
+        "actor": "Raashi Khanna"
+      },
+      {
+        "role": "Manjima Mohan",
+        "actor": "Manjima Mohan"
+      }
+    ],
+    "directors": ["Delhi Prasad Deenadayal"],
+    "duration_min": 145,
+    "description": "An unscrupulous politician develops a conscience that manifests as a split personality, leading him to challenge his corrupt leader."
+  },
+  {
+    "title": "Master",
+    "year": 2021,
+    "stars": [
+      {
+        "role": "JD",
+        "actor": "Joseph Vijay"
+      },
+      {
+        "role": "Bhavani",
+        "actor": "Vijay Sethupathi"
+      },
+      {
+        "role": "Charulatha",
+        "actor": "Malavika Mohanan"
+      }
+    ],
+    "directors": ["Lokesh Kanagaraj"],
+    "duration_min": 179,
+    "description": "An alcoholic professor is sent to a juvenile home where he clashes with a ruthless gangster using kids for crimes."
+  },
+  {
+    "title": "Vivegam",
+    "year": 2017,
+    "stars": [
+      {
+        "role": "Ajith Kumar",
+        "actor": "Ajith Kumar"
+      },
+      {
+        "role": "Vivek Oberoi",
+        "actor": "Vivek Oberoi"
+      },
+      {
+        "role": "Kajal Aggarwal",
+        "actor": "Kajal Aggarwal"
+      }
+    ],
+    "directors": ["Siva"],
+    "duration_min": 149,
+    "description": "A secret agent must stop a nuclear threat from a shadow government that manipulates global economies."
+  },
+  {
+    "title": "Karnan",
+    "year": 2021,
+    "stars": [
+      {
+        "role": "Dhanush",
+        "actor": "Dhanush"
+      },
+      {
+        "role": "Lal",
+        "actor": "Lal"
+      },
+      {
+        "role": "Rajisha Vijayan",
+        "actor": "Rajisha Vijayan"
+      }
+    ],
+    "directors": ["Mari Selvaraj"],
+    "duration_min": 158,
+    "description": "A hot-headed youth fights for the rights of his marginalized community to have a bus stop in their village."
+  },
+  {
+    "title": "Lucifer",
+    "year": 2019,
+    "stars": [
+      {
+        "role": "Mohanlal",
+        "actor": "Mohanlal"
+      },
+      {
+        "role": "Vivek Oberoi",
+        "actor": "Vivek Oberoi"
+      },
+      {
+        "role": "Manju Warrier",
+        "actor": "Manju Warrier"
+      }
+    ],
+    "directors": ["Prithviraj Sukumaran"],
+    "duration_min": 175,
+    "description": "A power struggle ensues in the political landscape of Kerala involving a mysterious international criminal named Stephen Nedumpally."
+  },
+  {
+    "title": "Kumbalangi Nights",
+    "year": 2019,
+    "stars": [
+      {
+        "role": "Shane Nigam",
+        "actor": "Shane Nigam"
+      },
+      {
+        "role": "Soubin Shahir",
+        "actor": "Soubin Shahir"
+      },
+      {
+        "role": "Fahadh Faasil",
+        "actor": "Fahadh Faasil"
+      }
+    ],
+    "directors": ["Madhu C. Narayanan"],
+    "duration_min": 135,
+    "description": "Four brothers in a dysfunctional household stand up for each other and face toxic masculinity in their community."
+  },
+  {
+    "title": "Ayyappanum Koshiyum",
+    "year": 2020,
+    "stars": [
+      {
+        "role": "Biju Menon",
+        "actor": "Biju Menon"
+      },
+      {
+        "role": "Prithviraj Sukumaran",
+        "actor": "Prithviraj Sukumaran"
+      },
+      {
+        "role": "Ranjith",
+        "actor": "Ranjith"
+      }
+    ],
+    "directors": ["Sachy"],
+    "duration_min": 177,
+    "description": "An intense ego clash between a police officer and an ex-army man escalates into a brutal feud in a remote village."
+  },
+  {
+    "title": "Drishyam",
+    "year": 2013,
+    "stars": [
+      {
+        "role": "Georgekutty",
+        "actor": "Mohanlal"
+      },
+      {
+        "role": "Rani",
+        "actor": "Meena"
+      },
+      {
+        "role": "Geetha Prabhakar",
+        "actor": "Asha Sharath"
+      }
+    ],
+    "directors": ["Jeethu Joseph"],
+    "duration_min": 160,
+    "description": "A common man uses his knowledge of cinema to protect his family after they accidentally kill a police officer's son."
+  },
+  {
+    "title": "Drishyam 2",
+    "year": 2021,
+    "stars": [
+      {
+        "role": "Georgekutty",
+        "actor": "Mohanlal"
+      },
+      {
+        "role": "Rani",
+        "actor": "Meena"
+      },
+      {
+        "role": "Anju",
+        "actor": "Ansiba Hassan"
+      }
+    ],
+    "directors": ["Jeethu Joseph"],
+    "duration_min": 152,
+    "description": "Six years after a life-altering incident, Georgekutty must once again protect his family from persistent police scrutiny."
+  },
+  {
+    "title": "Uyare",
+    "year": 2019,
+    "stars": [
+      {
+        "role": "Parvathy Thiruvothu",
+        "actor": "Parvathy Thiruvothu"
+      },
+      {
+        "role": "Asif Ali",
+        "actor": "Asif Ali"
+      },
+      {
+        "role": "Tovino Thomas",
+        "actor": "Tovino Thomas"
+      }
+    ],
+    "directors": ["Manu Ashokan"],
+    "duration_min": 125,
+    "description": "An aspiring pilot faces a life-shattering challenge when she survives an acid attack and strives to reclaim her dreams."
+  },
+  {
+    "title": "Premam",
+    "year": 2015,
+    "stars": [
+      {
+        "role": "George David",
+        "actor": "Nivin Pauly"
+      },
+      {
+        "role": "Malar",
+        "actor": "Sai Pallavi"
+      },
+      {
+        "role": "Celine",
+        "actor": "Madonna Sebastian"
+      }
+    ],
+    "directors": ["Alphonse Puthren"],
+    "duration_min": 156,
+    "description": "A journey through three different stages of a man's life as he experiences love and heartbreak."
+  },
+  {
+    "title": "Charlie",
+    "year": 2015,
+    "stars": [
+      {
+        "role": "Charlie",
+        "actor": "Dulquer Salmaan"
+      },
+      {
+        "role": "Tessa",
+        "actor": "Parvathy Thiruvothu"
+      },
+      {
+        "role": "Kani",
+        "actor": "Aparna Gopinath"
+      }
+    ],
+    "directors": ["Martin Prakkat"],
+    "duration_min": 130,
+    "description": "A young woman becomes fascinated by the sketches of a previous occupant of her room and sets out to find him."
+  },
+  {
+    "title": "Trance",
+    "year": 2020,
+    "stars": [
+      {
+        "role": "Fahadh Faasil",
+        "actor": "Fahadh Faasil"
+      },
+      {
+        "role": "Gautham Vasudev Menon",
+        "actor": "Gautham Vasudev Menon"
+      },
+      {
+        "role": "Chemban Vinod Jose",
+        "actor": "Chemban Vinod Jose"
+      }
+    ],
+    "directors": ["Anwar Rasheed"],
+    "duration_min": 170,
+    "description": "A motivational speaker is hired by a corporate firm to act as a miracle worker, leading to his mental breakdown."
+  },
+  {
+    "title": "Bangalore Days",
+    "year": 2014,
+    "stars": [
+      {
+        "role": "Arjun",
+        "actor": "Dulquer Salmaan"
+      },
+      {
+        "role": "Kuttan",
+        "actor": "Nivin Pauly"
+      },
+      {
+        "role": "Divya",
+        "actor": "Nazriya Nazim"
+      }
+    ],
+    "directors": ["Anjali Menon"],
+    "duration_min": 171,
+    "description": "Three cousins move to Bangalore to pursue their dreams and navigate their personal relationships."
+  },
+  {
+    "title": "Jallikattu",
+    "year": 2019,
+    "stars": [
+      {
+        "role": "Antony Varghese",
+        "actor": "Antony Varghese"
+      },
+      {
+        "role": "Chemban Vinod Jose",
+        "actor": "Chemban Vinod Jose"
+      },
+      {
+        "role": "Sabumon Abdusamad",
+        "actor": "Sabumon Abdusamad"
+      }
+    ],
+    "directors": ["Lijo Jose Pellissery"],
+    "duration_min": 95,
+    "description": "A buffalo escapes on the eve of a celebration, leading to a chaotic hunt that brings out the animalistic side of a village."
+  },
+  {
+    "title": "Malik",
+    "year": 2021,
+    "stars": [
+      {
+        "role": "Fahadh Faasil",
+        "actor": "Fahadh Faasil"
+      },
+      {
+        "role": "Nimisha Sajayan",
+        "actor": "Nimisha Sajayan"
+      },
+      {
+        "role": "Vinay Forrt",
+        "actor": "Vinay Forrt"
+      }
+    ],
+    "directors": ["Mahesh Narayanan"],
+    "duration_min": 162,
+    "description": "A political leader's rise to power in a coastal town is told through his memories as he prepares for a pilgrimage."
+  },
+  {
+    "title": "Ustad Hotel",
+    "year": 2012,
+    "stars": [
+      {
+        "role": "Dulquer Salmaan",
+        "actor": "Dulquer Salmaan"
+      },
+      {
+        "role": "Thilakan",
+        "actor": "Thilakan"
+      },
+      {
+        "role": "Siddique",
+        "actor": "Siddique"
+      }
+    ],
+    "directors": ["Anwar Rasheed"],
+    "duration_min": 151,
+    "description": "A young man returns to his grandfather's beachside hotel to fulfill his dream of becoming a chef and learns life lessons."
+  },
+  {
+    "title": "North 24 Kaatham",
+    "year": 2013,
+    "stars": [
+      {
+        "role": "Fahadh Faasil",
+        "actor": "Fahadh Faasil"
+      },
+      {
+        "role": "Nedumudi Venu",
+        "actor": "Nedumudi Venu"
+      },
+      {
+        "role": "Swathi Reddy",
+        "actor": "Swathi Reddy"
+      }
+    ],
+    "directors": ["Anil Radhakrishnan Menon"],
+    "duration_min": 125,
+    "description": "A man with OCD goes on a journey that forces him to change his perspective on life and people."
+  },
+  {
+    "title": "Nayattu",
+    "year": 2021,
+    "stars": [
+      {
+        "role": "Kunchacko Boban",
+        "actor": "Kunchacko Boban"
+      },
+      {
+        "role": "Joju George",
+        "actor": "Joju George"
+      },
+      {
+        "role": "Nimisha Sajayan",
+        "actor": "Nimisha Sajayan"
+      }
+    ],
+    "directors": ["Martin Prakkat"],
+    "duration_min": 124,
+    "description": "Three police officers go on the run after being framed for a crime they didn't commit."
+  },
+  {
+    "title": "Madhuraraja",
+    "year": 2019,
+    "stars": [
+      {
+        "role": "Mammootty",
+        "actor": "Mammootty"
+      },
+      {
+        "role": "Jai",
+        "actor": "Jai"
+      },
+      {
+        "role": "Jagapathi Babu",
+        "actor": "Jagapathi Babu"
+      }
+    ],
+    "directors": ["Vysakh"],
+    "duration_min": 147,
+    "description": "A man returns to help a village suffering under the reign of a local goon and corrupt politicians."
+  },
+  {
+    "title": "Take Off",
+    "year": 2017,
+    "stars": [
+      {
+        "role": "Parvathy Thiruvothu",
+        "actor": "Parvathy Thiruvothu"
+      },
+      {
+        "role": "Fahadh Faasil",
+        "actor": "Fahadh Faasil"
+      },
+      {
+        "role": "Kunchacko Boban",
+        "actor": "Kunchacko Boban"
+      }
+    ],
+    "directors": ["Mahesh Narayanan"],
+    "duration_min": 139,
+    "description": "A story about Indian nurses trapped in a conflict-ridden Iraq and their rescue mission."
+  },
+  {
+    "title": "Thuppakki",
+    "year": 2012,
+    "stars": [
+      {
+        "role": "Jagadish Dhanapal",
+        "actor": "Joseph Vijay"
+      },
+      {
+        "role": "Nisha",
+        "actor": "Kajal Aggarwal"
+      },
+      {
+        "role": "Leader of Sleeper Cells",
+        "actor": "Vidyut Jammwal"
+      }
+    ],
+    "directors": ["A.R. Murugadoss"],
+    "duration_min": 165,
+    "description": "An army officer on holiday in Mumbai tracks down and eliminates a terrorist sleeper cell."
+  },
+  {
+    "title": "24",
+    "year": 2016,
+    "stars": [
+      {
+        "role": "Suriya",
+        "actor": "Suriya"
+      },
+      {
+        "role": "Samantha Ruth Prabhu",
+        "actor": "Samantha Ruth Prabhu"
+      },
+      {
+        "role": "Nithya Menen",
+        "actor": "Nithya Menen"
+      }
+    ],
+    "directors": ["Vikram K. Kumar"],
+    "duration_min": 164,
+    "description": "A watchmaker travels through time to save his family and his invention from his evil twin brother."
+  },
+  {
+    "title": "Visaaranai",
+    "year": 2015,
+    "stars": [
+      {
+        "role": "Dinesh",
+        "actor": "Dinesh"
+      },
+      {
+        "role": "Samuthirakani",
+        "actor": "Samuthirakani"
+      },
+      {
+        "role": "Anandhi",
+        "actor": "Anandhi"
+      }
+    ],
+    "directors": ["Vetrimaaran"],
+    "duration_min": 117,
+    "description": "Laborers are picked up by the police and tortured for a confession to a crime they didn't commit."
+  },
+  {
+    "title": "Vikram Vedha",
+    "year": 2017,
+    "directors": ["Gayatri", "Pushkar"],
+    "stars": [
+      {
+        "role": "Vikram",
+        "actor": "Madhavan"
+      },
+      {
+        "role": "Vedha",
+        "actor": "Vijay Sethupathi"
+      },
+      {
+        "role": "Priya",
+        "actor": "Shraddha Srinath"
+      }
+    ],
+    "duration_min": 147,
+    "description": "A pragmatic policeman and a notorious gangster engage in a series of life-lesson stories during a cat-and-mouse game."
+  },
+  {
+    "title": "Enthiran",
+    "year": 2010,
+    "stars": [
+      {
+        "role": "Vaseegaran / Chitti",
+        "actor": "Rajinikanth"
+      },
+      {
+        "role": "Sana",
+        "actor": "Aishwarya Rai Bachchan"
+      },
+      {
+        "role": "Dr. Bohra",
+        "actor": "Danny Denzongpa"
+      }
+    ],
+    "directors": ["S. Shankar"],
+    "duration_min": 174,
+    "description": "A scientist creates a sophisticated robot that falls in love with his girlfriend and is later corrupted."
+  },
+  {
+    "title": "2.0",
+    "year": 2018,
+    "stars": [
+      {
+        "role": "Rajinikanth",
+        "actor": "Rajinikanth"
+      },
+      {
+        "role": "Akshay Kumar",
+        "actor": "Akshay Kumar"
+      },
+      {
+        "role": "Amy Jackson",
+        "actor": "Amy Jackson"
+      }
+    ],
+    "directors": ["S. Shankar"],
+    "duration_min": 148,
+    "description": "A scientist and his robot must fight a supernatural entity composed of mobile phones seeking revenge."
+  },
+  {
+    "title": "Ratsasan",
+    "year": 2018,
+    "stars": [
+      {
+        "role": "Arun Kumar",
+        "actor": "Vishnu Vishal"
+      },
+      {
+        "role": "Viji",
+        "actor": "Amala Paul"
+      },
+      {
+        "role": "Rajamanickam",
+        "actor": "Radha Ravi"
+      }
+    ],
+    "directors": ["Ram Kumar"],
+    "duration_min": 146,
+    "description": "A sub-inspector tracks down a psychotic serial killer who targets schoolgirls using elaborate psychological games."
+  },
+  {
+    "title": "Kaadan",
+    "year": 2021,
+    "stars": [
+      {
+        "role": "Srinath Alnath",
+        "actor": "Srinath Alnath"
+      },
+      {
+        "role": "Raghu Babu",
+        "actor": "Raghu Babu"
+      },
+      {
+        "role": "Rana Daggubati",
+        "actor": "Rana Daggubati"
+      }
+    ],
+    "directors": ["Prabu Solomon"],
+    "duration_min": 153,
+    "description": "A man dedicated to protecting elephants fights against corporate encroachment on their forest habitat."
+  },
+  {
+    "title": "Nerkonda Paarvai",
+    "year": 2019,
+    "stars": [
+      {
+        "role": "Ajith Kumar",
+        "actor": "Ajith Kumar"
+      },
+      {
+        "role": "Shraddha Srinath",
+        "actor": "Shraddha Srinath"
+      },
+      {
+        "role": "Abhirami Venkatachalam",
+        "actor": "Abhirami Venkatachalam"
+      }
+    ],
+    "directors": ["H. Vinoth"],
+    "duration_min": 157,
+    "description": "A retired lawyer comes out of retirement to defend three women falsely accused of a crime by powerful men."
+  },
+  {
+    "title": "Paruthiveeran",
+    "year": 2007,
+    "stars": [
+      {
+        "role": "Karthi",
+        "actor": "Karthi"
+      },
+      {
+        "role": "Priyamani",
+        "actor": "Priyamani"
+      },
+      {
+        "role": "Saravanan",
+        "actor": "Saravanan"
+      }
+    ],
+    "directors": ["Ameer Sultan"],
+    "duration_min": 162,
+    "description": "A tragic love story set in a rural village between a ruffian and his cousin."
+  },
+  {
+    "title": "Aadukalam",
+    "year": 2011,
+    "stars": [
+      {
+        "role": "Dhanush",
+        "actor": "Dhanush"
+      },
+      {
+        "role": "Taapsee Pannu",
+        "actor": "Taapsee Pannu"
+      },
+      {
+        "role": "Jayabalan",
+        "actor": "Jayabalan"
+      }
+    ],
+    "directors": ["Vetrimaaran"],
+    "duration_min": 160,
+    "description": "A story of betrayal and jealousy in the world of rooster fighting in Madurai."
+  },
+  {
+    "title": "96",
+    "year": 2018,
+    "stars": [
+      {
+        "role": "Ram",
+        "actor": "Vijay Sethupathi"
+      },
+      {
+        "role": "Janu",
+        "actor": "Trisha Krishnan"
+      },
+      {
+        "role": "Young Ram",
+        "actor": "Adithya Bhaskar"
+      }
+    ],
+    "directors": ["C. Prem Kumar"],
+    "duration_min": 158,
+    "description": "Childhood sweethearts reunite at their high school reunion after twenty years and reminisce about their love."
+  },
+  {
+    "title": "Super Deluxe",
+    "year": 2019,
+    "stars": [
+      {
+        "role": "Shilpa",
+        "actor": "Vijay Sethupathi"
+      },
+      {
+        "role": "Mugil",
+        "actor": "Fahadh Faasil"
+      },
+      {
+        "role": "Vaembu",
+        "actor": "Samantha Ruth Prabhu"
+      }
+    ],
+    "directors": ["Thiagarajan Kumararaja"],
+    "duration_min": 176,
+    "description": "Multiple intertwining stories of people in Chennai whose lives change in unexpected ways over one day."
+  },
+  {
+    "title": "Bigil",
+    "year": 2019,
+    "stars": [
+      {
+        "role": "Joseph Vijay",
+        "actor": "Joseph Vijay"
+      },
+      {
+        "role": "Nayanthara",
+        "actor": "Nayanthara"
+      },
+      {
+        "role": "Jackie Shroff",
+        "actor": "Jackie Shroff"
+      }
+    ],
+    "directors": ["Atlee"],
+    "duration_min": 179,
+    "description": "A former football player turned gangster coaches a women's football team to honor his father's dream."
+  },
+  {
+    "title": "Thadam",
+    "year": 2019,
+    "stars": [
+      {
+        "role": "Arun Vijay",
+        "actor": "Arun Vijay"
+      },
+      {
+        "role": "Vidya Pradeep",
+        "actor": "Vidya Pradeep"
+      },
+      {
+        "role": "Tanya Hope",
+        "actor": "Tanya Hope"
+      }
+    ],
+    "directors": ["Magizh Thirumeni"],
+    "duration_min": 138,
+    "description": "A murder case becomes a mystery when two lookalike twins become the main suspects."
+  },
+  {
+    "title": "Kabali",
+    "year": 2016,
+    "stars": [
+      {
+        "role": "Kabaleeswaran",
+        "actor": "Rajinikanth"
+      },
+      {
+        "role": "Tony Lee",
+        "actor": "Winston Chao"
+      },
+      {
+        "role": "Kumudhavalli",
+        "actor": "Radhika Apte"
+      }
+    ],
+    "directors": ["Pa. Ranjith"],
+    "duration_min": 153,
+    "description": "An aging gangster returns from prison to search for his family and protect his community in Malaysia."
+  },
+  {
+    "title": "Sarkar",
+    "year": 2018,
+    "stars": [
+      {
+        "role": "Sundar Ramaswamy",
+        "actor": "Joseph Vijay"
+      },
+      {
+        "role": "Nila",
+        "actor": "Keerthy Suresh"
+      },
+      {
+        "role": "Komalavalli",
+        "actor": "Varalaxmi Sarathkumar"
+      }
+    ],
+    "directors": ["A.R. Murugadoss"],
+    "duration_min": 163,
+    "description": "A corporate businessman returns to India to vote, but finds his vote has been cast illegally, sparking a political movement."
+  },
+  {
+    "title": "Kaithi",
+    "year": 2019,
+    "stars": [
+      {
+        "role": "Dilli",
+        "actor": "Karthi"
+      },
+      {
+        "role": "Bejoy",
+        "actor": "Narain"
+      },
+      {
+        "role": "Anbu",
+        "actor": "Arjun Das"
+      }
+    ],
+    "directors": ["Lokesh Kanagaraj"],
+    "duration_min": 145,
+    "description": "A prisoner on parole helps the police in a race against time to save poisoned officers while trying to meet his daughter."
+  },
+  {
+    "title": "Petta",
+    "year": 2019,
+    "stars": [
+      {
+        "role": "Kaali / Petta",
+        "actor": "Rajinikanth"
+      },
+      {
+        "role": "Jithu",
+        "actor": "Vijay Sethupathi"
+      },
+      {
+        "role": "Singaar Singh",
+        "actor": "Nawazuddin Siddiqui"
+      }
+    ],
+    "directors": ["Karthik Subbaraj"],
+    "duration_min": 171,
+    "description": "A hostel warden with a violent past takes on local goons who are terrorizing his friends."
+  },
+  {
+    "title": "Mersal",
+    "year": 2017,
+    "stars": [
+      {
+        "role": "Vetrimaaran / Vetri / Maaran",
+        "actor": "Joseph Vijay"
+      },
+      {
+        "role": "Aishwarya",
+        "actor": "Nithya Menen"
+      },
+      {
+        "role": "Daniel",
+        "actor": "S.J. Suryah"
+      }
+    ],
+    "directors": ["Atlee"],
+    "duration_min": 172,
+    "description": "Two brothers, a doctor and a magician, team up to expose corruption in the medical industry and avenge their father."
+  },
+  {
+    "title": "Madras",
+    "year": 2014,
+    "stars": [
+      {
+        "role": "Karthi",
+        "actor": "Karthi"
+      },
+      {
+        "role": "Catherine Tresa",
+        "actor": "Catherine Tresa"
+      },
+      {
+        "role": "Kalaiyarasan",
+        "actor": "Kalaiyarasan"
+      }
+    ],
+    "directors": ["Pa. Ranjith"],
+    "duration_min": 156,
+    "description": "A wall in a housing project becomes the center of a violent political rivalry between two parties."
+  },
+  {
+    "title": "Theeran Adhigaram Ondru",
+    "year": 2017,
+    "stars": [
+      {
+        "role": "Karthi",
+        "actor": "Karthi"
+      },
+      {
+        "role": "Rakul Preet Singh",
+        "actor": "Rakul Preet Singh"
+      },
+      {
+        "role": "Abhimanyu Singh",
+        "actor": "Abhimanyu Singh"
+      }
+    ],
+    "directors": ["H. Vinoth"],
+    "duration_min": 157,
+    "description": "An honest police officer leads an investigation into a series of brutal highway robberies and murders."
+  },
+  {
+    "title": "Soorarai Pottru",
+    "year": 2020,
+    "stars": [
+      {
+        "role": "Nedumaaran Rajangam",
+        "actor": "Suriya"
+      },
+      {
+        "role": "Bommi",
+        "actor": "Aparna Balamurali"
+      },
+      {
+        "role": "Paresh Goswami",
+        "actor": "Paresh Rawal"
+      }
+    ],
+    "directors": ["Sudha Kongara"],
+    "duration_min": 153,
+    "description": "A man from a small village dreams of starting a low-cost airline to make flying accessible to everyone."
+  },
+  {
+    "title": "Sivaji",
+    "year": 2007,
+    "stars": [
+      {
+        "role": "Sivaji Arumugam",
+        "actor": "Rajinikanth"
+      },
+      {
+        "role": "Tamizhselvi",
+        "actor": "Shriya Saran"
+      },
+      {
+        "role": "Adiseshan",
+        "actor": "Suman"
+      }
+    ],
+    "directors": ["S. Shankar"],
+    "duration_min": 188,
+    "description": "An NRI returns to India to do social work but faces obstacles from corrupt politicians and businessmen."
+  },
+  {
+    "title": "Kaththi",
+    "year": 2014,
+    "stars": [
+      {
+        "role": "Joseph Vijay",
+        "actor": "Joseph Vijay"
+      },
+      {
+        "role": "Samantha Ruth Prabhu",
+        "actor": "Samantha Ruth Prabhu"
+      },
+      {
+        "role": "Neil Nitin Mukesh",
+        "actor": "Neil Nitin Mukesh"
+      }
+    ],
+    "directors": ["A.R. Murugadoss"],
+    "duration_min": 166,
+    "description": "A petty thief who looks like a social activist takes on a corporate giant to help a group of farmers."
+  },
+  {
+    "title": "Saamy",
+    "year": 2003,
+    "stars": [
+      {
+        "role": "Vikram",
+        "actor": "Vikram"
+      },
+      {
+        "role": "Trisha Krishnan",
+        "actor": "Trisha Krishnan"
+      },
+      {
+        "role": "Kota Srinivasa Rao",
+        "actor": "Kota Srinivasa Rao"
+      }
+    ],
+    "directors": ["Hari"],
+    "duration_min": 150,
+    "description": "A tough policeman uses unconventional methods to clean up a city and take on a corrupt politician."
+  },
+  {
+    "title": "Maanagaram",
+    "year": 2017,
+    "stars": [
+      {
+        "role": "Sundeep Kishan",
+        "actor": "Sundeep Kishan"
+      },
+      {
+        "role": "Sri",
+        "actor": "Sri"
+      },
+      {
+        "role": "Regena Cassandrra",
+        "actor": "Regena Cassandrra"
+      }
+    ],
+    "directors": ["Lokesh Kanagaraj"],
+    "duration_min": 137,
+    "description": "Multiple lives intertwine in the city of Chennai during a series of unfortunate events involving a kidnapping and a mistaken identity."
+  },
+  {
+    "title": "Ayirathil Oruvan",
+    "year": 2010,
+    "stars": [
+      {
+        "role": "Karthi",
+        "actor": "Karthi"
+      },
+      {
+        "role": "Reema Sen",
+        "actor": "Reema Sen"
+      },
+      {
+        "role": "Andrea Jeremiah",
+        "actor": "Andrea Jeremiah"
+      }
+    ],
+    "directors": ["K. Selvaraghavan"],
+    "duration_min": 183,
+    "description": "An expedition team travels to a remote island to find a missing archaeologist and discovers a lost civilization."
+  },
+  {
+    "title": "Vishwaroopam",
+    "year": 2013,
+    "stars": [
+      {
+        "role": "Pooja Kumar",
+        "actor": "Pooja Kumar"
+      },
+      {
+        "role": "Miles Anderson",
+        "actor": "Miles Anderson"
+      },
+      {
+        "role": "Kamal Haasan",
+        "actor": "Kamal Haasan"
+      }
+    ],
+    "directors": ["Kamal Haasan"],
+    "duration_min": 148,
+    "description": "A classical dance teacher's wife discovers her husband's secret identity as he gets involved in a counter-terrorism mission."
+  },
+  {
+    "title": "Srimanthudu",
+    "year": 2015,
+    "stars": [
+      {
+        "role": "Mahesh Babu",
+        "actor": "Mahesh Babu"
+      },
+      {
+        "role": "Shruti Haasan",
+        "actor": "Shruti Haasan"
+      },
+      {
+        "role": "Jagapathi Babu",
+        "actor": "Jagapathi Babu"
+      }
+    ],
+    "directors": ["Koratala Siva"],
+    "duration_min": 158,
+    "description": "A wealthy man decides to adopt a village and bring development, facing opposition from local goons."
+  },
+  {
+    "title": "Seethamma Vaakitlo Sirimalle Chettu",
+    "year": 2013,
+    "stars": [
+      {
+        "role": "Venkatesh Daggubati",
+        "actor": "Venkatesh Daggubati"
+      },
+      {
+        "role": "Mahesh Babu",
+        "actor": "Mahesh Babu"
+      },
+      {
+        "role": "Anjali",
+        "actor": "Anjali"
+      }
+    ],
+    "directors": ["Srikanth Addala"],
+    "duration_min": 159,
+    "description": "A family drama centering on the relationship between two brothers and their bond with their family."
+  },
+  {
+    "title": "Dookudu",
+    "year": 2011,
+    "stars": [
+      {
+        "role": "Mahesh Babu",
+        "actor": "Mahesh Babu"
+      },
+      {
+        "role": "Samantha Ruth Prabhu",
+        "actor": "Samantha Ruth Prabhu"
+      },
+      {
+        "role": "Sonu Sood",
+        "actor": "Sonu Sood"
+      }
+    ],
+    "directors": ["Sreenu Vaitla"],
+    "duration_min": 170,
+    "description": "A policeman creates a fake world for his father who woke up from a coma, while hunting down the criminals responsible for his father's condition."
+  },
+  {
+    "title": "Bharath Ane Nenu",
+    "year": 2018,
+    "stars": [
+      {
+        "role": "Mahesh Babu",
+        "actor": "Mahesh Babu"
+      },
+      {
+        "role": "Kiara Advani",
+        "actor": "Kiara Advani"
+      },
+      {
+        "role": "Prakash Raj",
+        "actor": "Prakash Raj"
+      }
+    ],
+    "directors": ["Koratala Siva"],
+    "duration_min": 173,
+    "description": "A young man returns to India after his father's death and becomes the Chief Minister to change the political system."
+  },
+  {
+    "title": "Business Man",
+    "year": 2012,
+    "stars": [
+      {
+        "role": "Mahesh Babu",
+        "actor": "Mahesh Babu"
+      },
+      {
+        "role": "Kajal Aggarwal",
+        "actor": "Kajal Aggarwal"
+      },
+      {
+        "role": "Prakash Raj",
+        "actor": "Prakash Raj"
+      }
+    ],
+    "directors": ["Puri Jagannadh"],
+    "duration_min": 133,
+    "description": "A man arrives in Mumbai to become the city's biggest don by exploiting the flaws in the system."
+  },
+  {
+    "title": "Aagadu",
+    "year": 2014,
+    "stars": [
+      {
+        "role": "Mahesh Babu",
+        "actor": "Mahesh Babu"
+      },
+      {
+        "role": "Tamannaah Bhatia",
+        "actor": "Tamannaah Bhatia"
+      },
+      {
+        "role": "Sonu Sood",
+        "actor": "Sonu Sood"
+      }
+    ],
+    "directors": ["Sreenu Vaitla"],
+    "duration_min": 165,
+    "description": "A policeman arrives in a village to stop a local goon and restore law and order using his wit and strength."
+  },
+  {
+    "title": "Pokiri",
+    "year": 2006,
+    "stars": [
+      {
+        "role": "Krishna Manohar (Pandu)",
+        "actor": "Mahesh Babu"
+      },
+      {
+        "role": "Shruti",
+        "actor": "Ileana D'Cruz"
+      },
+      {
+        "role": "Ali Bhai",
+        "actor": "Prakash Raj"
+      }
+    ],
+    "directors": ["Puri Jagannadh"],
+    "duration_min": 164,
+    "description": "An undercover policeman infiltrates a powerful criminal gang to eliminate it from the inside."
+  },
+  {
+    "title": "Khaleja",
+    "year": 2010,
+    "stars": [
+      {
+        "role": "Mahesh Babu",
+        "actor": "Mahesh Babu"
+      },
+      {
+        "role": "Anushka Shetty",
+        "actor": "Anushka Shetty"
+      },
+      {
+        "role": "Prakash Raj",
+        "actor": "Prakash Raj"
+      }
+    ],
+    "directors": ["Trivikram Srinivas"],
+    "duration_min": 170,
+    "description": "A taxi driver is hailed as a god by a village suffering from a mysterious illness and must protect them from a greedy businessman."
+  },
+  {
+    "title": "Okkadu",
+    "year": 2003,
+    "stars": [
+      {
+        "role": "Mahesh Babu",
+        "actor": "Mahesh Babu"
+      },
+      {
+        "role": "Bhoomika Chawla",
+        "actor": "Bhoomika Chawla"
+      },
+      {
+        "role": "Prakash Raj",
+        "actor": "Prakash Raj"
+      }
+    ],
+    "directors": ["Gunasekhar"],
+    "duration_min": 171,
+    "description": "A kabaddi player rescues a girl from a powerful goon and hides her in his house while preparing for a tournament."
+  },
+  {
+    "title": "Arrambam",
+    "year": 2013,
+    "stars": [
+      {
+        "role": "Ajith Kumar",
+        "actor": "Ajith Kumar"
+      },
+      {
+        "role": "Arya",
+        "actor": "Arya"
+      },
+      {
+        "role": "Nayanthara",
+        "actor": "Nayanthara"
+      }
+    ],
+    "directors": ["Vishnuvardhan"],
+    "duration_min": 157,
+    "description": "A former bomb disposal expert leads a mission to expose corruption within the government and the police force."
+  },
+  {
+    "title": "Veeram",
+    "year": 2014,
+    "stars": [
+      {
+        "role": "Ajith Kumar",
+        "actor": "Ajith Kumar"
+      },
+      {
+        "role": "Tamannaah Bhatia",
+        "actor": "Tamannaah Bhatia"
+      },
+      {
+        "role": "Vidharth",
+        "actor": "Vidharth"
+      }
+    ],
+    "directors": ["Siva"],
+    "duration_min": 161,
+    "description": "A man who looks after his four brothers must confront his violent past when he falls in love."
+  },
+  {
+    "title": "Vedalam",
+    "year": 2015,
+    "stars": [
+      {
+        "role": "Ajith Kumar",
+        "actor": "Ajith Kumar"
+      },
+      {
+        "role": "Shruti Haasan",
+        "actor": "Shruti Haasan"
+      },
+      {
+        "role": "Lakshmi Menon",
+        "actor": "Lakshmi Menon"
+      }
+    ],
+    "directors": ["Siva"],
+    "duration_min": 148,
+    "description": "A man with a hidden identity as a dreaded gangster works as a taxi driver to protect his sister from a criminal syndicate."
+  },
+  {
+    "title": "Viswasam",
+    "year": 2019,
+    "stars": [
+      {
+        "role": "Ajith Kumar",
+        "actor": "Ajith Kumar"
+      },
+      {
+        "role": "Nayanthara",
+        "actor": "Nayanthara"
+      },
+      {
+        "role": "Jagapathi Babu",
+        "actor": "Jagapathi Babu"
+      }
+    ],
+    "directors": ["Siva"],
+    "duration_min": 153,
+    "description": "A village head tries to reconcile with his family while protecting them from a businessman's revenge."
+  },
+  {
+    "title": "Billa 2",
+    "year": 2012,
+    "stars": [
+      {
+        "role": "Ajith Kumar",
+        "actor": "Ajith Kumar"
+      },
+      {
+        "role": "Parvathy Omanakuttan",
+        "actor": "Parvathy Omanakuttan"
+      },
+      {
+        "role": "Bruna Abdullah",
+        "actor": "Bruna Abdullah"
+      }
+    ],
+    "directors": ["Chakri Toleti"],
+    "duration_min": 129,
+    "description": "The story of how an ordinary man named David Billa rises to become a powerful international underworld don."
+  },
+  {
+    "title": "Mankatha",
+    "year": 2011,
+    "stars": [
+      {
+        "role": "Vinayak Mahadev",
+        "actor": "Ajith Kumar"
+      },
+      {
+        "role": "Prithviraj",
+        "actor": "Arjun Sarja"
+      },
+      {
+        "role": "Sanjana",
+        "actor": "Trisha Krishnan"
+      }
+    ],
+    "directors": ["Venkat Prabhu"],
+    "duration_min": 155,
+    "description": "A suspended policeman leads a heist to steal betting money during the IPL season, only to be double-crossed."
+  },
+  {
+    "title": "Dheena",
+    "year": 2001,
+    "stars": [
+      {
+        "role": "Ajith Kumar",
+        "actor": "Ajith Kumar"
+      },
+      {
+        "role": "Suresh Gopi",
+        "actor": "Suresh Gopi"
+      },
+      {
+        "role": "Laila",
+        "actor": "Laila"
+      }
+    ],
+    "directors": ["A.R. Murugadoss"],
+    "duration_min": 167,
+    "description": "A man who works for a local don must choose between his loyalty to his boss and his love for his family."
+  },
+  {
+    "title": "Aegan",
+    "year": 2008,
+    "stars": [
+      {
+        "role": "Ajith Kumar",
+        "actor": "Ajith Kumar"
+      },
+      {
+        "role": "Nayanthara",
+        "actor": "Nayanthara"
+      },
+      {
+        "role": "Navdeep",
+        "actor": "Navdeep"
+      }
+    ],
+    "directors": ["Raju Sundaram"],
+    "duration_min": 170,
+    "description": "A police officer goes undercover in a college as a student to protect a girl from a terrorist threat."
+  },
+  {
+    "title": "Asal",
+    "year": 2010,
+    "stars": [
+      {
+        "role": "Ajith Kumar",
+        "actor": "Ajith Kumar"
+      },
+      {
+        "role": "Sameera Reddy",
+        "actor": "Sameera Reddy"
+      },
+      {
+        "role": "Bhavana",
+        "actor": "Bhavana"
+      }
+    ],
+    "directors": ["Saran"],
+    "duration_min": 135,
+    "description": "A man seeks to settle scores with his half-brothers over their father's property while dealing with international arms smugglers."
+  },
+  {
+    "title": "Billa",
+    "year": 2007,
+    "stars": [
+      {
+        "role": "Ajith Kumar",
+        "actor": "Ajith Kumar"
+      },
+      {
+        "role": "Nayanthara",
+        "actor": "Nayanthara"
+      },
+      {
+        "role": "Rahman",
+        "actor": "Rahman"
+      }
+    ],
+    "directors": ["Vishnuvardhan"],
+    "duration_min": 130,
+    "description": "An undercover policeman replaces a dreaded don with his lookalike to dismantle a criminal empire."
+  },
+  {
+    "title": "Citizen",
+    "year": 2001,
+    "stars": [
+      {
+        "role": "Vasundhara Das",
+        "actor": "Vasundhara Das"
+      },
+      {
+        "role": "Devan",
+        "actor": "Devan"
+      },
+      {
+        "role": "Cochin Hanifa",
+        "actor": "Cochin Hanifa"
+      }
+    ],
+    "directors": ["Saravana Subbiah"],
+    "duration_min": 172,
+    "description": "A mysterious man kidnaps government officials and exposes a past tragedy that wiped out an entire village."
+  },
+  {
+    "title": "7 Aum Arivu",
+    "year": 2011,
+    "stars": [
+      {
+        "role": "Suriya",
+        "actor": "Suriya"
+      },
+      {
+        "role": "Shruti Haasan",
+        "actor": "Shruti Haasan"
+      },
+      {
+        "role": "Johnny Tri Nguyen",
+        "actor": "Johnny Tri Nguyen"
+      }
+    ],
+    "directors": ["A.R. Murugadoss"],
+    "duration_min": 168,
+    "description": "A circus artist who is a descendant of Bodhidharma must rediscover his powers to stop a genetic threat from a foreign country."
+  },
+  {
+    "title": "Thaanaa Serndha Koottam",
+    "year": 2018,
+    "stars": [
+      {
+        "role": "Suriya",
+        "actor": "Suriya"
+      },
+      {
+        "role": "Keerthy Suresh",
+        "actor": "Keerthy Suresh"
+      },
+      {
+        "role": "Karthik",
+        "actor": "Karthik"
+      }
+    ],
+    "directors": ["Vignesh Shivan"],
+    "duration_min": 138,
+    "description": "A group of people pose as CBI officers to conduct raids and expose corruption, inspired by a real-life incident."
+  },
+  {
+    "title": "Singam",
+    "year": 2010,
+    "stars": [
+      {
+        "role": "Durai Singam",
+        "actor": "Suriya"
+      },
+      {
+        "role": "Kavya Mahalingam",
+        "actor": "Anushka Shetty"
+      },
+      {
+        "role": "Mayil Vaaganam",
+        "actor": "Prakash Raj"
+      }
+    ],
+    "directors": ["Hari"],
+    "duration_min": 160,
+    "description": "An honest policeman from a small village is transferred to the city and takes on a powerful kidnapping kingpin."
+  },
+  {
+    "title": "Singam 3",
+    "year": 2017,
+    "directors": ["Hari", "P.H. Kumanan"],
+    "stars": [
+      {
+        "role": "Suriya",
+        "actor": "Suriya"
+      },
+      {
+        "role": "Anushka Shetty",
+        "actor": "Anushka Shetty"
+      },
+      {
+        "role": "Shruti Haasan",
+        "actor": "Shruti Haasan"
+      }
+    ],
+    "duration_min": 155,
+    "description": "Police officer Durai Singam investigates a global crime network involving medical waste and ecological destruction."
+  },
+  {
+    "title": "Singam 2",
+    "year": 2013,
+    "stars": [
+      {
+        "role": "Suriya",
+        "actor": "Suriya"
+      },
+      {
+        "role": "Anushka Shetty",
+        "actor": "Anushka Shetty"
+      },
+      {
+        "role": "Hansika Motwani",
+        "actor": "Hansika Motwani"
+      }
+    ],
+    "directors": ["Hari"],
+    "duration_min": 166,
+    "description": "Durai Singam goes undercover to track an international drug smuggling operation along the coast of Tamil Nadu."
+  },
+  {
+    "title": "Maattrraan",
+    "year": 2012,
+    "stars": [
+      {
+        "role": "Suriya",
+        "actor": "Suriya"
+      },
+      {
+        "role": "Kajal Aggarwal",
+        "actor": "Kajal Aggarwal"
+      },
+      {
+        "role": "Sachin Khedekar",
+        "actor": "Sachin Khedekar"
+      }
+    ],
+    "directors": ["K.V. Anand"],
+    "duration_min": 165,
+    "description": "Conjoined twins discover a conspiracy involving an energy drink company that affects the health of many."
+  },
+  {
+    "title": "NGK",
+    "year": 2019,
+    "stars": [
+      {
+        "role": "Suriya",
+        "actor": "Suriya"
+      },
+      {
+        "role": "Sai Pallavi",
+        "actor": "Sai Pallavi"
+      },
+      {
+        "role": "Rakul Preet Singh",
+        "actor": "Rakul Preet Singh"
+      }
+    ],
+    "directors": ["K. Selvaraghavan"],
+    "duration_min": 148,
+    "description": "A social worker's entry into politics to change the system leads him down a dark and violent path."
+  },
+  {
+    "title": "Ponmagal Vandhal",
+    "year": 2020,
+    "stars": [
+      {
+        "role": "Jyotika",
+        "actor": "Jyotika"
+      },
+      {
+        "role": "Radhakrishnan Parthiban",
+        "actor": "Radhakrishnan Parthiban"
+      },
+      {
+        "role": "Bhagyaraj",
+        "actor": "Bhagyaraj"
+      }
+    ],
+    "directors": ["JJ Fredrick"],
+    "duration_min": 123,
+    "description": "A lawyer reopens an old murder case involving a woman labeled a child killer to reveal the truth."
+  },
+  {
+    "title": "Kaappaan",
+    "year": 2019,
+    "stars": [
+      {
+        "role": "Sayyeshaa Saigal",
+        "actor": "Sayyeshaa Saigal"
+      },
+      {
+        "role": "Suriya",
+        "actor": "Suriya"
+      },
+      {
+        "role": "Arya",
+        "actor": "Arya"
+      }
+    ],
+    "directors": ["K.V. Anand"],
+    "duration_min": 166,
+    "description": "An SPG officer must protect the Prime Minister of India from an assassination plot and biological warfare."
+  },
+  {
+    "title": "Rakta Charitra",
+    "year": 2010,
+    "stars": [
+      {
+        "role": "Vivek Oberoi",
+        "actor": "Vivek Oberoi"
+      },
+      {
+        "role": "Shatrughan Sinha",
+        "actor": "Shatrughan Sinha"
+      },
+      {
+        "role": "Sudeep",
+        "actor": "Sudeep"
+      }
+    ],
+    "directors": ["Ram Gopal Varma"],
+    "duration_min": 125,
+    "description": "A biographical action film based on the life of political leader Paritala Ravindra and the cycle of revenge in Rayalaseema."
+  },
+  {
+    "title": "Anjaan",
+    "year": 2014,
+    "directors": ["N. Linguswamy", "Suresh"],
+    "stars": [
+      {
+        "role": "Suriya",
+        "actor": "Suriya"
+      },
+      {
+        "role": "Vidyut Jammwal",
+        "actor": "Vidyut Jammwal"
+      },
+      {
+        "role": "Samantha Ruth Prabhu",
+        "actor": "Samantha Ruth Prabhu"
+      }
+    ],
+    "duration_min": 166,
+    "description": "A man arrives in Mumbai to look for his brother, who was a powerful gangster, and uncovers a web of betrayal."
+  },
+  {
+    "title": "Pithamagan",
+    "year": 2003,
+    "stars": [
+      {
+        "role": "Vikram",
+        "actor": "Vikram"
+      },
+      {
+        "role": "Suriya",
+        "actor": "Suriya"
+      },
+      {
+        "role": "Laila",
+        "actor": "Laila"
+      }
+    ],
+    "directors": ["Bala"],
+    "duration_min": 139,
+    "description": "The bond between a social outcast who works in a cemetery and a small-time conman leads to tragic consequences."
+  },
+  {
+    "title": "Pasanga 2",
+    "year": 2015,
+    "stars": [
+      {
+        "role": "Suriya",
+        "actor": "Suriya"
+      },
+      {
+        "role": "Amala Paul",
+        "actor": "Amala Paul"
+      },
+      {
+        "role": "Nishesh",
+        "actor": "Nishesh"
+      }
+    ],
+    "directors": ["Pandiraaj"],
+    "duration_min": 127,
+    "description": "A story about hyperactive children and their parents' struggle to understand and nurture their unique talents."
+  },
+  {
+    "title": "Uriyadi",
+    "year": 2016,
+    "stars": [
+      {
+        "role": "Vijay Kumar",
+        "actor": "Vijay Kumar"
+      },
+      {
+        "role": "Chandru",
+        "actor": "Chandru"
+      },
+      {
+        "role": "Mime Gopi",
+        "actor": "Mime Gopi"
+      }
+    ],
+    "directors": ["Vijay Kumar"],
+    "duration_min": 91,
+    "description": "Four students get unintentionally involved in a political feud that turns violent, testing their survival skills."
+  },
+  {
+    "title": "Uriyadi 2",
+    "year": 2019,
+    "stars": [
+      {
+        "role": "Vijay Kumar",
+        "actor": "Vijay Kumar"
+      },
+      {
+        "role": "Vismaya",
+        "actor": "Vismaya"
+      },
+      {
+        "role": "Sudhakar",
+        "actor": "Sudhakar"
+      }
+    ],
+    "directors": ["Vijay Kumar"],
+    "duration_min": 119,
+    "description": "A young man fights against a chemical plant that is polluting the environment and causing health issues in his village."
+  },
+  {
+    "title": "Ayan",
+    "year": 2009,
+    "stars": [
+      {
+        "role": "Suriya",
+        "actor": "Suriya"
+      },
+      {
+        "role": "Tamannaah Bhatia",
+        "actor": "Tamannaah Bhatia"
+      },
+      {
+        "role": "Prabhu",
+        "actor": "Prabhu"
+      }
+    ],
+    "directors": ["K.V. Anand"],
+    "duration_min": 162,
+    "description": "A young man working for a smuggler uses his wit to outsmart a rival gang and the authorities."
+  },
+  {
+    "title": "Naan Mahaan Alla",
+    "year": 2010,
+    "stars": [
+      {
+        "role": "Karthi",
+        "actor": "Karthi"
+      },
+      {
+        "role": "Kajal Aggarwal",
+        "actor": "Kajal Aggarwal"
+      },
+      {
+        "role": "V. Jayaprakash",
+        "actor": "V. Jayaprakash"
+      }
+    ],
+    "directors": ["Suseenthiran"],
+    "duration_min": 132,
+    "description": "A happy-go-lucky young man's life turns upside down when his father is murdered by a gang of ruthless youths."
+  },
+  {
+    "title": "Kaatru Veliyidai",
+    "year": 2017,
+    "stars": [
+      {
+        "role": "Karthi",
+        "actor": "Karthi"
+      },
+      {
+        "role": "Aditi Rao Hydari",
+        "actor": "Aditi Rao Hydari"
+      },
+      {
+        "role": "Shraddha Srinath",
+        "actor": "Shraddha Srinath"
+      }
+    ],
+    "directors": ["Mani Ratnam"],
+    "duration_min": 146,
+    "description": "A fighter pilot reminisces about his turbulent relationship with a doctor while being held as a prisoner of war."
+  },
+  {
+    "title": "Kadaikutty Singam",
+    "year": 2018,
+    "stars": [
+      {
+        "role": "Karthi",
+        "actor": "Karthi"
+      },
+      {
+        "role": "Sathyaraj",
+        "actor": "Sathyaraj"
+      },
+      {
+        "role": "Sayyeshaa Saigal",
+        "actor": "Sayyeshaa Saigal"
+      }
+    ],
+    "directors": ["Pandiraaj"],
+    "duration_min": 149,
+    "description": "A farmer from a large family struggles to maintain family unity while dealing with local disputes and marriage pressures."
+  },
+  {
+    "title": "Alex Pandian",
+    "year": 2013,
+    "stars": [
+      {
+        "role": "Karthi",
+        "actor": "Karthi"
+      },
+      {
+        "role": "Anushka Shetty",
+        "actor": "Anushka Shetty"
+      },
+      {
+        "role": "Santhanam",
+        "actor": "Santhanam"
+      }
+    ],
+    "directors": ["Suraj"],
+    "duration_min": 135,
+    "description": "A man helps a girl escape from a group of goons who are trying to extract a secret from her father, a scientist."
+  },
+  {
+    "title": "Thambi",
+    "year": 2019,
+    "stars": [
+      {
+        "role": "Karthi",
+        "actor": "Karthi"
+      },
+      {
+        "role": "Jyotika",
+        "actor": "Jyotika"
+      },
+      {
+        "role": "Sathyaraj",
+        "actor": "Sathyaraj"
+      }
+    ],
+    "directors": ["Jeethu Joseph"],
+    "duration_min": 149,
+    "description": "A long-lost brother returns to his family after 15 years, but his true identity and motives are questioned."
+  },
+  {
+    "title": "Komban",
+    "year": 2015,
+    "stars": [
+      {
+        "role": "Karthi",
+        "actor": "Karthi"
+      },
+      {
+        "role": "Raj Kiran",
+        "actor": "Raj Kiran"
+      },
+      {
+        "role": "Lakshmi Menon",
+        "actor": "Lakshmi Menon"
+      }
+    ],
+    "directors": ["M. Muthaiah"],
+    "duration_min": 136,
+    "description": "A hot-tempered man in a rural village tries to mend his relationship with his father-in-law while facing local enemies."
+  },
+  {
+    "title": "Anegan",
+    "year": 2015,
+    "stars": [
+      {
+        "role": "Ashwin / Murugappa",
+        "actor": "Dhanush"
+      },
+      {
+        "role": "Karthik",
+        "actor": "Karthik"
+      },
+      {
+        "role": "Madhumitha / Samudra",
+        "actor": "Amyra Dastur"
+      }
+    ],
+    "directors": ["K.V. Anand"],
+    "duration_min": 154,
+    "description": "A story of love and reincarnation spanning across different time periods and locations."
+  },
+  {
+    "title": "Irumugan",
+    "year": 2016,
+    "stars": [
+      {
+        "role": "Akhilan / Love",
+        "actor": "Vikram"
+      },
+      {
+        "role": "Meera",
+        "actor": "Nayanthara"
+      },
+      {
+        "role": "Nithya Menen",
+        "actor": "Nithya Menen"
+      }
+    ],
+    "directors": ["Anand Shankar"],
+    "duration_min": 154,
+    "description": "An ex-agent is brought back into service to track down a criminal scientist who has developed a drug that enhances strength."
+  },
+  {
+    "title": "Bheemaa",
+    "year": 2008,
+    "stars": [
+      {
+        "role": "Sekhar",
+        "actor": "Vikram"
+      },
+      {
+        "role": "Shalini",
+        "actor": "Trisha Krishnan"
+      },
+      {
+        "role": "Prakash Raj",
+        "actor": "Prakash Raj"
+      }
+    ],
+    "directors": ["N. Linguswamy"],
+    "duration_min": 169,
+    "description": "A man who joins a gang out of admiration for its leader finds himself caught in a war between rival factions."
+  },
+  {
+    "title": "Anniyan",
+    "year": 2005,
+    "stars": [
+      {
+        "role": "Ambi / Remo / Anniyan",
+        "actor": "Vikram"
+      },
+      {
+        "role": "Nandini",
+        "actor": "Sada"
+      },
+      {
+        "role": "Prakash Raj",
+        "actor": "Prakash Raj"
+      }
+    ],
+    "directors": ["S. Shankar"],
+    "duration_min": 181,
+    "description": "A man with multiple personality disorder becomes a vigilante who punishes the corrupt based on ancient scriptures."
+  },
+  {
+    "title": "Thaandavam",
+    "year": 2012,
+    "stars": [
+      {
+        "role": "Kenny Thomas / Shiva",
+        "actor": "Vikram"
+      },
+      {
+        "role": "Jagapathi Babu",
+        "actor": "Jagapathi Babu"
+      },
+      {
+        "role": "Meenakshi",
+        "actor": "Anushka Shetty"
+      }
+    ],
+    "directors": ["A.L. Vijay"],
+    "duration_min": 160,
+    "description": "A blind man seeks revenge for a past tragedy using his echolocation skills and help from his friends."
+  },
+  {
+    "title": "Saamy Square",
+    "year": 2018,
+    "stars": [
+      {
+        "role": "Aarusaamy / Ramasaamy",
+        "actor": "Vikram"
+      },
+      {
+        "role": "Diya",
+        "actor": "Keerthy Suresh"
+      },
+      {
+        "role": "Aishwarya Rajesh",
+        "actor": "Aishwarya Rajesh"
+      }
+    ],
+    "directors": ["Hari"],
+    "duration_min": 156,
+    "description": "The son of an honest policeman returns to take revenge on the criminals who destroyed his family."
+  },
+  {
+    "title": "Sketch",
+    "year": 2018,
+    "stars": [
+      {
+        "role": "Sketch",
+        "actor": "Vikram"
+      },
+      {
+        "role": "Amuthavalli",
+        "actor": "Tamannaah Bhatia"
+      },
+      {
+        "role": "Baburaj",
+        "actor": "Baburaj"
+      }
+    ],
+    "directors": ["Vijay Chandar"],
+    "duration_min": 137,
+    "description": "A man who works as a vehicle repossessor gets caught in a deadly game with a local goon and a revenge plot."
+  },
+  {
+    "title": "Raavan",
+    "year": 2010,
+    "stars": [
+      {
+        "role": "Abhishek Bachchan",
+        "actor": "Abhishek Bachchan"
+      },
+      {
+        "role": "Ragini",
+        "actor": "Aishwarya Rai Bachchan"
+      },
+      {
+        "role": "Govinda",
+        "actor": "Govinda"
+      }
+    ],
+    "directors": ["Mani Ratnam"],
+    "duration_min": 130,
+    "description": "A police officer's wife is kidnapped by a tribal leader, leading to a complex journey of emotions and loyalty."
+  },
+  {
+    "title": "David",
+    "year": 2013,
+    "stars": [
+      {
+        "role": "David",
+        "actor": "Vikram"
+      },
+      {
+        "role": "Neil Nitin Mukesh",
+        "actor": "Neil Nitin Mukesh"
+      },
+      {
+        "role": "Vinay Virmani",
+        "actor": "Vinay Virmani"
+      }
+    ],
+    "directors": ["Bejoy Nambiar"],
+    "duration_min": 155,
+    "description": "The lives of two men named David, living in different time periods and places, are connected by their circumstances and choices."
+  },
+  {
+    "title": "Kasi",
+    "year": 2001,
+    "stars": [
+      {
+        "role": "Kasi",
+        "actor": "Vikram"
+      },
+      {
+        "role": "Kavya Madhavan",
+        "actor": "Kavya Madhavan"
+      },
+      {
+        "role": "Kaveri",
+        "actor": "Kaveri"
+      }
+    ],
+    "directors": ["Vinayan"],
+    "duration_min": 138,
+    "description": "A blind singer struggles to provide for his family while dealing with the harsh realities of life and betrayal."
+  },
+  {
+    "title": "Maryan",
+    "year": 2013,
+    "stars": [
+      {
+        "role": "Maryan",
+        "actor": "Dhanush"
+      },
+      {
+        "role": "Panimalar",
+        "actor": "Parvathy Thiruvothu"
+      },
+      {
+        "role": "Salim Kumar",
+        "actor": "Salim Kumar"
+      }
+    ],
+    "directors": ["Bharatbala"],
+    "duration_min": 150,
+    "description": "A fisherman working in Sudan is taken hostage by oil mercenaries and must find a way back to his love."
+  },
+  {
+    "title": "Raanjhanaa",
+    "year": 2013,
+    "stars": [
+      {
+        "role": "Kundan Shankar",
+        "actor": "Dhanush"
+      },
+      {
+        "role": "Zoya Haider",
+        "actor": "Sonam Kapoor"
+      },
+      {
+        "role": "Mohd. Zeeshan Ayyub",
+        "actor": "Mohd. Zeeshan Ayyub"
+      }
+    ],
+    "directors": ["Aanand L. Rai"],
+    "duration_min": 140,
+    "description": "A small-town boy falls in love with a girl who is out of his reach, leading to a story of obsessive love and politics."
+  },
+  {
+    "title": "Velaiyilla Pattathari",
+    "year": 2014,
+    "stars": [
+      {
+        "role": "Raghuvaran",
+        "actor": "Dhanush"
+      },
+      {
+        "role": "Saranya Ponvannan",
+        "actor": "Saranya Ponvannan"
+      },
+      {
+        "role": "Shalini",
+        "actor": "Amala Paul"
+      }
+    ],
+    "directors": ["Velraj"],
+    "duration_min": 133,
+    "description": "An unemployed graduate struggles to find a job in his field and eventually takes on a corrupt businessman to prove himself."
+  },
+  {
+    "title": "Velaiyilla Pattathari 2",
+    "year": 2017,
+    "stars": [
+      {
+        "role": "Raghuvaran",
+        "actor": "Dhanush"
+      },
+      {
+        "role": "Vasundhara Parameshwar",
+        "actor": "Kajol"
+      },
+      {
+        "role": "Amala Paul",
+        "actor": "Amala Paul"
+      }
+    ],
+    "directors": ["Soundarya Rajinikanth Vishagan"],
+    "duration_min": 128,
+    "description": "Raghuvaran, now a successful engineer, clashes with a powerful businesswoman who wants to dominate the industry."
+  },
+  {
+    "title": "Power Paandi",
+    "year": 2017,
+    "stars": [
+      {
+        "role": "Dhanush",
+        "actor": "Dhanush"
+      },
+      {
+        "role": "Dheena",
+        "actor": "Dheena"
+      },
+      {
+        "role": "Divyadarshini",
+        "actor": "Divyadarshini"
+      }
+    ],
+    "directors": ["Dhanush"],
+    "duration_min": 125,
+    "description": "A retired stunt master goes on a journey to find his long-lost love and rediscover himself."
+  },
+  {
+    "title": "The Extraordinary Journey of the Fakir",
+    "year": 2018,
+    "stars": [
+      {
+        "role": "Ajatashatru Lavash Patel",
+        "actor": "Dhanush"
+      },
+      {
+        "role": "B\u00e9r\u00e9nice Bejo",
+        "actor": "B\u00e9r\u00e9nice Bejo"
+      },
+      {
+        "role": "Erin Moriarty",
+        "actor": "Erin Moriarty"
+      }
+    ],
+    "directors": ["Ken Scott"],
+    "duration_min": 92,
+    "description": "A street magician from Mumbai travels to France in search of his father and goes on an unexpected global adventure."
+  },
+  {
+    "title": "Mayakkam Enna",
+    "year": 2011,
+    "stars": [
+      {
+        "role": "Karthik Swaminathan",
+        "actor": "Dhanush"
+      },
+      {
+        "role": "Richa Langella",
+        "actor": "Richa Langella"
+      },
+      {
+        "role": "Sunder Ramu",
+        "actor": "Sunder Ramu"
+      }
+    ],
+    "directors": ["K. Selvaraghavan"],
+    "duration_min": 145,
+    "description": "A passionate wildlife photographer's life and mental health are tested by the challenges and betrayals in his career."
+  },
+  {
+    "title": "Kodi",
+    "year": 2016,
+    "stars": [
+      {
+        "role": "Kodi / Anbu",
+        "actor": "Dhanush"
+      },
+      {
+        "role": "Rudhra",
+        "actor": "Trisha Krishnan"
+      },
+      {
+        "role": "Anupama Parameswaran",
+        "actor": "Anupama Parameswaran"
+      }
+    ],
+    "directors": ["R.S. Durai Senthilkumar"],
+    "duration_min": 145,
+    "description": "Twin brothers, one a politician and the other a peaceful man, get involved in a political conspiracy."
+  },
+  {
+    "title": "Pattas",
+    "year": 2020,
+    "stars": [
+      {
+        "role": "Sakthi / Dhiraviyaperumal",
+        "actor": "Dhanush"
+      },
+      {
+        "role": "Kanyakumari",
+        "actor": "Sneha"
+      },
+      {
+        "role": "Mehreen Pirzada",
+        "actor": "Mehreen Pirzada"
+      }
+    ],
+    "directors": ["R.S. Durai Senthilkumar"],
+    "duration_min": 141,
+    "description": "A young man discovers his family's connection to an ancient martial art and uses it to fight for his community."
+  },
+  {
+    "title": "Maari",
+    "year": 2015,
+    "stars": [
+      {
+        "role": "Maari",
+        "actor": "Dhanush"
+      },
+      {
+        "role": "Sridevi",
+        "actor": "Kajal Aggarwal"
+      },
+      {
+        "role": "Vijay Yesudas",
+        "actor": "Vijay Yesudas"
+      }
+    ],
+    "directors": ["Balaji Mohan"],
+    "duration_min": 138,
+    "description": "A local gangster with a love for pigeons takes on a corrupt police officer while dealing with his own gang."
+  },
+  {
+    "title": "Maari 2",
+    "year": 2018,
+    "stars": [
+      {
+        "role": "Maari",
+        "actor": "Dhanush"
+      },
+      {
+        "role": "Kreshna",
+        "actor": "Kreshna"
+      },
+      {
+        "role": "Araathu Anandhi",
+        "actor": "Sai Pallavi"
+      }
+    ],
+    "directors": ["Balaji Mohan"],
+    "duration_min": 143,
+    "description": "The fun-loving gangster Maari returns to face a formidable enemy who has a personal score to settle."
+  },
+  {
+    "title": "Pudhu Pettai",
+    "year": 2006,
+    "stars": [
+      {
+        "role": "Kokki Kumar",
+        "actor": "Dhanush"
+      },
+      {
+        "role": "Krishnaveni",
+        "actor": "Sneha"
+      },
+      {
+        "role": "Sonia Agarwal",
+        "actor": "Sonia Agarwal"
+      }
+    ],
+    "directors": ["K. Selvaraghavan"],
+    "duration_min": 168,
+    "description": "A young boy's rise in the world of crime as he becomes a powerful gangster in North Chennai."
+  },
+  {
+    "title": "Thanga Magan",
+    "year": 2015,
+    "stars": [
+      {
+        "role": "Tamizh",
+        "actor": "Dhanush"
+      },
+      {
+        "role": "Samantha Ruth Prabhu",
+        "actor": "Samantha Ruth Prabhu"
+      },
+      {
+        "role": "Hema",
+        "actor": "Amy Jackson"
+      }
+    ],
+    "directors": ["Velraj"],
+    "duration_min": 122,
+    "description": "A man's happy life is disrupted when his father is accused of theft, leading him to uncover the truth."
+  },
+  {
+    "title": "Thodari",
+    "year": 2016,
+    "stars": [
+      {
+        "role": "Poochiyappan",
+        "actor": "Dhanush"
+      },
+      {
+        "role": "Saroja",
+        "actor": "Keerthy Suresh"
+      },
+      {
+        "role": "Ganesh Venkatraman",
+        "actor": "Ganesh Venkatraman"
+      }
+    ],
+    "directors": ["Prabu Solomon"],
+    "duration_min": 168,
+    "description": "A journey on a train becomes a race for survival when the train goes out of control due to a series of mishaps."
+  },
+  {
+    "title": "Enai Noki Paayum Thota",
+    "year": 2019,
+    "stars": [
+      {
+        "role": "Raghu",
+        "actor": "Dhanush"
+      },
+      {
+        "role": "Lekha",
+        "actor": "Megha Akash"
+      },
+      {
+        "role": "M. Sasikumar",
+        "actor": "M. Sasikumar"
+      }
+    ],
+    "directors": ["Gautham Vasudev Menon"],
+    "duration_min": 153,
+    "description": "A man's life changes when he falls in love with an actress and is forced into a dangerous situation involving her past."
+  },
+  {
+    "title": "Jagame Thandhiram",
+    "year": 2021,
+    "stars": [
+      {
+        "role": "Suruli",
+        "actor": "Dhanush"
+      },
+      {
+        "role": "James Cosmo",
+        "actor": "James Cosmo"
+      },
+      {
+        "role": "Attilla",
+        "actor": "Aishwarya Lekshmi"
+      }
+    ],
+    "directors": ["Karthik Subbaraj"],
+    "duration_min": 158,
+    "description": "A nomadic gangster is recruited to help a British crime lord take down a rival but finds himself in a moral dilemma."
+  },
+  {
+    "title": "Kaala",
+    "year": 2018,
+    "stars": [
+      {
+        "role": "Karikaalan",
+        "actor": "Rajinikanth"
+      },
+      {
+        "role": "Hari Abhayankar",
+        "actor": "Nana Patekar"
+      },
+      {
+        "role": "Samuthirakani",
+        "actor": "Samuthirakani"
+      }
+    ],
+    "directors": ["Pa. Ranjith"],
+    "duration_min": 162,
+    "description": "The leader of a slum in Mumbai fights to protect his people and their land from a powerful politician."
+  },
+  {
+    "title": "Annaatthe",
+    "year": 2021,
+    "stars": [
+      {
+        "role": "Kaaliyan",
+        "actor": "Rajinikanth"
+      },
+      {
+        "role": "Thangameenakshi",
+        "actor": "Keerthy Suresh"
+      },
+      {
+        "role": "Nayanthara",
+        "actor": "Nayanthara"
+      }
+    ],
+    "directors": ["Siva"],
+    "duration_min": 163,
+    "description": "A man goes to great lengths to protect his sister from various threats after she moves to a big city."
+  },
+  {
+    "title": "Darbar",
+    "year": 2020,
+    "stars": [
+      {
+        "role": "Aditya Arunachalam",
+        "actor": "Rajinikanth"
+      },
+      {
+        "role": "Lilly",
+        "actor": "Nayanthara"
+      },
+      {
+        "role": "Nivetha Thomas",
+        "actor": "Nivetha Thomas"
+      }
+    ],
+    "directors": ["A.R. Murugadoss"],
+    "duration_min": 159,
+    "description": "A top police officer goes on a mission to dismantle a drug syndicate in Mumbai while seeking personal revenge."
+  },
+  {
+    "title": "Lingaa",
+    "year": 2014,
+    "stars": [
+      {
+        "role": "Lingaa / Raja Lingeswaran",
+        "actor": "Rajinikanth"
+      },
+      {
+        "role": "Lakshmi",
+        "actor": "Anushka Shetty"
+      },
+      {
+        "role": "Sonakshi Sinha",
+        "actor": "Sonakshi Sinha"
+      }
+    ],
+    "directors": ["K.S. Ravikumar"],
+    "duration_min": 174,
+    "description": "A man discovers his grandfather's legacy as he helps a village complete a dam that was stalled for decades."
+  },
+  {
+    "title": "Vinaya Vidheya Rama",
+    "year": 2019,
+    "stars": [
+      {
+        "role": "Konidela Ram",
+        "actor": "Ram Charan"
+      },
+      {
+        "role": "Vivek Oberoi",
+        "actor": "Vivek Oberoi"
+      },
+      {
+        "role": "Seetha",
+        "actor": "Kiara Advani"
+      }
+    ],
+    "directors": ["Boyapati Srinu"],
+    "duration_min": 146,
+    "description": "A man from a large family goes to war against a ruthless dictator in Bihar to protect his brother."
+  },
+  {
+    "title": "Ranasthalam",
+    "year": 2019,
+    "stars": [
+      {
+        "role": "Satyam Rajesh",
+        "actor": "Satyam Rajesh"
+      },
+      {
+        "role": "Jabardasth Appa Rao",
+        "actor": "Jabardasth Appa Rao"
+      },
+      {
+        "role": "Chitram Seenu",
+        "actor": "Chitram Seenu"
+      }
+    ],
+    "directors": ["Adhi Aravala"],
+    "duration_min": 125,
+    "description": "A village-based action drama centering on local politics and a young man's quest for justice."
+  },
+  {
+    "title": "Yevadu",
+    "year": 2014,
+    "stars": [
+      {
+        "role": "Satya / Charan",
+        "actor": "Ram Charan"
+      },
+      {
+        "role": "Satya",
+        "actor": "Allu Arjun"
+      },
+      {
+        "role": "Shruti Haasan",
+        "actor": "Shruti Haasan"
+      }
+    ],
+    "directors": ["Vamshi Paidipally"],
+    "duration_min": 165,
+    "description": "A man who receives a face transplant seeks revenge on the people who killed his lover and ruined his life."
+  },
+  {
+    "title": "Magadheera",
+    "year": 2009,
+    "stars": [
+      {
+        "role": "Kala Bhairava / Harsha",
+        "actor": "Ram Charan"
+      },
+      {
+        "role": "Mithravinda Devi / Indu",
+        "actor": "Kajal Aggarwal"
+      },
+      {
+        "role": "Dev Gill",
+        "actor": "Dev Gill"
+      }
+    ],
+    "directors": ["S.S. Rajamouli"],
+    "duration_min": 166,
+    "description": "A reincarnation-themed epic where a warrior from the past seeks to protect his princess in the modern day."
+  },
+  {
+    "title": "Dhruva",
+    "year": 2016,
+    "stars": [
+      {
+        "role": "Dhruva",
+        "actor": "Ram Charan"
+      },
+      {
+        "role": "Arvind Swamy",
+        "actor": "Arvind Swamy"
+      },
+      {
+        "role": "Ishika",
+        "actor": "Rakul Preet Singh"
+      }
+    ],
+    "directors": ["Surender Reddy"],
+    "duration_min": 165,
+    "description": "A policeman tries to take down a powerful and intelligent criminal who operates from the shadows."
+  },
+  {
+    "title": "Zanjeer",
+    "year": 2013,
+    "stars": [
+      {
+        "role": "A.C.P. Vijay Khanna",
+        "actor": "Ram Charan"
+      },
+      {
+        "role": "Priyanka Chopra Jonas",
+        "actor": "Priyanka Chopra Jonas"
+      },
+      {
+        "role": "Sanjay Dutt",
+        "actor": "Sanjay Dutt"
+      }
+    ],
+    "directors": ["Apoorva Lakhia"],
+    "duration_min": 137,
+    "description": "An honest police officer is framed and suspended, leading him to take on the mafia and uncover his past."
+  },
+  {
+    "title": "Sye Raa Narasimha Reddy",
+    "year": 2019,
+    "stars": [
+      {
+        "role": "Uyyalawada Narasimha Reddy",
+        "actor": "Chiranjeevi"
+      },
+      {
+        "role": "Amitabh Bachchan",
+        "actor": "Amitabh Bachchan"
+      },
+      {
+        "role": "Sudeep",
+        "actor": "Sudeep"
+      }
+    ],
+    "directors": ["Surender Reddy"],
+    "duration_min": 167,
+    "description": "The story of Uyyalawada Narasimha Reddy, who led a rebellion against the British East India Company in the 1840s."
+  },
+  {
+    "title": "Khaidi No. 150",
+    "year": 2017,
+    "stars": [
+      {
+        "role": "Kaththi Seenu / Konidela Siva Sankara Vara Prasad",
+        "actor": "Chiranjeevi"
+      },
+      {
+        "role": "Kajal Aggarwal",
+        "actor": "Kajal Aggarwal"
+      },
+      {
+        "role": "Tarun Arora",
+        "actor": "Tarun Arora"
+      }
+    ],
+    "directors": ["V.V. Vinayak"],
+    "duration_min": 142,
+    "description": "A prisoner who escapes from jail finds himself in the shoes of a social activist and decides to fight for farmers' rights."
+  },
+  {
+    "title": "Mahanati",
+    "year": 2018,
+    "stars": [
+      {
+        "role": "Savitri",
+        "actor": "Keerthy Suresh"
+      },
+      {
+        "role": "Gemini Ganesan",
+        "actor": "Dulquer Salmaan"
+      },
+      {
+        "role": "Samantha Ruth Prabhu",
+        "actor": "Samantha Ruth Prabhu"
+      }
+    ],
+    "directors": ["Nag Ashwin"],
+    "duration_min": 177,
+    "description": "A biographical film based on the life of legendary actress Savitri, chronicling her rise and fall."
+  },
+  {
+    "title": "Janatha Garage",
+    "year": 2016,
+    "stars": [
+      {
+        "role": "Anand",
+        "actor": "N.T. Rama Rao Jr."
+      },
+      {
+        "role": "Sathyam",
+        "actor": "Mohanlal"
+      },
+      {
+        "role": "Samantha Ruth Prabhu",
+        "actor": "Samantha Ruth Prabhu"
+      }
+    ],
+    "directors": ["Koratala Siva"],
+    "duration_min": 162,
+    "description": "An environmental activist joins a local justice-dispensing garage to help people and fight corruption."
+  },
+  {
+    "title": "Aravindha Sametha",
+    "year": 2018,
+    "stars": [
+      {
+        "role": "Veera Raghava Reddy",
+        "actor": "N.T. Rama Rao Jr."
+      },
+      {
+        "role": "Aravindha",
+        "actor": "Pooja Hegde"
+      },
+      {
+        "role": "Jagapathi Babu",
+        "actor": "Jagapathi Babu"
+      }
+    ],
+    "directors": ["Trivikram Srinivas"],
+    "duration_min": 162,
+    "description": "A young man tries to end a long-standing violent feud between two villages by choosing peace over revenge."
+  },
+  {
+    "title": "Nannaku Prematho",
+    "year": 2016,
+    "stars": [
+      {
+        "role": "Abhiram",
+        "actor": "N.T. Rama Rao Jr."
+      },
+      {
+        "role": "Divyanka",
+        "actor": "Rakul Preet Singh"
+      },
+      {
+        "role": "Jagapathi Babu",
+        "actor": "Jagapathi Babu"
+      }
+    ],
+    "directors": ["Sukumar"],
+    "duration_min": 168,
+    "description": "A man seeks to avenge his father's betrayal by outsmarting a corrupt businessman in a game of wit."
+  },
+  {
+    "title": "Jai Lava Kusa",
+    "year": 2017,
+    "stars": [
+      {
+        "role": "Jai / Lava / Kusa",
+        "actor": "N.T. Rama Rao Jr."
+      },
+      {
+        "role": "Raashi Khanna",
+        "actor": "Raashi Khanna"
+      },
+      {
+        "role": "Nivetha Thomas",
+        "actor": "Nivetha Thomas"
+      }
+    ],
+    "directors": ["Bobby Kolli"],
+    "duration_min": 150,
+    "description": "Three identical brothers, separated at a young age, find their lives intertwining through a series of events."
+  },
+  {
+    "title": "Temper",
+    "year": 2015,
+    "stars": [
+      {
+        "role": "Daya",
+        "actor": "N.T. Rama Rao Jr."
+      },
+      {
+        "role": "Shanvi",
+        "actor": "Kajal Aggarwal"
+      },
+      {
+        "role": "Prakash Raj",
+        "actor": "Prakash Raj"
+      }
+    ],
+    "directors": ["Puri Jagannadh"],
+    "duration_min": 147,
+    "description": "A corrupt policeman's life changes after he witnesses a brutal crime and decides to fight for justice."
+  },
+  {
+    "title": "Stalin",
+    "year": 2006,
+    "stars": [
+      {
+        "role": "Stalin K. Vishnu",
+        "actor": "Chiranjeevi"
+      },
+      {
+        "role": "Chitra",
+        "actor": "Trisha Krishnan"
+      },
+      {
+        "role": "Prakash Raj",
+        "actor": "Prakash Raj"
+      }
+    ],
+    "directors": ["A.R. Murugadoss"],
+    "duration_min": 168,
+    "description": "A former army officer starts a chain reaction of helping people to bring a positive change in society."
+  },
+  {
+    "title": "Wild Dog",
+    "year": 2021,
+    "stars": [
+      {
+        "role": "Vijay Varma",
+        "actor": "Nagarjuna Akkineni"
+      },
+      {
+        "role": "Priya Varma",
+        "actor": "Dia Mirza"
+      },
+      {
+        "role": "Saiyami Kher",
+        "actor": "Saiyami Kher"
+      }
+    ],
+    "directors": ["Ahishor Solomon"],
+    "duration_min": 145,
+    "description": "A team of NIA agents leads a covert operation to track down and neutralize the terrorists responsible for bombings in India."
+  },
+  {
+    "title": "Theri",
+    "year": 2016,
+    "stars": [
+      {
+        "role": "Vijay Kumar / Joseph Kuruvilla / Dharmeshwar",
+        "actor": "Joseph Vijay"
+      },
+      {
+        "role": "Samantha Ruth Prabhu",
+        "actor": "Samantha Ruth Prabhu"
+      },
+      {
+        "role": "Amy Jackson",
+        "actor": "Amy Jackson"
+      }
+    ],
+    "directors": ["Atlee"],
+    "duration_min": 157,
+    "description": "A former police officer goes into hiding to protect his daughter but is forced to face his past when they are attacked."
+  },
+  {
+    "title": "Jilla",
+    "year": 2014,
+    "stars": [
+      {
+        "role": "Sivan",
+        "actor": "Mohanlal"
+      },
+      {
+        "role": "Shakti",
+        "actor": "Joseph Vijay"
+      },
+      {
+        "role": "Kajal Aggarwal",
+        "actor": "Kajal Aggarwal"
+      }
+    ],
+    "directors": ["R.T. Neason"],
+    "duration_min": 185,
+    "description": "A man who hates the police is forced to become a policeman by his foster father, leading to a clash of ideologies."
+  },
+  {
+    "title": "Thalaivaa",
+    "year": 2013,
+    "stars": [
+      {
+        "role": "Vishwa",
+        "actor": "Joseph Vijay"
+      },
+      {
+        "role": "Anjali",
+        "actor": "Amala Paul"
+      },
+      {
+        "role": "Santhanam",
+        "actor": "Santhanam"
+      }
+    ],
+    "directors": ["A.L. Vijay"],
+    "duration_min": 179,
+    "description": "A young man discovers his father's secret life as a leader of the common people in Mumbai and takes over his mantle."
+  },
+  {
+    "title": "Bairavaa",
+    "year": 2017,
+    "stars": [
+      {
+        "role": "Bairavaa",
+        "actor": "Joseph Vijay"
+      },
+      {
+        "role": "Malarvizhi",
+        "actor": "Keerthy Suresh"
+      },
+      {
+        "role": "Jagapathi Babu",
+        "actor": "Jagapathi Babu"
+      }
+    ],
+    "directors": ["Bharathan"],
+    "duration_min": 169,
+    "description": "A collection agent takes on a corrupt businessman who is running a scam in the medical education sector."
+  },
+  {
+    "title": "Kuruvi",
+    "year": 2008,
+    "stars": [
+      {
+        "role": "Vetrivel",
+        "actor": "Joseph Vijay"
+      },
+      {
+        "role": "Devi",
+        "actor": "Trisha Krishnan"
+      },
+      {
+        "role": "Suman",
+        "actor": "Suman"
+      }
+    ],
+    "directors": ["Dharani"],
+    "duration_min": 150,
+    "description": "A man travels to Vietnam to find his missing father and gets involved in a diamond smuggling case."
+  },
+  {
+    "title": "Kadaram Kondan",
+    "year": 2019,
+    "stars": [
+      {
+        "role": "Vikram",
+        "actor": "Vikram"
+      },
+      {
+        "role": "Aatirah",
+        "actor": "Akshara Haasan"
+      },
+      {
+        "role": "Abi Hassan",
+        "actor": "Abi Hassan"
+      }
+    ],
+    "directors": ["Rajesh M. Selva"],
+    "duration_min": 121,
+    "description": "A man must save his pregnant wife after getting involved in a crime syndicate's power struggle in Malaysia."
+  },
+  {
+    "title": "Sethupathi",
+    "year": 2016,
+    "stars": [
+      {
+        "role": "Sethupathi",
+        "actor": "Vijay Sethupathi"
+      },
+      {
+        "role": "Ramya Nambeeshan",
+        "actor": "Ramya Nambeeshan"
+      },
+      {
+        "role": "Raaghavan Murugan",
+        "actor": "Raaghavan Murugan"
+      }
+    ],
+    "directors": ["S.U. Arun Kumar"],
+    "duration_min": 122,
+    "description": "A tough and family-oriented police officer investigates a murder case involving a local politician."
+  },
+  {
+    "title": "Uppena",
+    "year": 2021,
+    "directors": ["Manish Rana", "Buchi Babu Sana"],
+    "stars": [
+      {
+        "role": "Aasi",
+        "actor": "Panja Vaisshnav Tej"
+      },
+      {
+        "role": "Sangeeta",
+        "actor": "Krithi Shetty"
+      },
+      {
+        "role": "Vijay Sethupathi",
+        "actor": "Vijay Sethupathi"
+      }
+    ],
+    "duration_min": 147,
+    "description": "A romantic drama about a fisherman's son who falls in love with a rich landlord's daughter, facing social and personal obstacles."
+  },
+  {
+    "title": "Ka Pae Ranasingam",
+    "year": 2020,
+    "stars": [
+      {
+        "role": "Ariyanachi",
+        "actor": "Aishwarya Rajesh"
+      },
+      {
+        "role": "Ranasingam",
+        "actor": "Vijay Sethupathi"
+      },
+      {
+        "role": "Munishkanth",
+        "actor": "Munishkanth"
+      }
+    ],
+    "directors": ["P. Virumandi"],
+    "duration_min": 177,
+    "description": "A woman's struggle to bring her deceased husband's body back from a foreign country while fighting a corrupt system."
+  },
+  {
+    "title": "Sangathamizhan",
+    "year": 2019,
+    "stars": [
+      {
+        "role": "Sangathamizhan / Murugan",
+        "actor": "Vijay Sethupathi"
+      },
+      {
+        "role": "Kamalini",
+        "actor": "Raashi Khanna"
+      },
+      {
+        "role": "Nivetha Pethuraj",
+        "actor": "Nivetha Pethuraj"
+      }
+    ],
+    "directors": ["Vijay Chandar"],
+    "duration_min": 147,
+    "description": "A man discovers his family's past and takes on a powerful businessman who is planning a harmful project in his village."
+  },
+  {
+    "title": "Seeru",
+    "year": 2020,
+    "directors": ["Swami Rajalingam", "Rathina Shiva"],
+    "stars": [
+      {
+        "role": "Manimaran",
+        "actor": "Jiiva"
+      },
+      {
+        "role": "Navdeep",
+        "actor": "Navdeep"
+      },
+      {
+        "role": "Vasuki",
+        "actor": "Riya Suman"
+      }
+    ],
+    "duration_min": 123,
+    "description": "A young man goes on a mission to protect his friend and his family from a dangerous criminal."
+  },
+  {
+    "title": "Saaho",
+    "year": 2019,
+    "stars": [
+      {
+        "role": "Ashok Chakravarthy / Siddhant Nandan Saaho",
+        "actor": "Prabhas"
+      },
+      {
+        "role": "Shraddha Kapoor",
+        "actor": "Shraddha Kapoor"
+      },
+      {
+        "role": "Jackie Shroff",
+        "actor": "Jackie Shroff"
+      }
+    ],
+    "directors": ["Sujeeth"],
+    "duration_min": 170,
+    "description": "An undercover agent gets involved in a high-stakes battle between rival gangs for a massive fortune."
+  },
+  {
+    "title": "Mirchi",
+    "year": 2013,
+    "stars": [
+      {
+        "role": "Jai",
+        "actor": "Prabhas"
+      },
+      {
+        "role": "Vennela",
+        "actor": "Anushka Shetty"
+      },
+      {
+        "role": "Richa Langella",
+        "actor": "Richa Langella"
+      }
+    ],
+    "directors": ["Koratala Siva"],
+    "duration_min": 155,
+    "description": "A man returns to his village to end a violent feud between two families using love and reconciliation."
+  },
+  {
+    "title": "Rebel",
+    "year": 2012,
+    "stars": [
+      {
+        "role": "Rishi",
+        "actor": "Prabhas"
+      },
+      {
+        "role": "Nandini",
+        "actor": "Tamannaah Bhatia"
+      },
+      {
+        "role": "Deeksha Seth",
+        "actor": "Deeksha Seth"
+      }
+    ],
+    "directors": ["Raghava Lawrence"],
+    "duration_min": 168,
+    "description": "A man seeks revenge for his parents' murder by infiltrating a powerful criminal gang."
+  },
+  {
+    "title": "Billa",
+    "year": 2009,
+    "stars": [
+      {
+        "role": "Billa / Swami",
+        "actor": "Prabhas"
+      },
+      {
+        "role": "Maya",
+        "actor": "Anushka Shetty"
+      },
+      {
+        "role": "Krishnamraju",
+        "actor": "Krishnamraju"
+      }
+    ],
+    "directors": ["Meher Ramesh"],
+    "duration_min": 149,
+    "description": "An undercover policeman replaces a dreaded don with his lookalike to dismantle a criminal empire."
+  },
+  {
+    "title": "Vakeel Saab",
+    "year": 2021,
+    "directors": ["Veerendra Singh", "Venu Sriram"],
+    "stars": [
+      {
+        "role": "Konidela Satyadev",
+        "actor": "Pawan Kalyan"
+      },
+      {
+        "role": "Pallavi",
+        "actor": "Nivetha Thomas"
+      },
+      {
+        "role": "Anjali",
+        "actor": "Anjali"
+      }
+    ],
+    "duration_min": 153,
+    "description": "A retired lawyer returns to court to defend three women in a case that challenges societal prejudices."
+  },
+  {
+    "title": "Gabbar Singh",
+    "year": 2012,
+    "stars": [
+      {
+        "role": "Gabbar Singh",
+        "actor": "Pawan Kalyan"
+      },
+      {
+        "role": "Bhagyalakshmi",
+        "actor": "Shruti Haasan"
+      },
+      {
+        "role": "Abhimanyu Singh",
+        "actor": "Abhimanyu Singh"
+      }
+    ],
+    "directors": ["Harish Shankar"],
+    "duration_min": 153,
+    "description": "A policeman with his own style of justice takes on a corrupt politician who is terrorizing a town."
+  },
+  {
+    "title": "Agnyaathavaasi: Prince in Exile",
+    "year": 2018,
+    "stars": [
+      {
+        "role": "Abhishikth Bhargav",
+        "actor": "Pawan Kalyan"
+      },
+      {
+        "role": "Sukumari",
+        "actor": "Keerthy Suresh"
+      },
+      {
+        "role": "Anu Emmanuel",
+        "actor": "Anu Emmanuel"
+      }
+    ],
+    "directors": ["Trivikram Srinivas"],
+    "duration_min": 158,
+    "description": "A young man returns to India after his father's murder to find the culprit and protect his family's business empire."
+  },
+  {
+    "title": "Katamarayudu",
+    "year": 2017,
+    "stars": [
+      {
+        "role": "Katamarayudu",
+        "actor": "Pawan Kalyan"
+      },
+      {
+        "role": "Avanthika",
+        "actor": "Shruti Haasan"
+      },
+      {
+        "role": "Ajay",
+        "actor": "Ajay"
+      }
+    ],
+    "directors": ["Kishore Kumar Pardasani"],
+    "duration_min": 146,
+    "description": "A man who looks after his four brothers and hates the idea of marriage finds his life changing when he falls in love."
+  },
+  {
+    "title": "Krack",
+    "year": 2021,
+    "stars": [
+      {
+        "role": "Pothuraju Veera Shankar",
+        "actor": "Ravi Teja"
+      },
+      {
+        "role": "Kalyani",
+        "actor": "Shruti Haasan"
+      },
+      {
+        "role": "Sudhakar Komakula",
+        "actor": "Sudhakar Komakula"
+      }
+    ],
+    "directors": ["Gopichand Malineni"],
+    "duration_min": 154,
+    "description": "A hot-tempered police officer clashes with three powerful criminals who think they are above the law."
+  },
+  {
+    "title": "Bengal Tiger",
+    "year": 2015,
+    "stars": [
+      {
+        "role": "Akash Narayan",
+        "actor": "Ravi Teja"
+      },
+      {
+        "role": "Meera",
+        "actor": "Tamannaah Bhatia"
+      },
+      {
+        "role": "Raashi Khanna",
+        "actor": "Raashi Khanna"
+      }
+    ],
+    "directors": ["Sampath Nandi"],
+    "duration_min": 145,
+    "description": "A man tries to get close to a powerful politician to fulfill a personal goal, leading to a series of comedic and action-packed events."
+  },
+  {
+    "title": "Power",
+    "year": 2014,
+    "creator": "Courtney A. Kemp",
+    "stars": [
+      {
+        "role": "Omari Hardwick",
+        "actor": "Omari Hardwick"
+      },
+      {
+        "role": "Lela Loren",
+        "actor": "Lela Loren"
+      },
+      {
+        "role": "Naturi Naughton",
+        "actor": "Naturi Naughton"
+      }
+    ],
+    "directors": [],
+    "duration_min": null,
+    "description": "A man who wants to become a policeman finds himself in the middle of a power struggle between a corrupt official and a criminal gang."
+  },
+  {
+    "title": "Arjun Reddy",
+    "year": 2017,
+    "stars": [
+      {
+        "role": "Arjun Reddy Deshmukh",
+        "actor": "Vijay Deverakonda"
+      },
+      {
+        "role": "Preethi Shetty",
+        "actor": "Shalini Pandey"
+      },
+      {
+        "role": "Jia Sharma",
+        "actor": "Jia Sharma"
+      }
+    ],
+    "directors": ["Sandeep Reddy Vanga"],
+    "duration_min": 182,
+    "description": "A brilliant but troubled medical student goes on a path of self-destruction after his girlfriend is forced to marry someone else."
+  },
+  {
+    "title": "Geetha Govindam",
+    "year": 2018,
+    "stars": [
+      {
+        "role": "Vijay Govind",
+        "actor": "Vijay Deverakonda"
+      },
+      {
+        "role": "Geetha",
+        "actor": "Rashmika Mandanna"
+      },
+      {
+        "role": "Subbaraju",
+        "actor": "Subbaraju"
+      }
+    ],
+    "directors": ["Parasuram"],
+    "duration_min": 142,
+    "description": "A young man tries to clear a misunderstanding with a girl he fell in love with, leading to a series of humorous situations."
+  },
+  {
+    "title": "Dear Comrade",
+    "year": 2019,
+    "stars": [
+      {
+        "role": "Bobby",
+        "actor": "Vijay Deverakonda"
+      },
+      {
+        "role": "Lilly",
+        "actor": "Rashmika Mandanna"
+      },
+      {
+        "role": "Raj Arjun",
+        "actor": "Raj Arjun"
+      }
+    ],
+    "directors": ["Bharat Kamma"],
+    "duration_min": 169,
+    "description": "A student leader with anger issues falls in love with a state-level cricketer and helps her overcome her trauma."
+  },
+  {
+    "title": "Taxiwala",
+    "year": 2018,
+    "stars": [
+      {
+        "role": "Shiva",
+        "actor": "Vijay Deverakonda"
+      },
+      {
+        "role": "Anu",
+        "actor": "Priyanka Jawalkar"
+      },
+      {
+        "role": "Malvika Nair",
+        "actor": "Malvika Nair"
+      }
+    ],
+    "directors": ["Rahul Sankrityan"],
+    "duration_min": 137,
+    "description": "A taxi driver finds that his car is possessed by a ghost, leading to a mysterious and supernatural investigation."
+  },
+  {
+    "title": "Nota",
+    "year": 2018,
+    "stars": [
+      {
+        "role": "Varun Mahendran",
+        "actor": "Vijay Deverakonda"
+      },
+      {
+        "role": "Nassar",
+        "actor": "Nassar"
+      },
+      {
+        "role": "Sathyaraj",
+        "actor": "Sathyaraj"
+      }
+    ],
+    "directors": ["Anand Shankar"],
+    "duration_min": 145,
+    "description": "A young man accidentally becomes the Chief Minister and must navigate the dirty world of politics to bring about a change."
+  },
+  {
+    "title": "Pushpa: The Rule - Part 2",
+    "year": 2024,
+    "stars": [
+      {
+        "role": "Pushpa Raj",
+        "actor": "Allu Arjun"
+      },
+      {
+        "role": "Srivalli",
+        "actor": "Rashmika Mandanna"
+      },
+      {
+        "role": "Fahadh Faasil",
+        "actor": "Fahadh Faasil"
+      }
+    ],
+    "directors": ["Sukumar"],
+    "duration_min": 201,
+    "description": "The continuation of the clash between Pushpa Raj and his enemies as he expands his sandalwood smuggling empire."
+  },
+  {
+    "title": "Kalki 2898 AD",
+    "year": 2024,
+    "stars": [
+      {
+        "role": "Bhairava",
+        "actor": "Prabhas"
+      },
+      {
+        "role": "Ashwatthama",
+        "actor": "Amitabh Bachchan"
+      },
+      {
+        "role": "Supreme Yaskin",
+        "actor": "Kamal Haasan"
+      }
+    ],
+    "directors": ["Nag Ashwin"],
+    "duration_min": 180,
+    "description": "A sci-fi epic set in a dystopian future where a modern-day avatar of Vishnu descends to protect the world."
+  },
+  {
+    "title": "Devara Part 1",
+    "year": 2024,
+    "stars": [
+      {
+        "role": "Devara / Varadha",
+        "actor": "N.T. Rama Rao Jr."
+      },
+      {
+        "role": "Bhaira",
+        "actor": "Saif Ali Khan"
+      },
+      {
+        "role": "Thangam",
+        "actor": "Janhvi Kapoor"
+      }
+    ],
+    "directors": ["Koratala Siva"],
+    "duration_min": 176,
+    "description": "An action-packed story set in a coastal region involving a powerful man and his quest for justice."
+  },
+  {
+    "title": "Amaran",
+    "year": 2024,
+    "stars": [
+      {
+        "role": "Major Mukund Varadarajan",
+        "actor": "Sivakarthikeyan"
+      },
+      {
+        "role": "Indhu Rebecca Varghese",
+        "actor": "Sai Pallavi"
+      },
+      {
+        "role": "Bhuvan Arora",
+        "actor": "Bhuvan Arora"
+      }
+    ],
+    "directors": ["Rajkumar Periasamy"],
+    "duration_min": 167,
+    "description": "A biographical action film based on the life of Major Mukund Varadarajan, an Indian army officer."
+  },
+  {
+    "title": "Hanu Man",
+    "year": 2024,
+    "stars": [
+      {
+        "role": "Hanumanthu",
+        "actor": "Teja Sajja"
+      },
+      {
+        "role": "Meenakshi",
+        "actor": "Amritha Aiyer"
+      },
+      {
+        "role": "Varalaxmi Sarathkumar",
+        "actor": "Varalaxmi Sarathkumar"
+      }
+    ],
+    "directors": ["Prasanth Varma"],
+    "duration_min": 158,
+    "description": "A young man gains superpowers from an ancient artifact and must protect his village from a powerful threat."
+  },
+  {
+    "title": "The Greatest of All Time",
+    "year": 2024,
+    "stars": [
+      {
+        "role": "Gandhi / Jeevan",
+        "actor": "Joseph Vijay"
+      },
+      {
+        "role": "Prashanth",
+        "actor": "Prashanth"
+      },
+      {
+        "role": "Prabhu Deva",
+        "actor": "Prabhu Deva"
+      }
+    ],
+    "directors": ["Venkat Prabhu"],
+    "duration_min": 183,
+    "description": "An action thriller involving a man who goes on a high-stakes mission with a team of skilled individuals."
+  },
+  {
+    "title": "Vettaiyan",
+    "year": 2024,
+    "stars": [
+      {
+        "role": "Athiyan",
+        "actor": "Rajinikanth"
+      },
+      {
+        "role": "Sathyadev",
+        "actor": "Amitabh Bachchan"
+      },
+      {
+        "role": "Fahadh Faasil",
+        "actor": "Fahadh Faasil"
+      }
+    ],
+    "directors": ["T.J. Gnanavel"],
+    "duration_min": 163,
+    "description": "A police officer goes on a mission to track down and eliminate a dangerous criminal group."
+  },
+  {
+    "title": "Manjummel Boys",
+    "year": 2024,
+    "stars": [
+      {
+        "role": "Kuttan",
+        "actor": "Soubin Shahir"
+      },
+      {
+        "role": "Subhash",
+        "actor": "Sreenath Bhasi"
+      },
+      {
+        "role": "Balu Varghese",
+        "actor": "Balu Varghese"
+      }
+    ],
+    "directors": ["Chidambaram"],
+    "duration_min": 135,
+    "description": "A group of friends on a vacation face a life-threatening situation and must work together to survive."
+  },
+  {
+    "title": "Maharaja",
+    "year": 2024,
+    "stars": [
+      {
+        "role": "Maharaja",
+        "actor": "Vijay Sethupathi"
+      },
+      {
+        "role": "Selvam",
+        "actor": "Anurag Kashyap"
+      },
+      {
+        "role": "Mamta Mohandas",
+        "actor": "Mamta Mohandas"
+      }
+    ],
+    "directors": ["Nithilan Saminathan"],
+    "duration_min": 141,
+    "description": "A barber's search for his missing 'Lakshmi' leads to a series of unexpected twists and turns."
+  },
+  {
+    "title": "Guntur Kaaram",
+    "year": 2024,
+    "stars": [
+      {
+        "role": "Venkatramana",
+        "actor": "Mahesh Babu"
+      },
+      {
+        "role": "Amukta Malyada",
+        "actor": "Sreeleela"
+      },
+      {
+        "role": "Meenaakshi Chaudhary",
+        "actor": "Meenaakshi Chaudhary"
+      }
+    ],
+    "directors": ["Trivikram Srinivas"],
+    "duration_min": 159,
+    "description": "A high-octane action drama set in the city of Guntur involving family dynamics and powerful rivals."
+  },
+  {
+    "title": "Indian 2",
+    "year": 2024,
+    "stars": [
+      {
+        "role": "Senapathy",
+        "actor": "Kamal Haasan"
+      },
+      {
+        "role": "Chitra Varadharajan",
+        "actor": "Siddharth"
+      },
+      {
+        "role": "Rakul Preet Singh",
+        "actor": "Rakul Preet Singh"
+      }
+    ],
+    "directors": ["S. Shankar"],
+    "duration_min": 165,
+    "description": "The return of the veteran freedom fighter Senapathy as he takes on corruption in the modern world."
+  },
+  {
+    "title": "Raayan",
+    "year": 2024,
+    "stars": [
+      {
+        "role": "Raayan",
+        "actor": "Dhanush"
+      },
+      {
+        "role": "Aparna Balamurali",
+        "actor": "Aparna Balamurali"
+      },
+      {
+        "role": "Devadarshini Chetan",
+        "actor": "Devadarshini Chetan"
+      }
+    ],
+    "directors": ["Dhanush"],
+    "duration_min": 145,
+    "description": "A man's life and his struggle to protect his family in a violent environment."
+  },
+  {
+    "title": "The Goat Life",
+    "year": 2024,
+    "stars": [
+      {
+        "role": "Najeeb Muhammad",
+        "actor": "Prithviraj Sukumaran"
+      },
+      {
+        "role": "Jimmy Jean-Louis",
+        "actor": "Jimmy Jean-Louis"
+      },
+      {
+        "role": "K.r. Gokul",
+        "actor": "K.r. Gokul"
+      }
+    ],
+    "directors": ["Blessy"],
+    "duration_min": 173,
+    "description": "The harrowing journey of an Indian immigrant worker who is forced into slavery as a goatherd in the Saudi desert."
+  },
+  {
+    "title": "Aavesham",
+    "year": 2024,
+    "stars": [
+      {
+        "role": "Ranga",
+        "actor": "Fahadh Faasil"
+      },
+      {
+        "role": "Aju",
+        "actor": "Hipzster"
+      },
+      {
+        "role": "Mithun Jai Shankar",
+        "actor": "Mithun Jai Shankar"
+      }
+    ],
+    "directors": ["Jithu Madhavan"],
+    "duration_min": 155,
+    "description": "A group of college students seek the help of a local gangster to protect them from bullies."
+  },
+  {
+    "title": "Premalu",
+    "year": 2024,
+    "stars": [
+      {
+        "role": "Naslen",
+        "actor": "Naslen"
+      },
+      {
+        "role": "Reenu",
+        "actor": "Mamitha Baiju"
+      },
+      {
+        "role": "Sangeeth Prathap",
+        "actor": "Sangeeth Prathap"
+      }
+    ],
+    "directors": ["Girish A.D."],
+    "duration_min": 156,
+    "description": "A lighthearted romantic comedy set in Hyderabad following the lives of young individuals."
+  },
+  {
+    "title": "Tillu Square",
+    "year": 2024,
+    "stars": [
+      {
+        "role": "Lilly",
+        "actor": "Anupama Parameswaran"
+      },
+      {
+        "role": "Murli Sharma",
+        "actor": "Murli Sharma"
+      },
+      {
+        "role": "Prince Cecil",
+        "actor": "Prince Cecil"
+      }
+    ],
+    "directors": ["Mallik Ram"],
+    "duration_min": 137,
+    "description": "The hilarious misadventures of Tillu as he gets caught in a new mess involving a mysterious woman."
+  },
+  {
+    "title": "Lucky Baskhar",
+    "year": 2024,
+    "stars": [
+      {
+        "role": "Baskhar Kumar",
+        "actor": "Dulquer Salmaan"
+      },
+      {
+        "role": "Meenaakshi Chaudhary",
+        "actor": "Meenaakshi Chaudhary"
+      },
+      {
+        "role": "Tinnu Anand",
+        "actor": "Tinnu Anand"
+      }
+    ],
+    "directors": ["Venky Atluri"],
+    "duration_min": 148,
+    "description": "A middle-class bank employee's life changes as he gets involved in a series of financial scams and struggles to survive."
+  },
+  {
+    "title": "Kanguva",
+    "year": 2024,
+    "stars": [
+      {
+        "role": "Kanguva / Francis",
+        "actor": "Suriya"
+      },
+      {
+        "role": "Disha Patani",
+        "actor": "Disha Patani"
+      },
+      {
+        "role": "Udhiran",
+        "actor": "Bobby Deol"
+      }
+    ],
+    "directors": ["Siva"],
+    "duration_min": 152,
+    "description": "An epic saga spanning centuries, connecting a warrior from the past with a man in the present."
+  },
+  {
+    "title": "A.R.M",
+    "year": 2024,
+    "stars": [
+      {
+        "role": "Ajayan / Maniyan / Kunjikelu",
+        "actor": "Tovino Thomas"
+      },
+      {
+        "role": "Basil Joseph",
+        "actor": "Basil Joseph"
+      },
+      {
+        "role": "Krithi Shetty",
+        "actor": "Krithi Shetty"
+      }
+    ],
+    "directors": ["Jithin Lal"],
+    "duration_min": 150,
+    "description": "The stories of three generations of heroes from the same family who protect their village from various threats."
+  },
+  {
+    "title": "Marco",
+    "year": 2024,
+    "stars": [
+      {
+        "role": "Marco Jr.",
+        "actor": "Unni Mukundan"
+      },
+      {
+        "role": "Siddique",
+        "actor": "Siddique"
+      },
+      {
+        "role": "Jagadish",
+        "actor": "Jagadish"
+      }
+    ],
+    "directors": ["Haneef Adeni"],
+    "duration_min": 145,
+    "description": "A spin-off action thriller centering on the character Marco from the movie 'Mikhael'."
+  },
+  {
+    "title": "Aranmanai 4",
+    "year": 2024,
+    "stars": [
+      {
+        "role": "Saravanan",
+        "actor": "Sundar C."
+      },
+      {
+        "role": "Selvi",
+        "actor": "Tamannaah Bhatia"
+      },
+      {
+        "role": "Raashi Khanna",
+        "actor": "Raashi Khanna"
+      }
+    ],
+    "directors": ["Sundar C."],
+    "duration_min": 148,
+    "description": "The latest installment in the horror-comedy franchise involving a haunted mansion and a new set of characters."
+  },
+  {
+    "title": "Saripodhaa Sanivaaram",
+    "year": 2024,
+    "stars": [
+      {
+        "role": "Surya",
+        "actor": "Nani"
+      },
+      {
+        "role": "Priyanka Arulmohan",
+        "actor": "Priyanka Arulmohan"
+      },
+      {
+        "role": "Harsh Roshan",
+        "actor": "Harsh Roshan"
+      }
+    ],
+    "directors": ["Vivek Athreya"],
+    "duration_min": 166,
+    "description": "A man who channels his anger only on Saturdays gets involved in a fight against a corrupt police officer."
+  },
+  {
+    "title": "Mana ShankaraVaraprasad Garu",
+    "year": 2026,
+    "stars": [
+      {
+        "role": "Shankara Varaprasad",
+        "actor": "Chiranjeevi"
+      },
+      {
+        "role": "Nayanthara",
+        "actor": "Nayanthara"
+      },
+      {
+        "role": "Catherine Tresa",
+        "actor": "Catherine Tresa"
+      }
+    ],
+    "directors": ["Anil Ravipudi"],
+    "duration_min": 156,
+    "description": "A family drama/comedy centering on a man named Shankara Varaprasad and his life events."
+  },
+  {
+    "title": "The Raja Saab",
+    "year": 2026,
+    "stars": [
+      {
+        "role": "Raja Saab",
+        "actor": "Prabhas"
+      },
+      {
+        "role": "Sanjay Dutt",
+        "actor": "Sanjay Dutt"
+      },
+      {
+        "role": "Nidhhi Agerwal",
+        "actor": "Nidhhi Agerwal"
+      }
+    ],
+    "directors": ["Maruthi Dasari"],
+    "duration_min": 190,
+    "description": "A horror-comedy film involving a man and a haunted palace."
+  },
+  {
+    "title": "Ustaad Bhagat Singh",
+    "year": 2026,
+    "stars": [
+      {
+        "role": "Bhagat Singh",
+        "actor": "Pawan Kalyan"
+      },
+      {
+        "role": "Sriram Reddy Polasane",
+        "actor": "Sriram Reddy Polasane"
+      },
+      {
+        "role": "Sreeleela",
+        "actor": "Sreeleela"
+      }
+    ],
+    "directors": ["Harish Shankar"],
+    "duration_min": 150,
+    "description": "A high-octane action film where a policeman takes on powerful enemies to bring about justice."
+  },
+  {
+    "title": "Parasakthi",
+    "year": 2026,
+    "stars": [
+      {
+        "role": "Sivakarthikeyan",
+        "actor": "Sivakarthikeyan"
+      },
+      {
+        "role": "Ravi Mohan",
+        "actor": "Ravi Mohan"
+      },
+      {
+        "role": "Atharvaa Murali",
+        "actor": "Atharvaa Murali"
+      }
+    ],
+    "directors": ["Sudha Kongara"],
+    "duration_min": 161,
+    "description": "An action-packed story involving a man and his fight against social injustices."
+  },
+  {
+    "title": "Anaganaga Oka Raju",
+    "year": 2026,
+    "stars": [
+      {
+        "role": "Raju",
+        "actor": "Naveen Polishetty"
+      },
+      {
+        "role": "Meenaakshi Chaudhary",
+        "actor": "Meenaakshi Chaudhary"
+      },
+      {
+        "role": "Tarak Ponnappa",
+        "actor": "Tarak Ponnappa"
+      }
+    ],
+    "directors": ["Maari"],
+    "duration_min": 150,
+    "description": "A comedic journey of a man who gets involved in a series of funny and chaotic situations."
+  },
+  {
+    "title": "Thaai Kizhavi",
+    "year": 2026,
+    "stars": [
+      {
+        "role": "Radhika Sarathkumar",
+        "actor": "Radhika Sarathkumar"
+      },
+      {
+        "role": "Aruldoss",
+        "actor": "Aruldoss"
+      },
+      {
+        "role": "Ilavarasu",
+        "actor": "Ilavarasu"
+      }
+    ],
+    "directors": ["Sivakumar Murugesan"],
+    "duration_min": 150,
+    "description": "A rural drama/comedy centering on an elderly woman and her interactions with the villagers."
+  },
+  {
+    "title": "Youth",
+    "year": 2026,
+    "stars": [
+      {
+        "role": "Ken Karunas",
+        "actor": "Ken Karunas"
+      },
+      {
+        "role": "Suraj Venjaramoodu",
+        "actor": "Suraj Venjaramoodu"
+      },
+      {
+        "role": "Devadarshini Chetan",
+        "actor": "Devadarshini Chetan"
+      }
+    ],
+    "directors": ["Ken Karunas"],
+    "duration_min": 140,
+    "description": "A youthful drama focusing on the lives, aspirations, and challenges of the modern generation."
+  },
+  {
+    "title": "TTT: Thalaivar Thambi Thalaimaiyil",
+    "year": 2026,
+    "stars": [
+      {
+        "role": "Jiiva",
+        "actor": "Jiiva"
+      },
+      {
+        "role": "Thambi Ramaiah",
+        "actor": "Thambi Ramaiah"
+      },
+      {
+        "role": "Ilavarasu",
+        "actor": "Ilavarasu"
+      }
+    ],
+    "directors": ["Nithish Sahadev"],
+    "duration_min": 113,
+    "description": "A comedy-drama revolving around a leader and his brother's antics."
+  },
+  {
+    "title": "With Love",
+    "year": 2026,
+    "stars": [
+      {
+        "role": "Abishan Jeevinth",
+        "actor": "Abishan Jeevinth"
+      },
+      {
+        "role": "Anaswara Rajan",
+        "actor": "Anaswara Rajan"
+      },
+      {
+        "role": "Saravanan",
+        "actor": "Saravanan"
+      }
+    ],
+    "directors": ["Madhan"],
+    "duration_min": 141,
+    "description": "A romantic comedy where a man and a woman rediscover their past connection while on a date."
+  },
+  {
+    "title": "Nari Nari Naduma Murari",
+    "year": 2026,
+    "stars": [
+      {
+        "role": "Sree Vishnu",
+        "actor": "Sree Vishnu"
+      },
+      {
+        "role": "Sakshi Vaidya",
+        "actor": "Sakshi Vaidya"
+      },
+      {
+        "role": "Samyuktha Menon",
+        "actor": "Samyuktha Menon"
+      }
+    ],
+    "directors": ["Ram Abbaraju"],
+    "duration_min": 140,
+    "description": "A family entertainer involving a man caught between two women and various family issues."
+  },
+  {
+    "title": "LIK: Love Insurance Kompany",
+    "year": 2026,
+    "stars": [
+      {
+        "role": "Pradeep Ranganathan",
+        "actor": "Pradeep Ranganathan"
+      },
+      {
+        "role": "S.J. Suryah",
+        "actor": "S.J. Suryah"
+      },
+      {
+        "role": "Krithi Shetty",
+        "actor": "Krithi Shetty"
+      }
+    ],
+    "directors": ["Vignesh Shivan"],
+    "duration_min": 150,
+    "description": "A futuristic romantic comedy where a company offers insurance for love and relationships."
+  },
+  {
+    "title": "Kara",
+    "year": 2026,
+    "stars": [
+      {
+        "role": "Dhanush",
+        "actor": "Dhanush"
+      },
+      {
+        "role": "Suraj Venjaramoodu",
+        "actor": "Suraj Venjaramoodu"
+      },
+      {
+        "role": "Mamitha Baiju",
+        "actor": "Mamitha Baiju"
+      }
+    ],
+    "directors": ["Vignesh Raja"],
+    "duration_min": 159,
+    "description": "An action thriller involving a man and his quest for revenge."
+  },
+  {
+    "title": "Peddi",
+    "year": 2026,
+    "stars": [
+      {
+        "role": "Ram Charan",
+        "actor": "Ram Charan"
+      },
+      {
+        "role": "Janhvi Kapoor",
+        "actor": "Janhvi Kapoor"
+      },
+      {
+        "role": "Shivarajkumar",
+        "actor": "Shivarajkumar"
+      }
+    ],
+    "directors": ["Buchi Babu Sana"],
+    "duration_min": 160,
+    "description": "A sports-based drama involving a character named Peddi and his journey."
+  },
+  {
+    "title": "Jana Nayagan",
+    "year": null,
+    "stars": [
+      {
+        "role": "Joseph Vijay",
+        "actor": "Joseph Vijay"
+      },
+      {
+        "role": "Pooja Hegde",
+        "actor": "Pooja Hegde"
+      },
+      {
+        "role": "Bobby Deol",
+        "actor": "Bobby Deol"
+      }
+    ],
+    "directors": ["H. Vinoth"],
+    "duration_min": 186,
+    "description": "A political thriller where a man rises as a leader to challenge the existing corrupt system."
+  },
+  {
+    "title": "Toxic",
+    "year": 2026,
+    "stars": [
+      {
+        "role": "Yash",
+        "actor": "Yash"
+      },
+      {
+        "role": "Nayanthara",
+        "actor": "Nayanthara"
+      },
+      {
+        "role": "Kiara Advani",
+        "actor": "Kiara Advani"
+      }
+    ],
+    "directors": ["Geethu Mohandas"],
+    "duration_min": null,
+    "description": "A high-stakes action film set in the world of international drug smuggling."
+  },
+  {
+    "title": "Jailer 2",
+    "year": 2026,
+    "stars": [
+      {
+        "role": "Rajinikanth",
+        "actor": "Rajinikanth"
+      },
+      {
+        "role": "Vijay Sethupathi",
+        "actor": "Vijay Sethupathi"
+      },
+      {
+        "role": "Mohanlal",
+        "actor": "Mohanlal"
+      }
+    ],
+    "directors": ["Nelson Dilipkumar"],
+    "duration_min": null,
+    "description": "The return of Muthuvel Pandian as he faces new challenges and protects his family."
+  },
+  {
+    "title": "The Paradise",
+    "year": 2026,
+    "stars": [
+      {
+        "role": "Nani",
+        "actor": "Nani"
+      },
+      {
+        "role": "Kayadu Lohar",
+        "actor": "Kayadu Lohar"
+      },
+      {
+        "role": "Raghav Juyal",
+        "actor": "Raghav Juyal"
+      }
+    ],
+    "directors": ["Srikanth Odela"],
+    "duration_min": null,
+    "description": "A crime drama set in a coastal region involving power struggles and revenge."
+  },
+  {
+    "title": "Indian 3",
+    "year": 2026,
+    "stars": [
+      {
+        "role": "Kajal Aggarwal",
+        "actor": "Kajal Aggarwal"
+      },
+      {
+        "role": "Benedict Garrett",
+        "actor": "Benedict Garrett"
+      },
+      {
+        "role": "Kamal Haasan",
+        "actor": "Kamal Haasan"
+      }
+    ],
+    "directors": ["S. Shankar"],
+    "duration_min": null,
+    "description": "The conclusion of Senapathy's fight against corruption as he takes on the roots of the system."
+  },
+  {
+    "title": "Seyon",
+    "year": 2026,
+    "stars": [
+      {
+        "role": "Sivakarthikeyan",
+        "actor": "Sivakarthikeyan"
+      },
+      {
+        "role": "Aruldoss",
+        "actor": "Aruldoss"
+      },
+      {
+        "role": "Bhagyashri Borse",
+        "actor": "Bhagyashri Borse"
+      }
+    ],
+    "directors": ["Sivakumar Murugesan"],
+    "duration_min": null,
+    "description": "An action drama centering on a man's journey and his fight for his people."
+  },
+  {
+    "title": "Benz",
+    "year": 2026,
+    "stars": [
+      {
+        "role": "Madhavan",
+        "actor": "Madhavan"
+      },
+      {
+        "role": "Nayanthara",
+        "actor": "Nayanthara"
+      },
+      {
+        "role": "Suriya",
+        "actor": "Suriya"
+      }
+    ],
+    "directors": ["Bakkiyaraj Kannan"],
+    "duration_min": null,
+    "description": "A crime thriller involving high-speed chases and a dangerous mission."
+  },
+  {
+    "title": "L2: Empuraan",
+    "year": 2025,
+    "stars": [
+      {
+        "role": "Mohanlal",
+        "actor": "Mohanlal"
+      },
+      {
+        "role": "Prithviraj Sukumaran",
+        "actor": "Prithviraj Sukumaran"
+      },
+      {
+        "role": "Rick Yune",
+        "actor": "Rick Yune"
+      }
+    ],
+    "directors": ["Prithviraj Sukumaran"],
+    "duration_min": 179,
+    "description": "The highly anticipated sequel to Lucifer, following the global operations of Khureshi-Ab'ram."
+  },
+  {
+    "title": "Game Changer",
+    "year": 2025,
+    "stars": [
+      {
+        "role": "Ram Charan",
+        "actor": "Ram Charan"
+      },
+      {
+        "role": "Kiara Advani",
+        "actor": "Kiara Advani"
+      },
+      {
+        "role": "S.J. Suryah",
+        "actor": "S.J. Suryah"
+      }
+    ],
+    "directors": ["S. Shankar"],
+    "duration_min": 165,
+    "description": "A political action drama where an honest IAS officer tries to change the corrupt election system."
+  },
+  {
+    "title": "Coolie",
+    "year": 2025,
+    "stars": [
+      {
+        "role": "Rajinikanth",
+        "actor": "Rajinikanth"
+      },
+      {
+        "role": "Akkineni Nagarjuna",
+        "actor": "Akkineni Nagarjuna"
+      },
+      {
+        "role": "Soubin Shahir",
+        "actor": "Soubin Shahir"
+      }
+    ],
+    "directors": ["Lokesh Kanagaraj"],
+    "duration_min": 150,
+    "description": "An action-packed film set in the world of gold smuggling at the Chennai port."
+  },
+  {
+    "title": "Good Bad Ugly",
+    "year": 2025,
+    "stars": [
+      {
+        "role": "Ajith Kumar",
+        "actor": "Ajith Kumar"
+      },
+      {
+        "role": "Trisha Krishnan",
+        "actor": "Trisha Krishnan"
+      },
+      {
+        "role": "Prasanna",
+        "actor": "Prasanna"
+      }
+    ],
+    "directors": ["Adhik Ravichandran"],
+    "duration_min": 160,
+    "description": "An action thriller involving characters with different moral shades and a high-stakes conflict."
+  },
+  {
+    "title": "Daaku Maharaaj",
+    "year": 2025,
+    "stars": [
+      {
+        "role": "Nandamuri Balakrishna",
+        "actor": "Nandamuri Balakrishna"
+      },
+      {
+        "role": "Bobby Deol",
+        "actor": "Bobby Deol"
+      },
+      {
+        "role": "Shraddha Srinath",
+        "actor": "Shraddha Srinath"
+      }
+    ],
+    "directors": ["Bobby Kolli"],
+    "duration_min": 155,
+    "description": "A period action film set in the world of outlaws and their fight for justice."
+  },
+  {
+    "title": "Thug Life",
+    "year": 2025,
+    "stars": [
+      {
+        "role": "Kamal Haasan",
+        "actor": "Kamal Haasan"
+      },
+      {
+        "role": "Silambarasan Rajendar",
+        "actor": "Silambarasan Rajendar"
+      },
+      {
+        "role": "Trisha Krishnan",
+        "actor": "Trisha Krishnan"
+      }
+    ],
+    "directors": ["Mani Ratnam"],
+    "duration_min": 170,
+    "description": "A gangster epic spanning decades, following the life of a man in the underworld."
+  },
+  {
+    "title": "Thalapathy 69",
+    "year": 2025,
+    "stars": [
+      {
+        "role": "Joseph Vijay",
+        "actor": "Joseph Vijay"
+      },
+      {
+        "role": "Pooja Hegde",
+        "actor": "Pooja Hegde"
+      },
+      {
+        "role": "Bobby Deol",
+        "actor": "Bobby Deol"
+      }
+    ],
+    "directors": ["H. Vinoth"],
+    "duration_min": 186,
+    "description": "An action-packed political drama which is expected to be a milestone in the lead actor's career."
+  },
+  {
+    "title": "Spirit",
+    "year": 2025,
+    "stars": [
+      {
+        "role": "Prabhas",
+        "actor": "Prabhas"
+      },
+      {
+        "role": "Trisha Krishnan",
+        "actor": "Trisha Krishnan"
+      },
+      {
+        "role": "Ma Dong-seok",
+        "actor": "Ma Dong-seok"
+      }
+    ],
+    "directors": ["Sandeep Reddy Vanga"],
+    "duration_min": 190,
+    "description": "An intense action film where a policeman takes on the underworld."
+  },
+  {
+    "title": "Kannappa",
+    "year": 2025,
+    "stars": [
+      {
+        "role": "Akshay Kumar",
+        "actor": "Akshay Kumar"
+      },
+      {
+        "role": "Prabhas",
+        "actor": "Prabhas"
+      },
+      {
+        "role": "Kajal Aggarwal",
+        "actor": "Kajal Aggarwal"
+      }
+    ],
+    "directors": ["Mukesh Kumar Singh"],
+    "duration_min": 175,
+    "description": "A mythological epic based on the life of the legendary devotee Bhakta Kannappa."
+  },
+  {
+    "title": "Hari Hara Veera Mallu: Part 1 - Sword vs Spirit",
+    "year": 2025,
+    "stars": [
+      {
+        "role": "Pawan Kalyan",
+        "actor": "Pawan Kalyan"
+      },
+      {
+        "role": "Nidhhi Agerwal",
+        "actor": "Nidhhi Agerwal"
+      },
+      {
+        "role": "Bobby Deol",
+        "actor": "Bobby Deol"
+      }
+    ],
+    "directors": ["Jyothi Krishna"],
+    "duration_min": 165,
+    "description": "The story of a legendary outlaw who leads a rebellion against the Mughal Empire."
+  },
+  {
+    "title": "Sankranthiki Vasthunnam",
+    "year": 2025,
+    "stars": [
+      {
+        "role": "Venkatesh Daggubati",
+        "actor": "Venkatesh Daggubati"
+      },
+      {
+        "role": "Meenaakshi Chaudhary",
+        "actor": "Meenaakshi Chaudhary"
+      },
+      {
+        "role": "Aishwarya Rajesh",
+        "actor": "Aishwarya Rajesh"
+      }
+    ],
+    "directors": ["Anil Ravipudi"],
+    "duration_min": 150,
+    "description": "A family entertainer set against the backdrop of the Sankranti festival."
+  },
+  {
+    "title": "Idli Kadai",
+    "year": 2025,
+    "stars": [
+      {
+        "role": "Dhanush",
+        "actor": "Dhanush"
+      },
+      {
+        "role": "Nithya Menen",
+        "actor": "Nithya Menen"
+      },
+      {
+        "role": "Prakash Raj",
+        "actor": "Prakash Raj"
+      }
+    ],
+    "directors": ["Dhanush"],
+    "duration_min": 145,
+    "description": "A heartwarming drama set in a small village centering on a man who runs an idli shop."
+  },
+  {
+    "title": "They Call Him OG",
+    "year": 2025,
+    "stars": [
+      {
+        "role": "Pawan Kalyan",
+        "actor": "Pawan Kalyan"
+      },
+      {
+        "role": "Emraan Hashmi",
+        "actor": "Emraan Hashmi"
+      },
+      {
+        "role": "Priyanka Arulmohan",
+        "actor": "Priyanka Arulmohan"
+      }
+    ],
+    "directors": ["Sujeeth"],
+    "duration_min": 160,
+    "description": "A stylish action thriller set in Mumbai involving a man from the underworld."
+  },
+  {
+    "title": "Vidaamuyarchi",
+    "year": 2025,
+    "stars": [
+      {
+        "role": "Ajith Kumar",
+        "actor": "Ajith Kumar"
+      },
+      {
+        "role": "Arjun Sarja",
+        "actor": "Arjun Sarja"
+      },
+      {
+        "role": "Trisha Krishnan",
+        "actor": "Trisha Krishnan"
+      }
+    ],
+    "directors": ["Magizh Thirumeni"],
+    "duration_min": 155,
+    "description": "A man's determined effort to find his missing wife and his fight against the people who kidnapped her."
+  },
+  {
+    "title": "Vishwambhara",
+    "year": 2025,
+    "stars": [
+      {
+        "role": "Chiranjeevi",
+        "actor": "Chiranjeevi"
+      },
+      {
+        "role": "Trisha Krishnan",
+        "actor": "Trisha Krishnan"
+      },
+      {
+        "role": "Ashika Ranganath",
+        "actor": "Ashika Ranganath"
+      }
+    ],
+    "directors": ["Vassishta"],
+    "duration_min": 170,
+    "description": "A socio-fantasy epic involving a man and his journey through celestial worlds."
+  },
+  {
+    "title": "Rudra",
+    "year": 2025,
+    "stars": [
+      {
+        "role": "Mammootty",
+        "actor": "Mammootty"
+      },
+      {
+        "role": "Vandana",
+        "actor": "Vandana"
+      },
+      {
+        "role": "Bindu Panikkar",
+        "actor": "Bindu Panikkar"
+      }
+    ],
+    "directors": ["B. Unnikrishnan"],
+    "duration_min": 150,
+    "description": "An action thriller where a man fights against a powerful crime syndicate."
+  },
+  {
+    "title": "D69",
+    "year": 2025,
+    "stars": [
+      {
+        "role": "Dhanush",
+        "actor": "Dhanush"
+      },
+      {
+        "role": "S.J. Suryah",
+        "actor": "S.J. Suryah"
+      },
+      {
+        "role": "Priyanka Arulmohan",
+        "actor": "Priyanka Arulmohan"
+      }
+    ],
+    "directors": ["Arun Matheswaran"],
+    "duration_min": 140,
+    "description": "An action drama focusing on a man's fight for his community."
+  },
+  {
+    "title": "Dragon",
+    "year": 2025,
+    "stars": [
+      {
+        "role": "Pradeep Ranganathan",
+        "actor": "Pradeep Ranganathan"
+      },
+      {
+        "role": "Anupama Parameswaran",
+        "actor": "Anupama Parameswaran"
+      },
+      {
+        "role": "Kayadu Lohar",
+        "actor": "Kayadu Lohar"
+      }
+    ],
+    "directors": ["Ashwath Marimuthu"],
+    "duration_min": 152,
+    "description": "A youthful comedy-drama centering on a man and his college life."
+  },
+  {
+    "title": "Kantara: A Legend Chapter 1",
+    "year": 2025,
+    "stars": [
+      {
+        "role": "Rishab Shetty",
+        "actor": "Rishab Shetty"
+      },
+      {
+        "role": "Sapthami Gowda",
+        "actor": "Sapthami Gowda"
+      },
+      {
+        "role": "Achyuth Kumar",
+        "actor": "Achyuth Kumar"
+      }
+    ],
+    "directors": ["Rishab Shetty"],
+    "duration_min": 165,
+    "description": "A prequel exploring the origins of the legend and the connection between nature and the divine."
+  },
+  {
+    "title": "Vayai Moodi Pesavum 2",
+    "year": 2025,
+    "stars": [
+      {
+        "role": "Dulquer Salmaan",
+        "actor": "Dulquer Salmaan"
+      },
+      {
+        "role": "Nazriya Nazim",
+        "actor": "Nazriya Nazim"
+      },
+      {
+        "role": "Madhoo",
+        "actor": "Madhoo"
+      }
+    ],
+    "directors": ["Balaji Mohan"],
+    "duration_min": 135,
+    "description": "A sequel to the unique comedy where people in a town are forbidden from speaking."
+  },
+  {
+    "title": "Major Sandeep",
+    "year": 2025,
+    "stars": [
+      {
+        "role": "Adivi Sesh",
+        "actor": "Adivi Sesh"
+      },
+      {
+        "role": "Sobhita Dhulipala",
+        "actor": "Sobhita Dhulipala"
+      },
+      {
+        "role": "Saiee Manjrekar",
+        "actor": "Saiee Manjrekar"
+      }
+    ],
+    "directors": ["Sashi Kiran Tikka"],
+    "duration_min": 160,
+    "description": "A biographical film based on the life of Major Sandeep Unnikrishnan, who was martyred during the 26/11 attacks."
+  },
+  {
+    "title": "Surya 44",
+    "year": 2025,
+    "stars": [
+      {
+        "role": "Suriya",
+        "actor": "Suriya"
+      },
+      {
+        "role": "Pooja Hegde",
+        "actor": "Pooja Hegde"
+      },
+      {
+        "role": "Jayaram",
+        "actor": "Jayaram"
+      }
+    ],
+    "directors": ["Karthik Subbaraj"],
+    "duration_min": 155,
+    "description": "A period action drama involving a man and his journey in a violent era."
+  },
+  {
+    "title": "Mirai",
+    "year": 2025,
+    "stars": [
+      {
+        "role": "Teja Sajja",
+        "actor": "Teja Sajja"
+      },
+      {
+        "role": "Ritika Nayak",
+        "actor": "Ritika Nayak"
+      },
+      {
+        "role": "Manoj Kumar Manchu",
+        "actor": "Manoj Kumar Manchu"
+      }
+    ],
+    "directors": ["Karthik Ghattamaneni"],
+    "duration_min": 150,
+    "description": "A sci-fi action film involving a young man and his journey through time and space."
+  },
+  {
+    "title": "Aadu 3",
+    "year": 2025,
+    "stars": [
+      {
+        "role": "Jayasurya",
+        "actor": "Jayasurya"
+      },
+      {
+        "role": "Sunny Wayne",
+        "actor": "Sunny Wayne"
+      },
+      {
+        "role": "Vinayakan",
+        "actor": "Vinayakan"
+      }
+    ],
+    "directors": ["Midhun Manuel Thomas"],
+    "duration_min": 165,
+    "description": "The third installment in the comedy franchise following the hilarious misadventures of Shaji Pappan and his gang."
+  },
+  {
+    "title": "Robinhood",
+    "year": 2025,
+    "stars": [
+      {
+        "role": "Nithiin",
+        "actor": "Nithiin"
+      },
+      {
+        "role": "Sreeleela",
+        "actor": "Sreeleela"
+      },
+      {
+        "role": "Rajendra Prasad",
+        "actor": "Rajendra Prasad"
+      }
+    ],
+    "directors": ["Nithin Renji Panicker"],
+    "duration_min": 145,
+    "description": "An action-packed story of a modern-day outlaw who robs from the rich to help the poor."
+  },
+  {
+    "title": "Odela 2",
+    "year": 2025,
+    "stars": [
+      {
+        "role": "Tamannaah Bhatia",
+        "actor": "Tamannaah Bhatia"
+      },
+      {
+        "role": "Hebah Patel",
+        "actor": "Hebah Patel"
+      },
+      {
+        "role": "Vasishta N. Simha",
+        "actor": "Vasishta N. Simha"
+      }
+    ],
+    "directors": ["Ashok Teja"],
+    "duration_min": 150,
+    "description": "A sequel to the horror-thriller set in the village of Odela, involving a supernatural mystery."
+  },
+  {
+    "title": "Kathanar - The Wild Sorcerer: Part 1",
+    "year": 2025,
+    "stars": [
+      {
+        "role": "Jayasurya",
+        "actor": "Jayasurya"
+      },
+      {
+        "role": "Anushka Shetty",
+        "actor": "Anushka Shetty"
+      },
+      {
+        "role": "Vineeth",
+        "actor": "Vineeth"
+      }
+    ],
+    "directors": ["Rojin Thomas"],
+    "duration_min": 180,
+    "description": "A historical fantasy epic based on the life of Kadamattathu Kathanar, a legendary priest with supernatural powers."
+  },
+  {
+    "title": "Ace",
+    "year": 2025,
+    "stars": [
+      {
+        "role": "Vijay Sethupathi",
+        "actor": "Vijay Sethupathi"
+      },
+      {
+        "role": "Rukmini Maitra",
+        "actor": "Rukmini Maitra"
+      },
+      {
+        "role": "Yogi Babu",
+        "actor": "Yogi Babu"
+      }
+    ],
+    "directors": ["Naveen"],
+    "duration_min": 140,
+    "description": "A high-stakes crime thriller involving a group of individuals in a dangerous mission."
+  },
+  {
+    "title": "Swayambhu",
+    "year": 2025,
+    "stars": [
+      {
+        "role": "Nikhil Siddhartha",
+        "actor": "Nikhil Siddhartha"
+      },
+      {
+        "role": "Samyuktha Menon",
+        "actor": "Samyuktha Menon"
+      },
+      {
+        "role": "Nabha Natesh",
+        "actor": "Nabha Natesh"
+      }
+    ],
+    "directors": ["Bharat Krishnamachari"],
+    "duration_min": 170,
+    "description": "A period action film centering on a legendary warrior and his battle for his kingdom."
+  },
+  {
+    "title": "SK 23",
+    "year": 2025,
+    "stars": [
+      {
+        "role": "Sivakarthikeyan",
+        "actor": "Sivakarthikeyan"
+      },
+      {
+        "role": "Rukmini Vanth",
+        "actor": "Rukmini Vanth"
+      },
+      {
+        "role": "Vidyut Jammwal",
+        "actor": "Vidyut Jammwal"
+      }
+    ],
+    "directors": ["A.R. Murugadoss"],
+    "duration_min": 165,
+    "description": "A high-octane action film where a man takes on powerful enemies."
+  },
+  {
+    "title": "V1",
+    "year": 2025,
+    "stars": [
+      {
+        "role": "Ram Arun Castro",
+        "actor": "Ram Arun Castro"
+      },
+      {
+        "role": "Vishnu Priya",
+        "actor": "Vishnu Priya"
+      },
+      {
+        "role": "Lijesh",
+        "actor": "Lijesh"
+      }
+    ],
+    "directors": ["Pavel Navageethan"],
+    "duration_min": 130,
+    "description": "An investigative thriller where a forensic officer with nyctophobia must solve a murder case."
+  },
+  {
+    "title": "Mechanic Rocky",
+    "year": 2025,
+    "stars": [
+      {
+        "role": "Vishwak Sen",
+        "actor": "Vishwak Sen"
+      },
+      {
+        "role": "Meenaakshi Chaudhary",
+        "actor": "Meenaakshi Chaudhary"
+      },
+      {
+        "role": "Shraddha Srinath",
+        "actor": "Shraddha Srinath"
+      }
+    ],
+    "directors": ["Ravi Teja Mullapudi"],
+    "duration_min": 155,
+    "description": "A youthful action entertainer set in a garage involving a young man and his rivals."
+  },
+  {
+    "title": "Ram",
+    "year": 2025,
+    "stars": [
+      {
+        "role": "Mohanlal",
+        "actor": "Mohanlal"
+      },
+      {
+        "role": "Trisha Krishnan",
+        "actor": "Trisha Krishnan"
+      },
+      {
+        "role": "Indrajith Sukumaran",
+        "actor": "Indrajith Sukumaran"
+      }
+    ],
+    "directors": ["Jeethu Joseph"],
+    "duration_min": 175,
+    "description": "An action thriller following an agent who is on a mission to track down a global threat."
+  },
+  {
+    "title": "Kubera",
+    "year": 2025,
+    "stars": [
+      {
+        "role": "Dhanush",
+        "actor": "Dhanush"
+      },
+      {
+        "role": "Akkineni Nagarjuna",
+        "actor": "Akkineni Nagarjuna"
+      },
+      {
+        "role": "Rashmika Mandanna",
+        "actor": "Rashmika Mandanna"
+      }
+    ],
+    "directors": ["Sekhar Kammula"],
+    "duration_min": 160,
+    "description": "A mythological drama exploring the life and wealth of the god Kubera."
+  },
+  {
+    "title": "Matka",
+    "year": 2025,
+    "stars": [
+      {
+        "role": "Varun Tej",
+        "actor": "Varun Tej"
+      },
+      {
+        "role": "Meenaakshi Chaudhary",
+        "actor": "Meenaakshi Chaudhary"
+      },
+      {
+        "role": "Nora Fatehi",
+        "actor": "Nora Fatehi"
+      }
+    ],
+    "directors": ["Karuna Kumar"],
+    "duration_min": 165,
+    "description": "A period crime drama set in the world of the gambling game Matka."
+  },
+  {
+    "title": "Super Good",
+    "year": 2025,
+    "stars": [
+      {
+        "role": "Pradeep Ranganathan",
+        "actor": "Pradeep Ranganathan"
+      },
+      {
+        "role": "S.J. Suryah",
+        "actor": "S.J. Suryah"
+      },
+      {
+        "role": "Mishti",
+        "actor": "Mishti"
+      }
+    ],
+    "directors": ["Vignesh Shivan"],
+    "duration_min": 140,
+    "description": "A fun-filled comedy-drama focusing on a group of friends and their journey."
+  },
+  {
+    "title": "Daku Maharaj",
+    "year": 2025,
+    "stars": [
+      {
+        "role": "Nandamuri Balakrishna",
+        "actor": "Nandamuri Balakrishna"
+      },
+      {
+        "role": "Bobby Deol",
+        "actor": "Bobby Deol"
+      },
+      {
+        "role": "Shraddha Srinath",
+        "actor": "Shraddha Srinath"
+      }
+    ],
+    "directors": ["Bobby Kolli"],
+    "duration_min": 155,
+    "description": "A period action film set in the world of outlaws and their fight for justice."
+  },
+  {
+    "title": "Veera Dheera Sooran: Part 2",
+    "year": 2025,
+    "stars": [
+      {
+        "role": "Vikram",
+        "actor": "Vikram"
+      },
+      {
+        "role": "Dushara Vijayan",
+        "actor": "Dushara Vijayan"
+      },
+      {
+        "role": "S.J. Suryah",
+        "actor": "S.J. Suryah"
+      }
+    ],
+    "directors": ["S.U. Arun Kumar"],
+    "duration_min": 160,
+    "description": "The continuation of the story of a man who takes on a powerful crime syndicate."
+  },
+  {
+    "title": "The Hunt",
+    "year": 2025,
+    "stars": [
+      {
+        "role": "Arya",
+        "actor": "Arya"
+      },
+      {
+        "role": "Gautham Vasudev Menon",
+        "actor": "Gautham Vasudev Menon"
+      },
+      {
+        "role": "Divya Pillai",
+        "actor": "Divya Pillai"
+      }
+    ],
+    "directors": ["M. Muthaiah"],
+    "duration_min": 150,
+    "description": "An action thriller where a group of people are hunted down in a remote location."
+  },
+  {
+    "title": "Porkkalam",
+    "year": 2025,
+    "stars": [
+      {
+        "role": "Bandi Saroj Kumar",
+        "actor": "Bandi Saroj Kumar"
+      },
+      {
+        "role": "Srikanth Iyengar",
+        "actor": "Srikanth Iyengar"
+      },
+      {
+        "role": "Ravi Verma",
+        "actor": "Ravi Verma"
+      }
+    ],
+    "directors": ["Bandi Saroj Kumar"],
+    "duration_min": 155,
+    "description": "A high-stakes action drama involving a battle between rival groups."
+  },
+  {
+    "title": "Brother",
+    "year": 2025,
+    "stars": [
+      {
+        "role": "Jayam Ravi",
+        "actor": "Jayam Ravi"
+      },
+      {
+        "role": "Priyanka Arulmohan",
+        "actor": "Priyanka Arulmohan"
+      },
+      {
+        "role": "Bhumika Chawla",
+        "actor": "Bhumika Chawla"
+      }
+    ],
+    "directors": ["M. Rajesh"],
+    "duration_min": 148,
+    "description": "A family drama centering on the relationship between siblings and their emotional journey."
+  },
+  {
+    "title": "Miss Shetty Mr Polishetty 2",
+    "year": null,
+    "stars": [
+      {
+        "role": "Anushka Shetty",
+        "actor": "Anushka Shetty"
+      },
+      {
+        "role": "Naveen Polishetty",
+        "actor": "Naveen Polishetty"
+      }
+    ],
+    "directors": ["Mahesh Babu P."],
+    "duration_min": null,
+    "description": "The sequel to the romantic comedy following the lives of Miss Shetty and Mr. Polishetty."
+  },
+  {
+    "title": "RC 16",
+    "year": 2025,
+    "stars": [
+      {
+        "role": "Ram Charan",
+        "actor": "Ram Charan"
+      },
+      {
+        "role": "Janhvi Kapoor",
+        "actor": "Janhvi Kapoor"
+      },
+      {
+        "role": "Shivarajkumar",
+        "actor": "Shivarajkumar"
+      }
+    ],
+    "directors": ["Buchi Babu Sana"],
+    "duration_min": null,
+    "description": "A rural sports drama involving a young man and his journey in a competitive world."
+  },
+  {
+    "title": "T69",
+    "year": 2025,
+    "stars": [
+      {
+        "role": "Joseph Vijay",
+        "actor": "Joseph Vijay"
+      },
+      {
+        "role": "Pooja Hegde",
+        "actor": "Pooja Hegde"
+      },
+      {
+        "role": "Bobby Deol",
+        "actor": "Bobby Deol"
+      }
+    ],
+    "directors": ["H. Vinoth"],
+    "duration_min": null,
+    "description": "An action-packed political drama focusing on a man's rise in the political system."
+  },
+  {
+    "title": "Aavesham 2",
+    "year": null,
+    "stars": [
+      {
+        "role": "Fahadh Faasil",
+        "actor": "Fahadh Faasil"
+      }
+    ],
+    "directors": ["Jithu Madhavan"],
+    "duration_min": null,
+    "description": "The sequel to the action-comedy following the antics of the local gangster and the students."
+  },
+  {
+    "title": "King of Kotha 2",
+    "year": null,
+    "stars": [
+      {
+        "role": "Dulquer Salmaan",
+        "actor": "Dulquer Salmaan"
+      }
+    ],
+    "directors": ["Abhilash Joshiy"],
+    "duration_min": null,
+    "description": "The continuation of the gangster epic set in the town of Kotha."
+  }
+]

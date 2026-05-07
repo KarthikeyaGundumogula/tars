@@ -1,0 +1,822 @@
+[
+  {
+    "name": "PRASHANTH NEEL",
+    "tagline": "Film Maker",
+    "stage_name": "Prashanth"
+  },
+  {
+    "name": "T.J. GNANAVEL",
+    "tagline": "Film Maker",
+    "stage_name": "Gnanavel"
+  },
+  {
+    "name": "S.S. RAJAMOULI",
+    "tagline": "Film Maker",
+    "stage_name": "Rajamouli"
+  },
+  {
+    "name": "VETRIMAARAN",
+    "tagline": "Film Maker",
+    "stage_name": "Vetrimaaran"
+  },
+  {
+    "name": "ANIL RAVIPUDI",
+    "tagline": "Film Maker",
+    "stage_name": "Anil"
+  },
+  {
+    "name": "A.R. MURUGADOSS",
+    "tagline": "Film Maker",
+    "stage_name": "Murugadoss"
+  },
+  {
+    "name": "DELHI PRASAD DEENADAYAL",
+    "tagline": "Film Maker",
+    "stage_name": "DelhiPrasad"
+  },
+  {
+    "name": "LOKESH KANAGARAJ",
+    "tagline": "Film Maker",
+    "stage_name": "Lokesh Kanagaraj"
+  },
+  {
+    "name": "SIVA",
+    "tagline": "Film Maker",
+    "stage_name": "Siva"
+  },
+  {
+    "name": "MARI SELVARAJ",
+    "tagline": "Film Maker",
+    "stage_name": "M Selvaraj"
+  },
+  {
+    "name": "PRITHVIRAJ SUKUMARAN",
+    "tagline": "Film Maker",
+    "stage_name": "PrithvirajS"
+  },
+  {
+    "name": "MADHU C. NARAYANAN",
+    "tagline": "Film Maker",
+    "stage_name": "M.Narayanan"
+  },
+  {
+    "name": "SACHY",
+    "tagline": "Film Maker",
+    "stage_name": "Sachy"
+  },
+  {
+    "name": "JEETHU JOSEPH",
+    "tagline": "Film Maker",
+    "stage_name": "J.Joseph"
+  },
+  {
+    "name": "MANU ASHOKAN",
+    "tagline": "Film Maker",
+    "stage_name": "M.Ashokan"
+  },
+  {
+    "name": "ALPHONSE PUTHREN",
+    "tagline": "Film Maker",
+    "stage_name": "A.Puthren"
+  },
+  {
+    "name": "MARTIN PRAKKAT",
+    "tagline": "Film Maker",
+    "stage_name": "Martin Prakkat"
+  },
+  {
+    "name": "ANWAR RASHEED",
+    "tagline": "Film Maker",
+    "stage_name": "Anwar Rasheed"
+  },
+  {
+    "name": "ANJALI MENON",
+    "tagline": "Film Maker",
+    "stage_name": "Anjali.M"
+  },
+  {
+    "name": "LIJO JOSE PELLISSERY",
+    "tagline": "Film Maker",
+    "stage_name": "Lijo Jose"
+  },
+  {
+    "name": "MAHESH NARAYANAN",
+    "tagline": "Film Maker",
+    "stage_name": "Mahesh.N"
+  },
+  {
+    "name": "ANIL RADHAKRISHNAN MENON",
+    "tagline": "Film Maker",
+    "stage_name": "A.R.Menon"
+  },
+  {
+    "name": "VYSAKH",
+    "tagline": "Film Maker",
+    "stage_name": "Vysakh"
+  },
+  {
+    "name": "VIKRAM K. KUMAR",
+    "tagline": "Film Maker",
+    "stage_name": "V.K.Kumar"
+  },
+  {
+    "name": "GAYATRI",
+    "tagline": "Film Maker",
+    "stage_name": "Gayatri"
+  },
+  {
+    "name": "PUSHKAR",
+    "tagline": "Film Maker",
+    "stage_name": "Pushkar"
+  },
+  {
+    "name": "S. SHANKAR",
+    "tagline": "Film Maker",
+    "stage_name": "S. Shankar"
+  },
+  {
+    "name": "RAM KUMAR",
+    "tagline": "Film Maker",
+    "stage_name": "Ram Kumar"
+  },
+  {
+    "name": "PRABU SOLOMON",
+    "tagline": "Film Maker",
+    "stage_name": "Prabu Solomon"
+  },
+  {
+    "name": "H. VINOTH",
+    "tagline": "Film Maker",
+    "stage_name": "H. Vinoth"
+  },
+  {
+    "name": "AMEER SULTAN",
+    "tagline": "Film Maker",
+    "stage_name": "Ameer.S"
+  },
+  {
+    "name": "C. PREM KUMAR",
+    "tagline": "Film Maker",
+    "stage_name": "C.P.Kumar"
+  },
+  {
+    "name": "THIAGARAJAN KUMARARAJA",
+    "tagline": "Film Maker",
+    "stage_name": "T.Kumararaja"
+  },
+  {
+    "name": "ATLEE",
+    "tagline": "Film Maker",
+    "stage_name": "Atlee"
+  },
+  {
+    "name": "MAGIZH THIRUMENI",
+    "tagline": "Film Maker",
+    "stage_name": "Magizh Thirumeni"
+  },
+  {
+    "name": "PA. RANJITH",
+    "tagline": "Film Maker",
+    "stage_name": "Pa.Ranjith"
+  },
+  {
+    "name": "KARTHIK SUBBARAJ",
+    "tagline": "Film Maker",
+    "stage_name": "Karthik S"
+  },
+  {
+    "name": "SUDHA KONGARA",
+    "tagline": "Film Maker",
+    "stage_name": "Sudha K"
+  },
+  {
+    "name": "HARI",
+    "tagline": "Film Maker",
+    "stage_name": "Hari"
+  },
+  {
+    "name": "K. SELVARAGHAVAN",
+    "tagline": "Film Maker",
+    "stage_name": "Selvaraghavan"
+  },
+  {
+    "name": "KAMAL HAASAN",
+    "tagline": "Film Maker",
+    "stage_name": "KamalHaasan"
+  },
+  {
+    "name": "KORATALA SIVA",
+    "tagline": "Film Maker",
+    "stage_name": "Koratala Siva"
+  },
+  {
+    "name": "SRIKANTH ADDALA",
+    "tagline": "Film Maker",
+    "stage_name": "Srikanth A"
+  },
+  {
+    "name": "SREENU VAITLA",
+    "tagline": "Film Maker",
+    "stage_name": "Sreenu V"
+  },
+  {
+    "name": "PURI JAGANNADH",
+    "tagline": "Film Maker",
+    "stage_name": "Puri.J"
+  },
+  {
+    "name": "TRIVIKRAM SRINIVAS",
+    "tagline": "Film Maker",
+    "stage_name": "Trivikram"
+  },
+  {
+    "name": "GUNASEKHAR",
+    "tagline": "Film Maker",
+    "stage_name": "Gunasekhar"
+  },
+  {
+    "name": "VISHNUVARDHAN",
+    "tagline": "Film Maker",
+    "stage_name": "Vishnuvardhan"
+  },
+  {
+    "name": "CHAKRI TOLETI",
+    "tagline": "Film Maker",
+    "stage_name": "Chakri Toleti"
+  },
+  {
+    "name": "VENKAT PRABHU",
+    "tagline": "Film Maker",
+    "stage_name": "Venkat Prabhu"
+  },
+  {
+    "name": "RAJU SUNDARAM",
+    "tagline": "Film Maker",
+    "stage_name": "Raju Sundaram"
+  },
+  {
+    "name": "SARAN",
+    "tagline": "Film Maker",
+    "stage_name": "Saran"
+  },
+  {
+    "name": "SARAVANA SUBBIAH",
+    "tagline": "Film Maker",
+    "stage_name": "Saravana Subbiah"
+  },
+  {
+    "name": "VIGNESH SHIVAN",
+    "tagline": "Film Maker",
+    "stage_name": "Vignesh Shivan"
+  },
+  {
+    "name": "P.H. KUMANAN",
+    "tagline": "Film Maker",
+    "stage_name": "P.H. Kumanan"
+  },
+  {
+    "name": "K.V. ANAND",
+    "tagline": "Film Maker",
+    "stage_name": "K.V. Anand"
+  },
+  {
+    "name": "JJ FREDRICK",
+    "tagline": "Film Maker",
+    "stage_name": "JJ Fredrick"
+  },
+  {
+    "name": "RAM GOPAL VARMA",
+    "tagline": "Film Maker",
+    "stage_name": "Ram Gopal Varma"
+  },
+  {
+    "name": "N. LINGUSWAMY",
+    "tagline": "Film Maker",
+    "stage_name": "N. Linguswamy"
+  },
+  {
+    "name": "SURESH",
+    "tagline": "Film Maker",
+    "stage_name": "Suresh"
+  },
+  {
+    "name": "BALA",
+    "tagline": "Film Maker",
+    "stage_name": "Bala"
+  },
+  {
+    "name": "PANDIRAAJ",
+    "tagline": "Film Maker",
+    "stage_name": "Pandiraaj"
+  },
+  {
+    "name": "VIJAY KUMAR",
+    "tagline": "Film Maker",
+    "stage_name": "Vijay Kumar"
+  },
+  {
+    "name": "SUSEENTHIRAN",
+    "tagline": "Film Maker",
+    "stage_name": "Suseenthiran"
+  },
+  {
+    "name": "MANI RATNAM",
+    "tagline": "Film Maker",
+    "stage_name": "Mani Ratnam"
+  },
+  {
+    "name": "SURAJ",
+    "tagline": "Film Maker",
+    "stage_name": "Suraj"
+  },
+  {
+    "name": "M. MUTHAIAH",
+    "tagline": "Film Maker",
+    "stage_name": "M. Muthaiah"
+  },
+  {
+    "name": "ANAND SHANKAR",
+    "tagline": "Film Maker",
+    "stage_name": "Anand Shankar"
+  },
+  {
+    "name": "A.L. VIJAY",
+    "tagline": "Film Maker",
+    "stage_name": "A.L. Vijay"
+  },
+  {
+    "name": "VIJAY CHANDAR",
+    "tagline": "Film Maker",
+    "stage_name": "Vijay Chandar"
+  },
+  {
+    "name": "BEJOY NAMBIAR",
+    "tagline": "Film Maker",
+    "stage_name": "Bejoy Nambiar"
+  },
+  {
+    "name": "VINAYAN",
+    "tagline": "Film Maker",
+    "stage_name": "Vinayan"
+  },
+  {
+    "name": "BHARATBALA",
+    "tagline": "Film Maker",
+    "stage_name": "Bharatbala"
+  },
+  {
+    "name": "AANAND L. RAI",
+    "tagline": "Film Maker",
+    "stage_name": "Aanand L. Rai"
+  },
+  {
+    "name": "VELRAJ",
+    "tagline": "Film Maker",
+    "stage_name": "Velraj"
+  },
+  {
+    "name": "SOUNDARYA RAJINIKANTH VISHAGAN",
+    "tagline": "Film Maker",
+    "stage_name": "Soundarya Rajinikanth Vishagan"
+  },
+  {
+    "name": "DHANUSH",
+    "tagline": "Film Maker",
+    "stage_name": "Dhanush"
+  },
+  {
+    "name": "KEN SCOTT",
+    "tagline": "Film Maker",
+    "stage_name": "Ken Scott"
+  },
+  {
+    "name": "R.S. DURAI SENTHILKUMAR",
+    "tagline": "Film Maker",
+    "stage_name": "R.S. Durai Senthilkumar"
+  },
+  {
+    "name": "BALAJI MOHAN",
+    "tagline": "Film Maker",
+    "stage_name": "Balaji Mohan"
+  },
+  {
+    "name": "GAUTHAM VASUDEV MENON",
+    "tagline": "Film Maker",
+    "stage_name": "Gautham Vasudev Menon"
+  },
+  {
+    "name": "K.S. RAVIKUMAR",
+    "tagline": "Film Maker",
+    "stage_name": "K.S. Ravikumar"
+  },
+  {
+    "name": "BOYAPATI SRINU",
+    "tagline": "Film Maker",
+    "stage_name": "Boyapati Srinu"
+  },
+  {
+    "name": "ADHI ARAVALA",
+    "tagline": "Film Maker",
+    "stage_name": "Adhi Aravala"
+  },
+  {
+    "name": "VAMSHI PAIDIPALLY",
+    "tagline": "Film Maker",
+    "stage_name": "Vamshi Paidipally"
+  },
+  {
+    "name": "SURENDER REDDY",
+    "tagline": "Film Maker",
+    "stage_name": "Surender Reddy"
+  },
+  {
+    "name": "APOORVA LAKHIA",
+    "tagline": "Film Maker",
+    "stage_name": "Apoorva Lakhia"
+  },
+  {
+    "name": "V.V. VINAYAK",
+    "tagline": "Film Maker",
+    "stage_name": "V.V. Vinayak"
+  },
+  {
+    "name": "NAG ASHWIN",
+    "tagline": "Film Maker",
+    "stage_name": "Nag Ashwin"
+  },
+  {
+    "name": "SUKUMAR",
+    "tagline": "Film Maker",
+    "stage_name": "Sukumar"
+  },
+  {
+    "name": "BOBBY KOLLI",
+    "tagline": "Film Maker",
+    "stage_name": "Bobby Kolli"
+  },
+  {
+    "name": "AHISHOR SOLOMON",
+    "tagline": "Film Maker",
+    "stage_name": "Ahishor Solomon"
+  },
+  {
+    "name": "R.T. NEASON",
+    "tagline": "Film Maker",
+    "stage_name": "R.T. Neason"
+  },
+  {
+    "name": "BHARATHAN",
+    "tagline": "Film Maker",
+    "stage_name": "Bharathan"
+  },
+  {
+    "name": "DHARANI",
+    "tagline": "Film Maker",
+    "stage_name": "Dharani"
+  },
+  {
+    "name": "RAJESH M. SELVA",
+    "tagline": "Film Maker",
+    "stage_name": "Rajesh M. Selva"
+  },
+  {
+    "name": "S.U. ARUN KUMAR",
+    "tagline": "Film Maker",
+    "stage_name": "S.U. Arun Kumar"
+  },
+  {
+    "name": "MANISH RANA",
+    "tagline": "Film Maker",
+    "stage_name": "Manish Rana"
+  },
+  {
+    "name": "BUCHI BABU SANA",
+    "tagline": "Film Maker",
+    "stage_name": "Buchi Babu Sana"
+  },
+  {
+    "name": "P. VIRUMANDI",
+    "tagline": "Film Maker",
+    "stage_name": "P. Virumandi"
+  },
+  {
+    "name": "SWAMI RAJALINGAM",
+    "tagline": "Film Maker",
+    "stage_name": "Swami Rajalingam"
+  },
+  {
+    "name": "RATHINA SHIVA",
+    "tagline": "Film Maker",
+    "stage_name": "Rathina Shiva"
+  },
+  {
+    "name": "SUJEETH",
+    "tagline": "Film Maker",
+    "stage_name": "Sujeeth"
+  },
+  {
+    "name": "RAGHAVA LAWRENCE",
+    "tagline": "Film Maker",
+    "stage_name": "Raghava Lawrence"
+  },
+  {
+    "name": "MEHER RAMESH",
+    "tagline": "Film Maker",
+    "stage_name": "Meher Ramesh"
+  },
+  {
+    "name": "VEERENDRA SINGH",
+    "tagline": "Film Maker",
+    "stage_name": "Veerendra Singh"
+  },
+  {
+    "name": "VENU SRIRAM",
+    "tagline": "Film Maker",
+    "stage_name": "Venu Sriram"
+  },
+  {
+    "name": "HARISH SHANKAR",
+    "tagline": "Film Maker",
+    "stage_name": "Harish Shankar"
+  },
+  {
+    "name": "KISHORE KUMAR PARDASANI",
+    "tagline": "Film Maker",
+    "stage_name": "Kishore Kumar Pardasani"
+  },
+  {
+    "name": "GOPICHAND MALINENI",
+    "tagline": "Film Maker",
+    "stage_name": "Gopichand Malineni"
+  },
+  {
+    "name": "SAMPATH NANDI",
+    "tagline": "Film Maker",
+    "stage_name": "Sampath Nandi"
+  },
+  {
+    "name": "SANDEEP REDDY VANGA",
+    "tagline": "Film Maker",
+    "stage_name": "Sandeep Reddy Vanga"
+  },
+  {
+    "name": "PARASURAM",
+    "tagline": "Film Maker",
+    "stage_name": "Parasuram"
+  },
+  {
+    "name": "BHARAT KAMMA",
+    "tagline": "Film Maker",
+    "stage_name": "Bharat Kamma"
+  },
+  {
+    "name": "RAHUL SANKRITYAN",
+    "tagline": "Film Maker",
+    "stage_name": "Rahul Sankrityan"
+  },
+  {
+    "name": "RAJKUMAR PERIASAMY",
+    "tagline": "Film Maker",
+    "stage_name": "Rajkumar Periasamy"
+  },
+  {
+    "name": "PRASANTH VARMA",
+    "tagline": "Film Maker",
+    "stage_name": "Prasanth Varma"
+  },
+  {
+    "name": "CHIDAMBARAM",
+    "tagline": "Film Maker",
+    "stage_name": "Chidambaram"
+  },
+  {
+    "name": "NITHILAN SAMINATHAN",
+    "tagline": "Film Maker",
+    "stage_name": "Nithilan Saminathan"
+  },
+  {
+    "name": "BLESSY",
+    "tagline": "Film Maker",
+    "stage_name": "Blessy"
+  },
+  {
+    "name": "JITHU MADHAVAN",
+    "tagline": "Film Maker",
+    "stage_name": "Jithu Madhavan"
+  },
+  {
+    "name": "GIRISH A.D.",
+    "tagline": "Film Maker",
+    "stage_name": "Girish A.D."
+  },
+  {
+    "name": "MALLIK RAM",
+    "tagline": "Film Maker",
+    "stage_name": "Mallik Ram"
+  },
+  {
+    "name": "VENKY ATLURI",
+    "tagline": "Film Maker",
+    "stage_name": "Venky Atluri"
+  },
+  {
+    "name": "JITHIN LAL",
+    "tagline": "Film Maker",
+    "stage_name": "Jithin Lal"
+  },
+  {
+    "name": "HANEEF ADENI",
+    "tagline": "Film Maker",
+    "stage_name": "Haneef Adeni"
+  },
+  {
+    "name": "SUNDAR C.",
+    "tagline": "Film Maker",
+    "stage_name": "Sundar C."
+  },
+  {
+    "name": "VIVEK ATHREYA",
+    "tagline": "Film Maker",
+    "stage_name": "Vivek Athreya"
+  },
+  {
+    "name": "MARUTHI DASARI",
+    "tagline": "Film Maker",
+    "stage_name": "Maruthi Dasari"
+  },
+  {
+    "name": "MAARI",
+    "tagline": "Film Maker",
+    "stage_name": "Maari"
+  },
+  {
+    "name": "SIVAKUMAR MURUGESAN",
+    "tagline": "Film Maker",
+    "stage_name": "Sivakumar Murugesan"
+  },
+  {
+    "name": "KEN KARUNAS",
+    "tagline": "Film Maker",
+    "stage_name": "Ken Karunas"
+  },
+  {
+    "name": "NITHISH SAHADEV",
+    "tagline": "Film Maker",
+    "stage_name": "Nithish Sahadev"
+  },
+  {
+    "name": "MADHAN",
+    "tagline": "Film Maker",
+    "stage_name": "Madhan"
+  },
+  {
+    "name": "RAM ABBARAJU",
+    "tagline": "Film Maker",
+    "stage_name": "Ram Abbaraju"
+  },
+  {
+    "name": "VIGNESH RAJA",
+    "tagline": "Film Maker",
+    "stage_name": "Vignesh Raja"
+  },
+  {
+    "name": "GEETHU MOHANDAS",
+    "tagline": "Film Maker",
+    "stage_name": "Geethu Mohandas"
+  },
+  {
+    "name": "NELSON DILIPKUMAR",
+    "tagline": "Film Maker",
+    "stage_name": "Nelson Dilipkumar"
+  },
+  {
+    "name": "SRIKANTH ODELA",
+    "tagline": "Film Maker",
+    "stage_name": "Srikanth Odela"
+  },
+  {
+    "name": "BAKKIYARAJ KANNAN",
+    "tagline": "Film Maker",
+    "stage_name": "Bakkiyaraj Kannan"
+  },
+  {
+    "name": "ADHIK RAVICHANDRAN",
+    "tagline": "Film Maker",
+    "stage_name": "Adhik Ravichandran"
+  },
+  {
+    "name": "MUKESH KUMAR SINGH",
+    "tagline": "Film Maker",
+    "stage_name": "Mukesh Kumar Singh"
+  },
+  {
+    "name": "JYOTHI KRISHNA",
+    "tagline": "Film Maker",
+    "stage_name": "Jyothi Krishna"
+  },
+  {
+    "name": "VASSISHTA",
+    "tagline": "Film Maker",
+    "stage_name": "Vassishta"
+  },
+  {
+    "name": "B. UNNIKRISHNAN",
+    "tagline": "Film Maker",
+    "stage_name": "B. Unnikrishnan"
+  },
+  {
+    "name": "ARUN MATHESWARAN",
+    "tagline": "Film Maker",
+    "stage_name": "Arun Matheswaran"
+  },
+  {
+    "name": "ASHWATH MARIMUTHU",
+    "tagline": "Film Maker",
+    "stage_name": "Ashwath Marimuthu"
+  },
+  {
+    "name": "RISHAB SHETTY",
+    "tagline": "Film Maker",
+    "stage_name": "Rishab Shetty"
+  },
+  {
+    "name": "SASHI KIRAN TIKKA",
+    "tagline": "Film Maker",
+    "stage_name": "Sashi Kiran Tikka"
+  },
+  {
+    "name": "KARTHIK GHATTAMANENI",
+    "tagline": "Film Maker",
+    "stage_name": "Karthik Ghattamaneni"
+  },
+  {
+    "name": "MIDHUN MANUEL THOMAS",
+    "tagline": "Film Maker",
+    "stage_name": "Midhun Manuel Thomas"
+  },
+  {
+    "name": "NITHIN RENJI PANICKER",
+    "tagline": "Film Maker",
+    "stage_name": "Nithin Renji Panicker"
+  },
+  {
+    "name": "ASHOK TEJA",
+    "tagline": "Film Maker",
+    "stage_name": "Ashok Teja"
+  },
+  {
+    "name": "ROJIN THOMAS",
+    "tagline": "Film Maker",
+    "stage_name": "Rojin Thomas"
+  },
+  {
+    "name": "NAVEEN",
+    "tagline": "Film Maker",
+    "stage_name": "Naveen"
+  },
+  {
+    "name": "BHARAT KRISHNAMACHARI",
+    "tagline": "Film Maker",
+    "stage_name": "Bharat Krishnamachari"
+  },
+  {
+    "name": "PAVEL NAVAGEETHAN",
+    "tagline": "Film Maker",
+    "stage_name": "Pavel Navageethan"
+  },
+  {
+    "name": "RAVI TEJA MULLAPUDI",
+    "tagline": "Film Maker",
+    "stage_name": "Ravi Teja Mullapudi"
+  },
+  {
+    "name": "SEKHAR KAMMULA",
+    "tagline": "Film Maker",
+    "stage_name": "Sekhar Kammula"
+  },
+  {
+    "name": "KARUNA KUMAR",
+    "tagline": "Film Maker",
+    "stage_name": "Karuna Kumar"
+  },
+  {
+    "name": "BANDI SAROJ KUMAR",
+    "tagline": "Film Maker",
+    "stage_name": "Bandi Saroj Kumar"
+  },
+  {
+    "name": "M. RAJESH",
+    "tagline": "Film Maker",
+    "stage_name": "M. Rajesh"
+  },
+  {
+    "name": "MAHESH BABU P.",
+    "tagline": "Film Maker",
+    "stage_name": "Mahesh Babu P."
+  },
+  {
+    "name": "ABHILASH JOSHIY",
+    "tagline": "Film Maker",
+    "stage_name": "Abhilash Joshiy"
+  }
+]

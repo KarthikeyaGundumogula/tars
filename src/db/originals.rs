@@ -22,9 +22,11 @@ pub async fn insert_new_original(
             presence,
             created_at,
             password_hash,
-            associated_with
+            associated_with,
+            release_date,
+            genres
         )
-        VALUES ($1, $2, $3, $4, $5, $6, $7, $8)
+        VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10)
         RETURNING id;
         "#,
         data.id,
@@ -34,7 +36,9 @@ pub async fn insert_new_original(
         data.presence,
         data.created_at,
         data.password_hash,
-        data.associated_with
+        data.associated_with,
+        data.release_date,
+        &data.genres
     )
     .fetch_one(&mut **txn)
     .await?)
