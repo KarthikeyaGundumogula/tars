@@ -1,11 +1,14 @@
 use std::sync::Arc;
 
-use axum::{extract::State};
-use axum_extra::extract::{CookieJar, cookie::Cookie};
+use axum::extract::State;
+use axum_extra::extract::{
+    CookieJar,
+    cookie::{Cookie, SameSite},
+};
 use chrono::Utc;
+use time;
 use tracing::instrument;
 use uuid::Uuid;
-use time;
 
 use crate::{
     AppState,
@@ -16,10 +19,13 @@ use crate::{
         requests::auth::{ProfileLogin, ProfileSignupReq},
         response::ApiResponse,
     },
-    utils::{auth::{create_jwt, get_password_hash, verify_password}, json_extractor::AppJson},
+    utils::{
+        auth::password::{create_jwt, get_password_hash, verify_password},
+        json_extractor::AppJson,
+    },
 };
 
-#[instrument(name = "sign_up_artist", skip(app, data), err,fields(user_name = %data.user_name))]
+#[instrument(name = "sign_up_artist", skip(app, data), err,fields(user_name = %data.handle))]
 pub async fn sign_up_artist_handler(
     State(app): State<Arc<AppState>>,
     AppJson(data): AppJson<ProfileSignupReq>,
@@ -27,7 +33,7 @@ pub async fn sign_up_artist_handler(
     let password = data.password;
     let password_hash = get_password_hash(password.as_ref())?;
     let artist = Profile {
-        user_name: data.user_name.as_ref().to_string(),
+        user_name: data.handle.as_ref().to_string(),
         is_claimed: false,
         presence: 100,
         id: Uuid::new_v4(),
@@ -48,22 +54,41 @@ pub async fn sign_up_artist_handler(
     Ok(ApiResponse::OK)
 }
 
-#[instrument(name = "log_in_artist", skip(app, jar, data), err,fields(user_name = %data.user_name))]
-pub async fn log_in_artist_handler(
+#[instrument(name = "log_in_artist", skip(app, jar, data), err,fields(user_name = %data.handle))]
+pub async fn login_profile(
     State(app): State<Arc<AppState>>,
     jar: CookieJar,
     AppJson(data): AppJson<ProfileLogin>,
 ) -> Result<ApiResponse, ApiError> {
     let password = data.password;
-    let (password_hash, user_id) = get_profile_auth_details(&app.pool, data.user_name).await?;
-    verify_password(password.as_ref(), &password_hash)?;
-    let token = create_jwt(&user_id, "USER", app.secret.as_bytes())?;
+    let profile = get_profile_auth_details(&app.pool, &data.handle).await?;
+    let password_hash = match &profile {
+        Some(profile) => &profile.password_hash,
+        None => "$argon2id$v=19$m=19456,t=2,p=1$dummysaltdummysalt$dummyhash",
+    };
+    let valid_password = verify_password(password.as_ref(), password_hash)?;
+    let user = match (profile, valid_password) {
+        (Some(profile), true) => profile,
+        _ => return Err(ApiError::Unauthorized("Invalid credentials".to_string())),
+    };
+    let token = create_jwt(&user.user_name, "artist", &app.secret, user.id)?;
     let cookie = Cookie::build(("auth_token", token))
         .http_only(true)
-        .secure(true)
+        .secure(false)
+        .same_site(SameSite::Lax)
         .path("/")
-        .max_age(time::Duration::days(7))
         .build();
-    tracing::info!("Artist logged in successfully");
-    Ok(ApiResponse::ProfileLoggedIn(jar.add(cookie)))
+    Ok(ApiResponse::ProfileAuthenticated(jar.add(cookie)))
+}
+
+#[instrument(name = "logout_artist", skip(jar), err)]
+pub async fn logout_profile(jar: CookieJar) -> Result<ApiResponse, ApiError> {
+    let cookie = Cookie::build(("auth_token", ""))
+        .http_only(true)
+        .secure(true)
+        .same_site(SameSite::Lax)
+        .path("/")
+        .max_age(time::Duration::seconds(0))
+        .build();
+    Ok(ApiResponse::ProfileAuthenticated(jar.remove(cookie)))
 }

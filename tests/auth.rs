@@ -7,7 +7,7 @@ async fn register_profile_return_200_on_correct_data() {
     let app = spawn_app::spawn().await;
     let client = Client::new();
     let body = serde_json::json!({
-      "user_name":"kapten",
+      "handle":"kapten",
       "tag_line":"I dont give a dmn about your opinion",
       "password":"kApten@1023",
       "profile_picture":"aofdjosfjosf",
@@ -19,6 +19,7 @@ async fn register_profile_return_200_on_correct_data() {
         .send()
         .await
         .expect("failed to execute request");
+    println!("Response: {:#?}", response);
     assert!(response.status().is_success());
     let saved = sqlx::query_scalar!(
         r#"SELECT youtube_profile FROM profiles WHERE user_name=$1"#,

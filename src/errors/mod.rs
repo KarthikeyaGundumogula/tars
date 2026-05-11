@@ -1,3 +1,5 @@
+use std::convert::Infallible;
+
 use axum::{
     Json,
     extract::rejection::JsonRejection,
@@ -36,6 +38,10 @@ pub enum ApiError {
     JWTError(#[from] jsonwebtoken::errors::Error),
     #[error("json parsing failed")]
     JsonError(#[from] serde_json::Error),
+    #[error("unauthorized")]
+    Unauthorized(String),
+    #[error("Cookie Jar rejection")]
+    CookieJarRejection(#[from] Infallible),
 }
 
 impl IntoResponse for ApiError {
@@ -43,9 +49,9 @@ impl IntoResponse for ApiError {
         let message = self.to_string();
         match self {
             Self::NotFound => (
-                StatusCode::INTERNAL_SERVER_ERROR,
+                StatusCode::NOT_FOUND,
                 Json(ErrorResponse::new(
-                    StatusCode::INTERNAL_SERVER_ERROR.to_string(),
+                    StatusCode::NOT_FOUND.to_string(),
                     message,
                 )),
             )
@@ -86,6 +92,14 @@ impl IntoResponse for ApiError {
                 StatusCode::BAD_REQUEST,
                 Json(ErrorResponse::new(
                     StatusCode::BAD_REQUEST.to_string(),
+                    message,
+                )),
+            )
+                .into_response(),
+            Self::Unauthorized(_) => (
+                StatusCode::UNAUTHORIZED,
+                Json(ErrorResponse::new(
+                    StatusCode::UNAUTHORIZED.to_string(),
                     message,
                 )),
             )

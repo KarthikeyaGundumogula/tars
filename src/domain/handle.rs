@@ -10,8 +10,8 @@ impl Handle {
         if handle.is_empty() {
             return Err("Artist handle cannot be empty".to_string());
         }
-        if handle.len() > 200 {
-            return Err("Artist handle cannot be longer than 200 characters".to_string());
+        if handle.len() > 25 {
+            return Err("Artist handle cannot be longer than 25 characters".to_string());
         }
         if handle.contains(' ') {
             return Err("Artist handle cannot contain spaces".to_string());

@@ -18,38 +18,50 @@ pub fn get_password_hash(password: &str) -> Result<String, ApiError> {
         .to_string())
 }
 
-pub fn verify_password(password: &str, password_hash: &str) -> Result<(), ApiError> {
+pub fn verify_password(password: &str, password_hash: &str) -> Result<bool, ApiError> {
     let parsed_hash = PasswordHash::new(password_hash)?;
-    Argon2::default().verify_password(password.as_bytes(), &parsed_hash)?;
-    Ok(())
+    Ok(Argon2::default().verify_password(password.as_bytes(), &parsed_hash).is_ok())
+    
 }
 
-pub fn create_jwt(user_id: &str, role: &str, secret: &[u8]) -> Result<String, ApiError> {
-    let expiry = chrono::Utc::now()
+pub fn create_jwt(
+    handle: &str,
+    role: &str,
+    secret: &str,
+    profile_id: uuid::Uuid,
+) -> Result<String, ApiError> {
+    let now = chrono::Utc::now();
+    let expiry = now
         .checked_add_signed(chrono::Duration::days(7))
         .unwrap()
         .timestamp() as usize;
 
     let claims = Claims {
-        sub: user_id.to_string(),
+        sub: handle.to_string(),
+        profile_id,
         role: role.to_string(),
         exp: expiry,
+        iat: now.timestamp() as usize,
     };
 
     let token = encode(
         &Header::default(),
         &claims,
-        &EncodingKey::from_secret(secret),
+        &EncodingKey::from_secret(secret.as_bytes()),
     )?;
     Ok(token)
 }
-pub fn validate_jwt(token: &str) -> Result<Claims, ApiError> {
-    let secret: String =
-        std::env::var("JWT_SIGNER_SECRET").expect("SECRET NOT SET FOR THE JWT SIGNING");
+pub fn validate_jwt(token: &str, secret: &str) -> Result<Claims, ApiError> {
     let token_data = decode::<Claims>(
         token,
         &DecodingKey::from_secret(secret.as_bytes()),
         &Validation::default(),
-    )?;
+    ).map_err(|e| {
+        if e.kind() == &jsonwebtoken::errors::ErrorKind::ExpiredSignature {
+            ApiError::Unauthorized("Token expired".into())
+        } else {
+            ApiError::Unauthorized("Invalid token".into())
+        }
+    })?;
     Ok(token_data.claims)
 }

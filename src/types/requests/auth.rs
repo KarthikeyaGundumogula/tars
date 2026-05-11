@@ -1,10 +1,11 @@
 use serde::{Deserialize, Serialize};
+use uuid::Uuid;
 
 use crate::domain::{Handle, Password, TagLine};
 
 #[derive(Deserialize)]
 pub struct ProfileSignupReq {
-    pub user_name: Handle,
+    pub handle: Handle,
     pub tag_line: TagLine,
     pub password: Password,
     pub profile_picture: String,
@@ -15,13 +16,15 @@ pub struct ProfileSignupReq {
 
 #[derive(Deserialize)]
 pub struct ProfileLogin {
-    pub user_name: Handle,
+    pub handle: Handle,
     pub password: Password,
 }
 
 #[derive(Serialize, Deserialize)]
 pub struct Claims {
     pub sub: String,
+    pub profile_id: Uuid,
     pub role: String,
     pub exp: usize,
+    pub iat: usize
 }

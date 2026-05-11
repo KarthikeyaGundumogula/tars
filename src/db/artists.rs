@@ -1,7 +1,9 @@
 use sqlx::PgPool;
 
 use crate::{
-    domain::Handle, errors::ApiError, types::db::profile::{Profile, ProfileType}
+    domain::Handle,
+    errors::ApiError,
+    types::db::profile::{Profile, ProfileType},
 };
 
 pub async fn insert_new_profile(pool: &PgPool, data: Profile) -> Result<Option<Profile>, ApiError> {
@@ -53,13 +55,13 @@ pub async fn insert_new_profile(pool: &PgPool, data: Profile) -> Result<Option<P
 
 pub async fn get_profile_auth_details(
     pool: &PgPool,
-    user_name: Handle,
-) -> Result<(String, String), ApiError> {
-    Ok(sqlx::query!(
-        r#"SELECT password_hash,id FROM profiles WHERE user_name=$1"#,
+    user_name: &Handle,
+) -> Result<Option<Profile>, ApiError> {
+    Ok(sqlx::query_as!(
+        Profile,
+        r#"SELECT id, user_name, tag_line, is_claimed, youtube_profile, twitter_profile, instagram_profile, created_at, profile_picture, password_hash, profile_type as "profile_type: ProfileType", presence FROM profiles WHERE user_name=$1"#,
         user_name.as_ref()
     )
-    .fetch_one(pool)
-    .await
-    .map(|r| (r.password_hash, r.id.to_string()))?)
+    .fetch_optional(pool)
+    .await?)
 }
