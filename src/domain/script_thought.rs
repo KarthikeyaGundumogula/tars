@@ -22,6 +22,12 @@ impl AsRef<str> for ScriptThought {
     }
 }
 
+impl std::fmt::Display for ScriptThought {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        write!(f, "{}", self.0)
+    }
+}
+
 impl<'de> Deserialize<'de> for ScriptThought {
     fn deserialize<D>(deserializer: D) -> Result<Self, D::Error>
     where

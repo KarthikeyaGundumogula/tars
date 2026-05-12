@@ -25,8 +25,16 @@
 22. **Rename Poster and Edit format TYPE in the DB to get rid of hyphens** - ✅
 23. **ADD Work_views and work_likes tables** - ✅
     --- completed migration 6 --
-24. **Add a column for storing the total views and likes on the Originals table**
-25. **Drop the created at column in the Works table** - since anyways we are storing the created_at on individual work tables we dont need to store it in the works table
-26. **Add a Stage name column to the Works table**
-27. **Add Stage_color and Stage_bg columns to the profiles table**
-28. **Add a table for favorites**
+24. **Add a Stage name column to the Profiles table** - ✅
+25. **Add Text_color and Background_color columns to the profiles table** - ✅
+26. **Drop the created at column in the Edits & Posters & Scripts Tables** - since anyways we are storing the created_at on individual work tables we dont need to store it in the works table - ✅
+27. **Create a table for favorite profiles** - ✅
+28. **Create a table for follows** - ✅
+29. **Create table sets(title,statement,presence,description,curator)** - ✅
+30. **Create table for festivals(title,start_date,end_date,Description,Essentials,Organizer)** - ✅
+31. **Create table for panelists(festival_id,profile_id,work_id)** - ✅
+32. **Create table for members(set_id,profile_id,Role)** - create a SetRole enum with values:member,moderator - ✅
+33. **Create a table for festival works(festival_id,work_id)** - ✅
+34. **Create a table for set_works(set_id,work_id)** - ✅
+    --- completed migration 7 ---
+35. 

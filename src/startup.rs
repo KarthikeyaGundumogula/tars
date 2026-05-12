@@ -2,6 +2,7 @@ use std::sync::Arc;
 
 use axum::{
     Router,
+    extract::DefaultBodyLimit,
     routing::{get, post},
     serve::Serve,
 };
@@ -31,6 +32,7 @@ pub async fn run(
         // .route("/artists", get(get_artist_handler))
         .route("/works/new/{work_type}", post(create_new_work_handler))
         .layer(TraceLayer::new_for_http())
+        .layer(DefaultBodyLimit::max(5 * 1024 * 1024))
         .with_state(app_state.clone());
     println!(
         "Server started successfully at {}",

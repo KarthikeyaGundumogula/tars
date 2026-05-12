@@ -43,7 +43,7 @@ pub enum WorkType {
 pub struct Work {
     pub id: Uuid,
     pub artist_id: Uuid,
-    pub title: String,
+    pub title: Option<String>,
     pub credits: i64,
     pub created_at: DateTime<Utc>,
     pub category: WorkType,

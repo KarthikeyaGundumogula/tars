@@ -1,14 +1,14 @@
 use serde::Deserialize;
 use uuid::Uuid;
 
-use crate::domain::{ScriptThought, WorkTitle};
+use crate::{domain::{ScriptThought, WorkTitle}, types::db::work::{EditFormat, PosterFormat, SupportedPlatforms}};
 
 #[derive(Deserialize)]
 pub struct UploadEditReq {
     pub title: Option<WorkTitle>,
     pub src_id: String,
-    pub platform: String,
-    pub format: String,
+    pub platform: SupportedPlatforms,
+    pub format: EditFormat,
     pub originals: Vec<Uuid>,
 }
 
@@ -16,7 +16,7 @@ pub struct UploadEditReq {
 pub struct UploadPosterReq {
     pub title: Option<WorkTitle>,
     pub src_id: String,
-    pub format: String,
+    pub format: PosterFormat,
     pub originals: Vec<Uuid>,
 }
 
@@ -25,5 +25,5 @@ pub struct UploadScriptReq {
     pub title: Option<WorkTitle>,
     pub src_ids: Vec<String>,
     pub originals: Vec<Uuid>,
-    pub thoughts: Vec<Option<ScriptThought>>,
+    pub thoughts: Vec<ScriptThought>,
 }

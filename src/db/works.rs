@@ -1,5 +1,5 @@
-use sqlx::PgPool;
 use uuid::Uuid;
+use sqlx;
 
 use crate::{
     errors::ApiError,
@@ -8,21 +8,20 @@ use crate::{
     },
 };
 
-pub async fn insert_new_work(pool: &PgPool, data: Work) -> Result<Uuid, ApiError> {
-    let id = Uuid::new_v4();
+pub async fn insert_new_work(txn: &mut sqlx::Transaction<'_, sqlx::Postgres>, data: Work) -> Result<Uuid, ApiError> {
     Ok(
    sqlx::query_scalar!(
     r#"
     INSERT INTO works(id,title,artist_id,created_at,credits,category) VALUES ($1,$2,$3,NOW(),0,$4) RETURNING id;
     "#,
-    id,
+    data.id,
     data.title,
-    Uuid::new_v4(),
-    WorkType::EDIT as WorkType
-   ).fetch_one(pool).await?
+    data.artist_id,
+    data.category as WorkType
+   ).fetch_one(&mut **txn).await?
   )
 }
-pub async fn insert_new_edit(pool: &PgPool, data: Edit) -> Result<Uuid, ApiError> {
+pub async fn insert_new_edit(txn: &mut sqlx::Transaction<'_, sqlx::Postgres>, data: Edit) -> Result<Uuid, ApiError> {
     Ok(sqlx::query_scalar!(
         "
     INSERT INTO edits (
@@ -41,11 +40,11 @@ pub async fn insert_new_edit(pool: &PgPool, data: Edit) -> Result<Uuid, ApiError
         data.format as EditFormat,
         data.created_at
     )
-    .fetch_one(pool)
+    .fetch_one(&mut **txn)
     .await?)
 }
 
-pub async fn insert_new_poster(pool: &PgPool, data: Poster) -> Result<Uuid, ApiError> {
+pub async fn insert_new_poster(txn: &mut sqlx::Transaction<'_, sqlx::Postgres>, data: Poster) -> Result<Uuid, ApiError> {
     Ok(sqlx::query_scalar!(
         r#"
 INSERT INTO posters (work_id, src_id, format, created_at)
@@ -57,11 +56,11 @@ RETURNING work_id;
         data.format as PosterFormat,
         data.created_at
     )
-    .fetch_one(pool)
+    .fetch_one(&mut **txn)
     .await?)
 }
 
-pub async fn insert_new_script(pool: &PgPool, data: Script) -> Result<Uuid, ApiError> {
+pub async fn insert_new_script(txn: &mut sqlx::Transaction<'_, sqlx::Postgres>, data: Script) -> Result<Uuid, ApiError> {
     Ok(sqlx::query_scalar!(
         r#"
             INSERT INTO scripts (
@@ -82,6 +81,6 @@ pub async fn insert_new_script(pool: &PgPool, data: Script) -> Result<Uuid, ApiE
         &data.thoughts,
         data.created_at
     )
-    .fetch_one(pool)
+    .fetch_one(&mut **txn)
     .await?)
 }
