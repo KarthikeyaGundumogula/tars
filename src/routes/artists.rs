@@ -1,6 +1,6 @@
 use std::sync::Arc;
 
-use axum::extract::State;
+use axum::{extract::State, Router, routing::post};
 use axum_extra::extract::{
     CookieJar,
     cookie::{Cookie, SameSite},
@@ -91,4 +91,11 @@ pub async fn logout_profile(jar: CookieJar) -> Result<ApiResponse, ApiError> {
         .max_age(time::Duration::seconds(0))
         .build();
     Ok(ApiResponse::ProfileAuthenticated(jar.remove(cookie)))
+}
+
+pub fn router() -> Router<Arc<AppState>> {
+    Router::new()
+        .route("/register", post(sign_up_artist_handler))
+        .route("/login", post(login_profile))
+        .route("/logout", post(logout_profile))
 }

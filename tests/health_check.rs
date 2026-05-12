@@ -1,7 +1,7 @@
 use reqwest::Client;
-mod utils;
+mod common;
 
-use utils::spawn_app;
+use common::spawn_app;
 
 #[tokio::test]
 async fn health_check_test() {

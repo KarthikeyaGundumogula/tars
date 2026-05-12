@@ -42,3 +42,24 @@ impl<'de> Deserialize<'de> for OriginalDescription {
         Self::parse(s).map_err(serde::de::Error::custom)
     }
 }
+
+#[cfg(test)]
+mod tests {
+    use super::OriginalDescription;
+
+    #[test]
+    fn valid_description_is_accepted() {
+        assert!(OriginalDescription::parse("A valid description".to_string()).is_ok());
+    }
+
+    #[test]
+    fn empty_description_is_rejected() {
+        assert!(OriginalDescription::parse("".to_string()).is_err());
+    }
+
+    #[test]
+    fn long_description_is_rejected() {
+        let description = "a".repeat(501);
+        assert!(OriginalDescription::parse(description).is_err());
+    }
+}

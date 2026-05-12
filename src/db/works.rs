@@ -28,17 +28,15 @@ pub async fn insert_new_edit(txn: &mut sqlx::Transaction<'_, sqlx::Postgres>, da
         work_id,
         src_id,
         platform,
-        format,
-        created_at
+        format
       )
-    VALUES ($1, $2, $3, $4, $5)
+    VALUES ($1, $2, $3, $4)
     RETURNING work_id;
 ",
         data.work_id,
         data.src_id,
         data.platform as SupportedPlatforms,
-        data.format as EditFormat,
-        data.created_at
+        data.format as EditFormat
     )
     .fetch_one(&mut **txn)
     .await?)
@@ -47,14 +45,13 @@ pub async fn insert_new_edit(txn: &mut sqlx::Transaction<'_, sqlx::Postgres>, da
 pub async fn insert_new_poster(txn: &mut sqlx::Transaction<'_, sqlx::Postgres>, data: Poster) -> Result<Uuid, ApiError> {
     Ok(sqlx::query_scalar!(
         r#"
-INSERT INTO posters (work_id, src_id, format, created_at)
-VALUES ($1, $2, $3, $4)
+INSERT INTO posters (work_id, src_id, format)
+VALUES ($1, $2, $3)
 RETURNING work_id;
 "#,
         data.work_id,
         data.src_id,
-        data.format as PosterFormat,
-        data.created_at
+        data.format as PosterFormat
     )
     .fetch_one(&mut **txn)
     .await?)
@@ -66,20 +63,17 @@ pub async fn insert_new_script(txn: &mut sqlx::Transaction<'_, sqlx::Postgres>, 
             INSERT INTO scripts (
                 work_id,
                 img_src_ids,
-                thoughts,
-                created_at
+                thoughts
               )
             VALUES (
                 $1,
                 $2,
-                $3,
-                $4
+                $3
               ) RETURNING work_id;
             "#,
         data.work_id,
         &data.img_src_ids,
-        &data.thoughts,
-        data.created_at
+        &data.thoughts
     )
     .fetch_one(&mut **txn)
     .await?)

@@ -45,3 +45,57 @@ impl<'de> Deserialize<'de> for WorkTitle {
         Self::parse(s).map_err(serde::de::Error::custom)
     }
 }
+
+#[cfg(test)]
+mod tests {
+    use super::WorkTitle;
+
+    #[test]
+    fn a_100_grapheme_long_title_is_valid() {
+        let title = "a".repeat(100);
+        assert!(WorkTitle::parse(title).is_ok());
+    }
+
+    #[test]
+    fn a_title_longer_than_100_graphemes_is_rejected() {
+        let title = "a".repeat(101);
+        assert!(WorkTitle::parse(title).is_err());
+    }
+
+    #[test]
+    fn whitespace_only_titles_are_rejected() {
+        // Technically " " is alphabetic? No, `char::is_alphabetic` is false for space,
+        // but the rule is `!c.is_alphabetic() && c != ' '`.
+        // However, `work_title.trim() != work_title` will reject " ".
+        let title = " ".to_string();
+        assert!(WorkTitle::parse(title).is_err());
+    }
+
+    #[test]
+    fn empty_string_is_valid() {
+        // Wait, the logic doesn't explicitly reject empty string.
+        // Let's verify empty string behavior.
+        let title = "".to_string();
+        assert!(WorkTitle::parse(title).is_ok());
+    }
+
+    #[test]
+    fn titles_containing_an_invalid_character_are_rejected() {
+        for name in &['/', '(', ')', '"', '<', '>', '\\', '{', '}', '1', '_'] {
+            let title = name.to_string();
+            assert!(WorkTitle::parse(title).is_err());
+        }
+    }
+
+    #[test]
+    fn a_valid_title_is_parsed_successfully() {
+        let title = "Valid Title".to_string();
+        assert!(WorkTitle::parse(title).is_ok());
+    }
+
+    #[test]
+    fn leading_or_trailing_whitespace_is_rejected() {
+        assert!(WorkTitle::parse(" Title".to_string()).is_err());
+        assert!(WorkTitle::parse("Title ".to_string()).is_err());
+    }
+}

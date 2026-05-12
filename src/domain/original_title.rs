@@ -42,3 +42,25 @@ impl<'de> Deserialize<'de> for OriginalTitle {
         Self::parse(s).map_err(serde::de::Error::custom)
     }
 }
+
+#[cfg(test)]
+mod tests {
+    use super::OriginalTitle;
+
+    #[test]
+    fn valid_title_is_accepted() {
+        assert!(OriginalTitle::parse("A valid title".to_string()).is_ok());
+    }
+
+    #[test]
+    fn empty_title_is_rejected() {
+        assert!(OriginalTitle::parse("".to_string()).is_err());
+    }
+
+    #[test]
+    fn long_title_is_rejected() {
+        let title = "a".repeat(101);
+        assert!(OriginalTitle::parse(title).is_err());
+    }
+}
+

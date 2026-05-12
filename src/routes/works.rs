@@ -3,6 +3,8 @@ use std::sync::Arc;
 use axum::{
     body::Bytes,
     extract::{Path, State},
+    routing::post,
+    Router,
 };
 use chrono::Utc;
 use sqlx::PgPool;
@@ -133,4 +135,8 @@ async fn upload_script_handler(data: UploadScriptReq, user: AuthUser,pool:&PgPoo
     insert_new_script(&mut txn, script).await?;
     txn.commit().await?;
     Ok(new_work_id)
+}
+
+pub fn router() -> Router<Arc<AppState>> {
+    Router::new().route("/new/{work_type}", post(create_new_work_handler))
 }

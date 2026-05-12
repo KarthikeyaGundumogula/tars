@@ -42,3 +42,24 @@ impl<'de> Deserialize<'de> for TagLine {
         Self::parse(s).map_err(serde::de::Error::custom)
     }
 }
+
+#[cfg(test)]
+mod tests {
+    use super::TagLine;
+
+    #[test]
+    fn valid_tagline_is_accepted() {
+        assert!(TagLine::parse("A very cool tagline".to_string()).is_ok());
+    }
+
+    #[test]
+    fn empty_tagline_is_rejected() {
+        assert!(TagLine::parse("".to_string()).is_err());
+    }
+
+    #[test]
+    fn long_tagline_is_rejected() {
+        let tagline = "a".repeat(101);
+        assert!(TagLine::parse(tagline).is_err());
+    }
+}

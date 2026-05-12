@@ -55,3 +55,42 @@ impl<'de> Deserialize<'de> for StageName {
         Self::parse(s).map_err(serde::de::Error::custom)
     }
 }
+
+#[cfg(test)]
+mod tests {
+    use super::StageName;
+
+    #[test]
+    fn valid_stage_name_is_accepted() {
+        assert!(StageName::parse("kapten og".to_string()).is_ok());
+    }
+
+    #[test]
+    fn empty_stage_name_is_rejected() {
+        assert!(StageName::parse("".to_string()).is_err());
+    }
+
+    #[test]
+    fn long_stage_name_is_rejected() {
+        let name = "a".repeat(16);
+        assert!(StageName::parse(name).is_err());
+    }
+
+    #[test]
+    fn uppercase_is_rejected() {
+        assert!(StageName::parse("Kapten OG".to_string()).is_err());
+    }
+
+    #[test]
+    fn non_alphabetic_characters_are_rejected() {
+        assert!(StageName::parse("kapten 1".to_string()).is_err());
+        assert!(StageName::parse("kapten!".to_string()).is_err());
+    }
+
+    #[test]
+    fn leading_trailing_space_is_rejected() {
+        assert!(StageName::parse(" kapten".to_string()).is_err());
+        assert!(StageName::parse("kapten ".to_string()).is_err());
+    }
+}
+

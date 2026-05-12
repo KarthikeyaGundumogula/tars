@@ -37,3 +37,27 @@ impl<'de> Deserialize<'de> for ScriptThought {
         Self::parse(s).map_err(serde::de::Error::custom)
     }
 }
+
+#[cfg(test)]
+mod tests {
+    use super::ScriptThought;
+
+    #[test]
+    fn valid_thought_is_accepted() {
+        assert!(ScriptThought::parse("A brilliant idea".to_string()).is_ok());
+    }
+
+    #[test]
+    fn empty_thought_is_accepted() {
+        // Based on parse logic, empty is not rejected unless we add a check.
+        // Current logic only checks for length > 500.
+        assert!(ScriptThought::parse("".to_string()).is_ok());
+    }
+
+    #[test]
+    fn long_thought_is_rejected() {
+        let thought = "a".repeat(501);
+        assert!(ScriptThought::parse(thought).is_err());
+    }
+}
+

@@ -1,6 +1,6 @@
 use std::sync::Arc;
 
-use axum::extract::State;
+use axum::{extract::State, Router, routing::post};
 use chrono::Utc;
 use tracing::instrument;
 use uuid::Uuid;
@@ -62,4 +62,8 @@ pub async fn create_new_original_handler(
     txn.commit().await?;
     tracing::info!("Original created successfully: {}", original_id);
     Ok(ApiResponse::OK)
+}
+
+pub fn router() -> Router<Arc<AppState>> {
+    Router::new().route("/new", post(create_new_original_handler))
 }

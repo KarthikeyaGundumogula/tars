@@ -53,4 +53,39 @@ impl<'de> Deserialize<'de> for Genre {
     }
 }
 
+#[cfg(test)]
+mod tests {
+    use super::Genre;
+
+    #[test]
+    fn valid_genre_is_accepted() {
+        assert!(Genre::parse("Action".to_string()).is_ok());
+        assert!(Genre::parse("Sci Fi".to_string()).is_ok());
+        assert!(Genre::parse("Drama 123".to_string()).is_ok());
+    }
+
+    #[test]
+    fn empty_genre_is_rejected() {
+        assert!(Genre::parse("".to_string()).is_err());
+    }
+
+    #[test]
+    fn long_genre_is_rejected() {
+        let genre = "a".repeat(51);
+        assert!(Genre::parse(genre).is_err());
+    }
+
+    #[test]
+    fn special_characters_are_rejected() {
+        assert!(Genre::parse("Action!".to_string()).is_err());
+        assert!(Genre::parse("Action@".to_string()).is_err());
+    }
+
+    #[test]
+    fn leading_trailing_space_is_rejected() {
+        assert!(Genre::parse(" Action".to_string()).is_err());
+        assert!(Genre::parse("Action ".to_string()).is_err());
+    }
+}
+
 

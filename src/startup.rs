@@ -3,7 +3,6 @@ use std::sync::Arc;
 use axum::{
     Router,
     extract::DefaultBodyLimit,
-    routing::{get, post},
     serve::Serve,
 };
 use tokio::net::TcpListener;
@@ -11,12 +10,7 @@ use tower_http::trace::TraceLayer;
 
 use crate::{
     AppState,
-    routes::{
-        artists::{login_profile, sign_up_artist_handler},
-        health_check::health_check_handler,
-        originals::create_new_original_handler,
-        works::create_new_work_handler,
-    },
+    routes,
 };
 
 pub async fn run(
@@ -25,12 +19,7 @@ pub async fn run(
 ) -> Result<Serve<TcpListener, Router, Router>, std::io::Error> {
     let app_state = Arc::new(app);
     let app = Router::new()
-        .route("/health_check", get(health_check_handler))
-        .route("/artist/register", post(sign_up_artist_handler))
-        .route("/artist/login", post(login_profile))
-        .route("/originals/new", post(create_new_original_handler))
-        // .route("/artists", get(get_artist_handler))
-        .route("/works/new/{work_type}", post(create_new_work_handler))
+        .merge(routes::build_router())
         .layer(TraceLayer::new_for_http())
         .layer(DefaultBodyLimit::max(5 * 1024 * 1024))
         .with_state(app_state.clone());

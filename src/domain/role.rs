@@ -51,3 +51,38 @@ impl<'de> Deserialize<'de> for Role {
         Self::parse(s).map_err(serde::de::Error::custom)
     }
 }
+
+#[cfg(test)]
+mod tests {
+    use super::Role;
+
+    #[test]
+    fn valid_role_is_accepted() {
+        assert!(Role::parse("Actor".to_string()).is_ok());
+        assert!(Role::parse("Supporting Actor".to_string()).is_ok());
+    }
+
+    #[test]
+    fn empty_role_is_rejected() {
+        assert!(Role::parse("".to_string()).is_err());
+    }
+
+    #[test]
+    fn long_role_is_rejected() {
+        let role = "a".repeat(51);
+        assert!(Role::parse(role).is_err());
+    }
+
+    #[test]
+    fn non_alphabetic_characters_are_rejected() {
+        assert!(Role::parse("Actor 1".to_string()).is_err());
+        assert!(Role::parse("Actor!".to_string()).is_err());
+    }
+
+    #[test]
+    fn leading_trailing_space_is_rejected() {
+        assert!(Role::parse(" Actor".to_string()).is_err());
+        assert!(Role::parse("Actor ".to_string()).is_err());
+    }
+}
+

@@ -32,7 +32,7 @@ pub enum PosterFormat {
 }
 
 #[derive(sqlx::Type, Deserialize, Serialize, Debug)]
-#[sqlx(type_name = "work_type")]
+#[sqlx(type_name = "work_category")]
 pub enum WorkType {
     EDIT,
     POSTER,

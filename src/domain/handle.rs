@@ -60,3 +60,58 @@ impl<'de> Deserialize<'de> for Handle {
         Self::parse(s).map_err(serde::de::Error::custom)
     }
 }
+
+#[cfg(test)]
+mod tests {
+    use super::Handle;
+
+    #[test]
+    fn a_25_grapheme_long_handle_is_valid() {
+        let handle = "a".repeat(25);
+        assert!(Handle::parse(handle).is_ok());
+    }
+
+    #[test]
+    fn a_handle_longer_than_25_graphemes_is_rejected() {
+        let handle = "a".repeat(26);
+        assert!(Handle::parse(handle).is_err());
+    }
+
+    #[test]
+    fn whitespace_only_handles_are_rejected() {
+        let handle = " ".to_string();
+        assert!(Handle::parse(handle).is_err());
+    }
+
+    #[test]
+    fn empty_string_is_rejected() {
+        let handle = "".to_string();
+        assert!(Handle::parse(handle).is_err());
+    }
+
+    #[test]
+    fn handles_containing_an_invalid_character_are_rejected() {
+        for name in &['/', '(', ')', '"', '<', '>', '\\', '{', '}'] {
+            let handle = name.to_string();
+            assert!(Handle::parse(handle).is_err());
+        }
+    }
+
+    #[test]
+    fn a_valid_handle_is_parsed_successfully() {
+        let handle = "valid_handle_123".to_string();
+        assert!(Handle::parse(handle).is_ok());
+    }
+
+    #[test]
+    fn uppercase_characters_are_rejected() {
+        let handle = "InvalidHandle".to_string();
+        assert!(Handle::parse(handle).is_err());
+    }
+
+    #[test]
+    fn starting_or_ending_with_underscore_is_rejected() {
+        assert!(Handle::parse("_invalid".to_string()).is_err());
+        assert!(Handle::parse("invalid_".to_string()).is_err());
+    }
+}

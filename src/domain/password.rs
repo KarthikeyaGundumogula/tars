@@ -43,3 +43,39 @@ impl<'de> Deserialize<'de> for Password {
         Self::parse(s).map_err(serde::de::Error::custom)
     }
 }
+
+#[cfg(test)]
+mod tests {
+    use super::Password;
+
+    #[test]
+    fn valid_password_is_parsed_successfully() {
+        assert!(Password::parse("ValidPass123!".to_string()).is_ok());
+    }
+
+    #[test]
+    fn empty_password_is_rejected() {
+        assert!(Password::parse("".to_string()).is_err());
+    }
+
+    #[test]
+    fn password_shorter_than_8_chars_is_rejected() {
+        assert!(Password::parse("Short1!".to_string()).is_err());
+    }
+
+    #[test]
+    fn password_without_numbers_is_rejected() {
+        assert!(Password::parse("NoNumbersHere".to_string()).is_err());
+    }
+
+    #[test]
+    fn password_without_uppercase_is_rejected() {
+        assert!(Password::parse("nouppercase123".to_string()).is_err());
+    }
+
+    #[test]
+    fn password_without_lowercase_is_rejected() {
+        assert!(Password::parse("NOLOWERCASE123".to_string()).is_err());
+    }
+}
+
