@@ -37,4 +37,4 @@
 33. **Create a table for festival works(festival_id,work_id)** - ✅
 34. **Create a table for set_works(set_id,work_id)** - ✅
     --- completed migration 7 ---
-35. 
+35. **Add Profile picture column to the sets table**

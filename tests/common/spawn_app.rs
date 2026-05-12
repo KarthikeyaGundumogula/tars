@@ -13,7 +13,7 @@ pub struct TestApp {
 impl TestApp {
     pub async fn post_login(&self, body: &serde_json::Value) -> reqwest::Response {
         self.api_client
-            .post(&format!("{}/artist/login", &self.address))
+            .post(&format!("{}/auth/login", &self.address))
             .json(body)
             .send()
             .await
@@ -22,7 +22,7 @@ impl TestApp {
 
     pub async fn post_register(&self, body: &serde_json::Value) -> reqwest::Response {
         self.api_client
-            .post(&format!("{}/artist/register", &self.address))
+            .post(&format!("{}/auth/register", &self.address))
             .json(body)
             .send()
             .await

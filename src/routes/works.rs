@@ -40,7 +40,7 @@ pub async fn create_new_work_handler(
                 Some(title) => tracing::info!(work_title = %title, "Uploading edit"),
                 None => tracing::info!("Uploading edit"),
             }
-            upload_edit_handler(data, &app.pool, user).await
+            upload_edit(data, &app.pool, user).await
         }
         WorkType::POSTER => {
             let AppJson(data) = AppJson::<UploadPosterReq>::from_bytes(&body)?;
@@ -48,7 +48,7 @@ pub async fn create_new_work_handler(
                 Some(title) => tracing::info!(work_title = %title, "Uploading poster"),
                 None => tracing::info!("Uploading poster"),
             }
-            upload_poster_handler(data, user,&app.pool).await
+            upload_poster(data, user,&app.pool).await
         }
         WorkType::SCRIPT => {
             let AppJson(data) = AppJson::<UploadScriptReq>::from_bytes(&body)?;
@@ -56,13 +56,13 @@ pub async fn create_new_work_handler(
                 Some(title) => tracing::info!(work_title = %title, "Uploading script"),
                 None => tracing::info!("Uploading script"),
             }
-            upload_script_handler(data, user,&app.pool).await
+            upload_script(data, user,&app.pool).await
         }
     };
     Ok(ApiResponse::WorkCreated(res?))
 }
 
-async fn upload_edit_handler(
+async fn upload_edit(
     data: UploadEditReq,
     pool: &PgPool,
     user: AuthUser,
@@ -89,7 +89,7 @@ async fn upload_edit_handler(
     Ok(new_work_id)
 }
 
-async fn upload_poster_handler(
+async fn upload_poster(
     data: UploadPosterReq,
     user: AuthUser,
     pool: &PgPool,
@@ -115,7 +115,7 @@ async fn upload_poster_handler(
     Ok(new_work_id)
 }
 
-async fn upload_script_handler(data: UploadScriptReq, user: AuthUser,pool:&PgPool) -> Result<Uuid, ApiError> {
+async fn upload_script(data: UploadScriptReq, user: AuthUser,pool:&PgPool) -> Result<Uuid, ApiError> {
     let new_work = Work {
         id: Uuid::new_v4(),
         artist_id: user.profile_id,

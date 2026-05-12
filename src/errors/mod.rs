@@ -2,7 +2,7 @@ use std::convert::Infallible;
 
 use axum::{
     Json,
-    extract::rejection::JsonRejection,
+    extract::rejection::{JsonRejection, PathRejection},
     http::StatusCode,
     response::{IntoResponse, Response},
 };
@@ -30,6 +30,8 @@ pub enum ApiError {
     NotFound,
     #[error("Unble to process the incoming request")]
     Serialization(#[from] JsonRejection),
+    #[error("Invalid Url")]
+    UrlError(#[from] PathRejection),
     #[error("There is an error at the database")]
     DbError(#[from] sqlx::Error),
     #[error("password hashing failed")]
@@ -100,6 +102,14 @@ impl IntoResponse for ApiError {
                 StatusCode::UNAUTHORIZED,
                 Json(ErrorResponse::new(
                     StatusCode::UNAUTHORIZED.to_string(),
+                    message,
+                )),
+            )
+                .into_response(),
+            Self::UrlError(_) => (
+                StatusCode::BAD_REQUEST,
+                Json(ErrorResponse::new(
+                    StatusCode::BAD_REQUEST.to_string(),
                     message,
                 )),
             )

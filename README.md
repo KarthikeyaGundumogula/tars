@@ -87,7 +87,7 @@ tars/
 │   │   └── mod.rs
 │   ├── routes/             # HTTP endpoint handlers
 │   │   ├── mod.rs
-│   │   ├── artists.rs      # POST /artist/register
+│   │   ├── artists.rs      # POST /auth/register
 │   │   ├── health_check.rs # GET /health_check
 │   │   ├── works.rs        # Work submission endpoints
 │   │   ├── originals.rs    # Original management endpoints
@@ -216,7 +216,7 @@ User's tracking status for an original.
 | `profile_picture`   | TEXT         | NOT NULL         | Avatar image URL          |
 | `password_hash`     | TEXT         | NOT NULL         | Argon2 hashed password    |
 | `presence`          | BIGINT       | DEFAULT 100      | Reputation score          |
-| `profile_type`      | profile_type | DEFAULT 'ARTIST' | STAR/MAKER/ARTIST         |
+| `profile_type`      | profile_type | DEFAULT 'ARTIST' | STAR/MAKER/auth           |
 | `youtube_profile`   | TEXT         |                  | YouTube channel URL       |
 | `twitter_profile`   | TEXT         |                  | Twitter handle URL        |
 | `instagram_profile` | TEXT         |                  | Instagram profile URL     |
@@ -367,7 +367,7 @@ User's tracking status for an original.
 
 ### Implemented Endpoints
 
-#### `POST /artist/register`
+#### `POST /auth/register`
 
 Register a new artist/user profile
 
@@ -524,7 +524,7 @@ Fetch anchor originals (movies/series)
 }
 ```
 
-#### `GET /api/artists/:artistId`
+#### `GET /api/auths/:artistId`
 
 Fetch artist profile with work history
 
@@ -600,7 +600,7 @@ Comprehensive authentication/registration tests
 ##### `register_profile_return_200_on_correct_data`
 
 ```rust
-POST /artist/register {
+POST /auth/register {
   "user_name": "kapten",
   "tag_line": "...",
   "password": "...",
@@ -620,7 +620,7 @@ POST /artist/register {
 ##### `register_profile_return_error_on_incorrect_data`
 
 ```rust
-POST /artist/register {
+POST /auth/register {
   "user_name": "kapten",
   "password": "kapten@1023"
   // Missing required: tag_line, profile_picture

@@ -1,6 +1,11 @@
-use axum::{extract::FromRequestParts, http::request::Parts};
+use axum::{
+    extract::{FromRequestParts, Path},
+    http::request::Parts,
+};
 use axum_extra::extract::CookieJar;
+use sqlx::PgPool;
 use std::sync::Arc;
+use uuid::Uuid;
 
 use crate::{AppState, errors::ApiError, utils::auth::password::validate_jwt};
 
@@ -47,41 +52,6 @@ impl FromRequestParts<Arc<AppState>> for AdminUser {
         Ok(AdminUser(auth_user))
     }
 }
-
-pub struct SetCaptain(pub AuthUser);
-
-impl FromRequestParts<Arc<AppState>> for SetCaptain {
-    type Rejection = ApiError;
-
-    async fn from_request_parts(
-        parts: &mut Parts,
-        state: &Arc<AppState>,
-    ) -> Result<Self, Self::Rejection> {
-        let auth_user = AuthUser::from_request_parts(parts, state).await?;
-        if auth_user.role != "captain" {
-            return Err(ApiError::Unauthorized("Not a captain".into()));
-        }
-        Ok(SetCaptain(auth_user))
-    }
-}
-
-pub struct FestivalPanelist(pub AuthUser);
-
-impl FromRequestParts<Arc<AppState>> for FestivalPanelist {
-    type Rejection = ApiError;
-
-    async fn from_request_parts(
-        parts: &mut Parts,
-        state: &Arc<AppState>,
-    ) -> Result<Self, Self::Rejection> {
-        let auth_user = AuthUser::from_request_parts(parts, state).await?;
-        if auth_user.role != "panelist" {
-            return Err(ApiError::Unauthorized("Not a panelist".into()));
-        }
-        Ok(FestivalPanelist(auth_user))
-    }
-}
-
 pub struct Artist(pub AuthUser);
 
 impl FromRequestParts<Arc<AppState>> for Artist {
@@ -99,3 +69,39 @@ impl FromRequestParts<Arc<AppState>> for Artist {
     }
 }
 
+pub struct OwnedResourceOrAdmin<T: Resource> {
+    pub resource_id: Uuid,
+    pub user_id: Uuid,
+    pub resource: T,
+}
+
+pub trait Resource: Send + Sync + Sized {
+    fn fetch_by_id(
+        db: &PgPool,
+        resource_id: Uuid,
+    ) -> impl Future<Output = Result<Option<(Uuid, Self)>, sqlx::Error>> + Send
+    where
+        Self: Send;
+}
+
+impl<T: Resource + Send> FromRequestParts<Arc<AppState>> for OwnedResourceOrAdmin<T> {
+    type Rejection = ApiError;
+
+    async fn from_request_parts(
+        parts: &mut Parts,
+        state: &Arc<AppState>,
+    ) -> Result<Self, Self::Rejection> {
+        let auth_user = AuthUser::from_request_parts(parts, state).await?;
+        let Path(resource_id) = Path::from_request_parts(parts, state).await?;
+        let owner = T::fetch_by_id(&state.pool, resource_id).await?;
+        let (owner, resource) = owner.ok_or(ApiError::NotFound)?;
+        if owner != auth_user.profile_id && auth_user.role != "admin" {
+            return Err(ApiError::Unauthorized("Not permitted action".into()));
+        }
+        Ok(OwnedResourceOrAdmin {
+            resource_id,
+            user_id: owner,
+            resource,
+        })
+    }
+}
