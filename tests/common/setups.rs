@@ -22,7 +22,7 @@ pub async fn setup_original_registration() -> (Vec<Uuid>, TestApp) {
         
         let artist =
             sqlx::query_scalar!(r#"SELECT id FROM profiles WHERE user_name=$1"#, user_name)
-                .fetch_one(&app.state.pool)
+                .fetch_one(&app.state.db_pool)
                 .await
                 .expect("db query failed");
         artists.push(artist);
@@ -63,7 +63,7 @@ pub async fn setup_edit_upload() -> (Vec<Uuid>, TestApp, Uuid) {
         r#"SELECT id FROM originals WHERE title=$1"#,
         "They Call him Og"
     )
-    .fetch_one(&app.state.pool)
+    .fetch_one(&app.state.db_pool)
     .await
     .expect("db query failed");
     

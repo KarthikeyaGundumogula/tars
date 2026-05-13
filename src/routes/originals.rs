@@ -25,7 +25,7 @@ pub async fn create_new_original_handler(
     AppJson(data): AppJson<CreateOriginalReq>,
 ) -> Result<ApiResponse, ApiError> {
     let password_hash = get_password_hash(data.password.as_ref())?;
-    let mut txn = app.pool.begin().await?;
+    let mut txn = app.db_pool.begin().await?;
     let original = Original {
         id: Uuid::new_v4(),
         title: data.title.to_string(),

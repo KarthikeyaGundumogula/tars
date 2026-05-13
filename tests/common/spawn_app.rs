@@ -55,8 +55,8 @@ pub async fn spawn() -> TestApp {
     config.database.database_name = Uuid::new_v4().to_string();
     let pool = configure_postgres(config.database).await;
     let app = AppState {
-        pool,
-        secret: config.jwt_secret,
+        db_pool: pool,
+        jwt_secret: config.jwt_secret,
     };
     let server = run(listener, app.clone())
         .await

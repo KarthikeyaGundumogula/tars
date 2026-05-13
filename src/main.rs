@@ -20,14 +20,14 @@ async fn main() -> Result<(), std::io::Error> {
     let config = get_configuration().expect("failed to read configuration");
     let address = format!("{}:{}", config.application.host, config.application.port);
     let listener = TcpListener::bind(address).await.unwrap();
-    let pool = PgPoolOptions::new()
+    let db_pool = PgPoolOptions::new()
         .max_connections(5)
         .connect(&config.database.connection_string())
         .await
         .expect("failed to connect to the database");
     let app = AppState {
-        pool,
-        secret: config.jwt_secret,
+        db_pool,
+        jwt_secret: config.jwt_secret,
     };
     run(listener, app).await?.await
 }

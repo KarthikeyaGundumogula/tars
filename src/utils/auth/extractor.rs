@@ -27,7 +27,7 @@ impl FromRequestParts<Arc<AppState>> for AuthUser {
             .get("auth_token")
             .map(|cookie| cookie.value().to_owned())
             .ok_or_else(|| ApiError::Unauthorized("Token not found".into()))?;
-        let claims = validate_jwt(&token, &state.secret)?;
+        let claims = validate_jwt(&token, &state.jwt_secret)?;
         Ok(AuthUser {
             profile_id: claims.profile_id,
             handle: claims.sub,
@@ -93,7 +93,7 @@ impl<T: Resource + Send> FromRequestParts<Arc<AppState>> for OwnedResourceOrAdmi
     ) -> Result<Self, Self::Rejection> {
         let auth_user = AuthUser::from_request_parts(parts, state).await?;
         let Path(resource_id) = Path::from_request_parts(parts, state).await?;
-        let owner = T::fetch_by_id(&state.pool, resource_id).await?;
+        let owner = T::fetch_by_id(&state.db_pool, resource_id).await?;
         let (owner, resource) = owner.ok_or(ApiError::NotFound)?;
         if owner != auth_user.profile_id && auth_user.role != "admin" {
             return Err(ApiError::Unauthorized("Not permitted action".into()));

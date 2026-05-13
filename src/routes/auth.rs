@@ -1,6 +1,6 @@
 use std::sync::Arc;
 
-use axum::{extract::State, Router, routing::post};
+use axum::{Router, extract::State, routing::post};
 use axum_extra::extract::{
     CookieJar,
     cookie::{Cookie, SameSite},
@@ -46,7 +46,7 @@ pub async fn sign_up_artist_handler(
         password_hash,
         created_at: Utc::now(),
     };
-    let profile = insert_new_profile(&app.pool, artist).await?;
+    let profile = insert_new_profile(&app.db_pool, artist).await?;
     match profile {
         Some(_) => tracing::info!("Artist created"),
         None => tracing::error!("Failed to create artist"),
@@ -61,7 +61,7 @@ pub async fn login_profile(
     AppJson(data): AppJson<ProfileLogin>,
 ) -> Result<ApiResponse, ApiError> {
     let password = data.password;
-    let profile = get_profile_auth_details(&app.pool, &data.handle).await?;
+    let profile = get_profile_auth_details(&app.db_pool, &data.handle).await?;
     let password_hash = match &profile {
         Some(profile) => &profile.password_hash,
         None => "$argon2id$v=19$m=19456,t=2,p=1$dummysaltdummysalt$dummyhash",
@@ -71,7 +71,7 @@ pub async fn login_profile(
         (Some(profile), true) => profile,
         _ => return Err(ApiError::Unauthorized("Invalid credentials".to_string())),
     };
-    let token = create_jwt(&user.user_name, "artist", &app.secret, user.id)?;
+    let token = create_jwt(&user.user_name, "artist", &app.jwt_secret, user.id)?;
     let cookie = Cookie::build(("auth_token", token))
         .http_only(true)
         .secure(false)

@@ -32,7 +32,7 @@ async fn upload_edit_return_200_on_correct_data() {
         r#"SELECT id, title, category as "category: tars::types::db::work::WorkType" FROM works WHERE title=$1"#,
         work_title
     )
-    .fetch_one(&app.state.pool)
+    .fetch_one(&app.state.db_pool)
     .await
     .expect("Failed to find uploaded work in DB");
 
@@ -42,7 +42,7 @@ async fn upload_edit_return_200_on_correct_data() {
         r#"SELECT src_id, platform as "platform: tars::types::db::work::SupportedPlatforms" FROM edits WHERE work_id=$1"#,
         saved_work.id
     )
-    .fetch_one(&app.state.pool)
+    .fetch_one(&app.state.db_pool)
     .await
     .expect("Failed to find edit details in DB");
 
@@ -78,7 +78,7 @@ async fn upload_poster_return_200_on_correct_data() {
         r#"SELECT id, title, category as "category: tars::types::db::work::WorkType" FROM works WHERE title=$1"#,
         work_title
     )
-    .fetch_one(&app.state.pool)
+    .fetch_one(&app.state.db_pool)
     .await
     .expect("Failed to find uploaded work in DB");
 
@@ -86,7 +86,7 @@ async fn upload_poster_return_200_on_correct_data() {
         r#"SELECT src_id, format as "format: tars::types::db::work::PosterFormat" FROM posters WHERE work_id=$1"#,
         saved_work.id
     )
-    .fetch_one(&app.state.pool)
+    .fetch_one(&app.state.db_pool)
     .await
     .expect("Failed to find poster details in DB");
 
@@ -122,7 +122,7 @@ async fn upload_script_return_200_on_correct_data() {
         r#"SELECT id, title, category as "category: tars::types::db::work::WorkType" FROM works WHERE title=$1"#,
         work_title
     )
-    .fetch_one(&app.state.pool)
+    .fetch_one(&app.state.db_pool)
     .await
     .expect("Failed to find uploaded work in DB");
 
@@ -130,7 +130,7 @@ async fn upload_script_return_200_on_correct_data() {
         "SELECT img_src_ids, thoughts FROM scripts WHERE work_id=$1",
         saved_work.id
     )
-    .fetch_one(&app.state.pool)
+    .fetch_one(&app.state.db_pool)
     .await
     .expect("Failed to find script details in DB");
 

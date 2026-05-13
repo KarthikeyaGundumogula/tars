@@ -38,3 +38,7 @@
 34. **Create a table for set_works(set_id,work_id)** - ✅
     --- completed migration 7 ---
 35. **Add Profile picture column to the sets table**
+36. **Add Unique Constraint to the sets name column**
+37. **Add Unique Constraint to the festivals name column**
+38. **Add rules coloumn to festivals its a text**
+39. 
