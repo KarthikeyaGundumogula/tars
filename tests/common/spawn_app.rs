@@ -46,6 +46,33 @@ impl TestApp {
             .await
             .expect("Failed to execute request.")
     }
+
+    pub async fn post_set(&self, body: &serde_json::Value) -> reqwest::Response {
+        self.api_client
+            .post(&format!("{}/sets/new", &self.address))
+            .json(body)
+            .send()
+            .await
+            .expect("Failed to execute request.")
+    }
+
+    pub async fn post_festival(&self, body: &serde_json::Value) -> reqwest::Response {
+        self.api_client
+            .post(&format!("{}/festivals/new", &self.address))
+            .json(body)
+            .send()
+            .await
+            .expect("Failed to execute request.")
+    }
+
+    pub async fn post_ledger(&self, body: &serde_json::Value) -> reqwest::Response {
+        self.api_client
+            .post(&format!("{}/ledger/new", &self.address))
+            .json(body)
+            .send()
+            .await
+            .expect("Failed to execute request.")
+    }
 }
 
 pub async fn spawn() -> TestApp {

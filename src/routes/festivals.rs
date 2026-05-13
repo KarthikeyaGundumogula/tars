@@ -19,8 +19,8 @@ pub async fn create_new_set(
 ) -> Result<ApiResponse, ApiError> {
     let festival = Festival {
         id: uuid::Uuid::new_v4(),
-        name: data.name,
-        description: data.description,
+        name: data.name.to_string(),
+        description: data.description.to_string(),
         set_id: data.set_id,
         organizer: user.profile_id,
         start_date: data.start_date,

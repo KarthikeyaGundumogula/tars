@@ -4,6 +4,7 @@ pub mod originals;
 pub mod works;
 pub mod sets;
 pub mod festivals;
+pub mod ledger;
 
 use crate::AppState;
 use axum::Router;
@@ -19,4 +20,6 @@ pub fn build_router() -> Router<Arc<AppState>> {
         .nest("/originals", originals::router())
         .nest("/works", works::router())
         .nest("/sets", sets::router())
+        .nest("/festivals", festivals::router())
+        .nest("/ledger", ledger::router())
 }

@@ -21,9 +21,9 @@ pub async fn create_new_set_handler(
 ) -> Result<ApiResponse, ApiError> {
     let set = Set {
         id: Uuid::new_v4(),
-        name: data.name,
-        statement: data.statement,
-        description: data.description,
+        name: data.name.to_string(),
+        statement: data.statement.to_string(),
+        description: data.description.to_string(),
         curator: user.profile_id,
         presence: 0,
         created_at: Utc::now(),

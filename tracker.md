@@ -62,8 +62,8 @@ This document tracks the implementation status of the **TARS** (Rust/Axum) backe
 ---
 
 ## 🚀 Immediate Backend TODOs (TARS)
-1. [ ] **JWT Implementation**: Add middleware to protect `POST /api/works` and `POST /api/originals`.
-2. [ ] **WorkArtist Linkage**: In `create_new_work_handler`, replace `Uuid::new_v4()` with the authenticated user's `artist_id`.
+1. [x] **JWT Implementation**: Add middleware to protect `POST /api/works` and `POST /api/originals`.
+2. [x] **WorkArtist Linkage**: In `create_new_work_handler`, replace `Uuid::new_v4()` with the authenticated user's `artist_id`.
 3. [ ] **Originals Fetch**: Implement `GET /api/originals` with stats (joining `works` and `roles` counts).
 4. [ ] **Watchlist Engine**: Create `watchlist` table and basic CRUD handlers.
 5. [ ] **Cluster Builder**: Port `clusterBuilder.ts` logic to Rust for deterministic `/api/works` payload.

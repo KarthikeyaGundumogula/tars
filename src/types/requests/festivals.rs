@@ -2,10 +2,12 @@ use chrono::{DateTime, Utc};
 use serde::Deserialize;
 use uuid::Uuid;
 
+use crate::domain::{FestivalDescription, FestivalName};
+
 #[derive(Deserialize)]
 pub struct CreateFestivalReq {
-    pub name: String,
-    pub description: String,
+    pub name: FestivalName,
+    pub description: FestivalDescription,
     pub start_date: DateTime<Utc>,
     pub end_date: DateTime<Utc>,
     pub set_id: Uuid,

@@ -1,6 +1,6 @@
 use std::sync::Arc;
 
-use axum::{Router, extract::State, routing::post};
+use axum::{Json, Router, extract::State, routing::post};
 use axum_extra::extract::{
     CookieJar,
     cookie::{Cookie, SameSite},
@@ -12,15 +12,18 @@ use uuid::Uuid;
 
 use crate::{
     AppState,
-    db::artists::{get_profile_auth_details, insert_new_profile},
+    db::artists::{get_profile_auth_details, insert_new_profile, update_profile_password},
     errors::ApiError,
     types::{
         db::profile::{Profile, ProfileType},
-        requests::auth::{ProfileLogin, ProfileSignupReq},
+        requests::auth::{ProfileLogin, ProfileSignupReq, ResetPasswordReq},
         response::ApiResponse,
     },
     utils::{
-        auth::password::{create_jwt, get_password_hash, verify_password},
+        auth::{
+            extractor::Artist,
+            password::{create_jwt, get_password_hash, verify_password},
+        },
         json_extractor::AppJson,
     },
 };
@@ -61,7 +64,7 @@ pub async fn login_profile(
     AppJson(data): AppJson<ProfileLogin>,
 ) -> Result<ApiResponse, ApiError> {
     let password = data.password;
-    let profile = get_profile_auth_details(&app.db_pool, &data.handle).await?;
+    let profile = get_profile_auth_details(&app.db_pool, &data.handle.to_string()).await?;
     let password_hash = match &profile {
         Some(profile) => &profile.password_hash,
         None => "$argon2id$v=19$m=19456,t=2,p=1$dummysaltdummysalt$dummyhash",
@@ -93,9 +96,32 @@ pub async fn logout_profile(jar: CookieJar) -> Result<ApiResponse, ApiError> {
     Ok(ApiResponse::ProfileAuthenticated(jar.remove(cookie)))
 }
 
+pub async fn reset_password(
+    State(app): State<Arc<AppState>>,
+    Artist(user): Artist,
+    Json(data): Json<ResetPasswordReq>,
+) -> Result<ApiResponse, ApiError> {
+    let old_profile = get_profile_auth_details(&app.db_pool, &user.handle).await?;
+    let password_hash = match &old_profile {
+        Some(profile) => &profile.password_hash,
+        None => "$argon2id$v=19$m=19456,t=2,p=1$dummysaltdummysalt$dummyhash",
+    };
+    let valid_password = verify_password(data.old_password.as_ref(), password_hash)?;
+    let user = match (old_profile, valid_password) {
+        (Some(profile), true) => profile,
+        _ => return Err(ApiError::Unauthorized("Invlaid Operation".to_string())),
+    };
+    let password_hash = get_password_hash(data.new_password.as_ref())?;
+    let user_id = update_profile_password(&app.db_pool, user.id, password_hash)
+        .await?
+        .ok_or(ApiError::DbError(sqlx::Error::RowNotFound))?;
+    Ok(ApiResponse::PasswordUpdated(user_id))
+}
+
 pub fn router() -> Router<Arc<AppState>> {
     Router::new()
         .route("/register", post(sign_up_artist_handler))
         .route("/login", post(login_profile))
         .route("/logout", post(logout_profile))
+        .route("/reset-password", post(reset_password))
 }

@@ -69,3 +69,35 @@ pub async fn setup_edit_upload() -> (Vec<Uuid>, TestApp, Uuid) {
     
     (artists, app, original_id)
 }
+
+pub async fn setup_set_creation() -> (Vec<Uuid>, TestApp, Uuid) {
+    let (artists, app) = setup_original_registration().await;
+
+    // Login user
+    let login_body = serde_json::json!({
+        "handle": "user_0",
+        "password": "kApten@1023"
+    });
+    app.post_login(&login_body).await;
+
+    let set_name = "Base Set For Festival";
+    let body = serde_json::json!({
+        "name": set_name,
+        "statement": "Set statement",
+        "description": "Set description"
+    });
+
+    let response = app.post_set(&body).await;
+    println!("Response status: {:?}", response.json::<serde_json::Value>().await);
+    assert!(1==0);
+
+    let set_id = sqlx::query_scalar!(
+        r#"SELECT id FROM sets WHERE name=$1"#,
+        set_name
+    )
+    .fetch_one(&app.state.db_pool)
+    .await
+    .expect("db query failed");
+
+    (artists, app, set_id)
+}

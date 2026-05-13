@@ -1,7 +1,7 @@
 use sqlx::PgPool;
+use uuid::Uuid;
 
 use crate::{
-    domain::Handle,
     errors::ApiError,
     types::db::profile::{Profile, ProfileType},
 };
@@ -53,14 +53,28 @@ pub async fn insert_new_profile(pool: &PgPool, data: Profile) -> Result<Option<P
     .await?)
 }
 
+pub async fn update_profile_password(
+    pool: &PgPool,
+    profile_id: Uuid,
+    password_hash: String,
+) -> Result<Option<Uuid>, ApiError> {
+    Ok(sqlx::query_scalar!(
+        r#"UPDATE profiles SET password_hash = $1 WHERE id = $2 RETURNING id"#,
+        password_hash,
+        profile_id
+    )
+    .fetch_optional(pool)
+    .await?)
+}
+
 pub async fn get_profile_auth_details(
     pool: &PgPool,
-    user_name: &Handle,
+    user_name: &String,
 ) -> Result<Option<Profile>, ApiError> {
     Ok(sqlx::query_as!(
         Profile,
         r#"SELECT id, user_name, tag_line, is_claimed, youtube_profile, twitter_profile, instagram_profile, created_at, profile_picture, password_hash, profile_type as "profile_type: ProfileType", presence FROM profiles WHERE user_name=$1"#,
-        user_name.as_ref()
+        user_name
     )
     .fetch_optional(pool)
     .await?)

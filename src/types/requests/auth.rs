@@ -20,11 +20,17 @@ pub struct ProfileLogin {
     pub password: Password,
 }
 
+#[derive(Deserialize)]
+pub struct ResetPasswordReq {
+    pub old_password: Password,
+    pub new_password: Password,
+}
+
 #[derive(Serialize, Deserialize)]
 pub struct Claims {
     pub sub: String,
     pub profile_id: Uuid,
     pub role: String,
     pub exp: usize,
-    pub iat: usize
+    pub iat: usize,
 }

@@ -18,7 +18,7 @@
 16. **Add Episodes Table**
 17. **Add type on Orignals to differentiate movies and series**
 18. **Add Parent Column on Originals table** - see this will be helpful to link the multiple movies in to collection like bahubali duology and it can also be used as a reference to the seasons and episodes in case of series right? and in the feed of this parent orignal we will have broader options to fill the feed and yeah - there is a work-around so we will maked the associated_with as the parent for children originals and for parents the associated_with is on of the maker right, so we can easily link but it i think its not a good design. - ✅
-19. **Add separate tabel as for seasons** ❌- see we can make the season as a new original and add the parent as the same page created for the entire orignal, so take `The Boys` for example for series we create an original entry with the name `The Boys` and assoicated with prime_video somethig like that and then for every season we create an new original entry and we link the parent as the `the BOys` orignal for this entry so it points to the parent orignals and then for episodes this seanson-1-boys acts as the parent and we acheive it with the single table design and we also get the all the feed related to `boys` in the parent original and we can also get the feed related to seasona and even for episodes also - by this design parent column we can acheive the linking of the series to its seans and episodes in a single table of orignals but querying will be a bit complex and slow because for every episode lookup we have to do a complete orignals table lookup. -- verdict is we dont need separate table for seasons
+19. **Add separate tabel as for seasons** ❌- see we can make the season as a new original and add the parent as the same page created for the entire orignal, so take `The Boys` for example for series we create an original entry with the name `The Boys` and assoicated with prime_video somethig like that and then for every season we create an new original entry and we link the parent as the `the Boys` orignal for this entry so it points to the parent orignals and then for episodes this seanson-1-boys acts as the parent and we acheive it with the single table design and we also get the all the feed related to `boys` in the parent original and we can also get the feed related to seasona and even for episodes also - by this design parent column we can acheive the linking of the series to its seans and episodes in a single table of orignals but querying will be a bit complex and slow because for every episode lookup we have to do a complete orignals table lookup. -- verdict is we dont need separate table for seasons
 20. **Add a OriginalType to watchlist** (SERIES,MOVIE,SEASON,EPISODE) - ✅
 21. **Create a new column for type with check constraint on watchlist** - ✅
     --- completed migration 4 & 5 ---
@@ -41,4 +41,7 @@
 36. **Add Unique Constraint to the sets name column**
 37. **Add Unique Constraint to the festivals name column**
 38. **Add rules coloumn to festivals its a text**
-39. 
+39. **Add NOT NULL contraint to the pub_visibility column in the ledger table**
+40. **Add NOT NULL constraint to the entry type column in the ledger table**
+41. **Update the foreign key constraint on the episode id to ON DELETE CASCADE**
+42. **Add created_at and updated_at columns to the ledger table**

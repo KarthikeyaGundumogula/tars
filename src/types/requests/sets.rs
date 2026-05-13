@@ -1,9 +1,11 @@
 use serde::Deserialize;
 
+use crate::domain::{SetName, SetDescription, Statement};
+
 #[derive(Deserialize)]
 pub struct CreateSetReq {
-    pub name: String,
-    pub description: String,
-    pub statement: String,
+    pub name: SetName,
+    pub description: SetDescription,
+    pub statement: Statement,
     pub profile_picture:String,
 }
