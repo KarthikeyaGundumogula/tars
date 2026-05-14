@@ -1,20 +1,22 @@
 use std::sync::Arc;
 
-use axum::{Json, Router, extract::State, routing::post};
+use axum::{Router, extract::State, routing::post};
+use tracing::instrument;
 use uuid::Uuid;
 
 use crate::{
-    AppState, db::ledger::insert_new_ledger_entry, errors::ApiError, types::{db::ledger::LedgerEntry, requests::ledger::LedgerEntryReq, response::ApiResponse}, utils::auth::extractor::Artist
+    AppState, db::ledger::insert_new_ledger_entry, errors::ApiError, types::{db::ledger::LedgerEntry, requests::ledger::LedgerEntryReq, response::ApiResponse}, utils::{auth::extractor::Artist, json_extractor::AppJson}
 };
 
 pub fn router() -> Router<Arc<AppState>> {
     Router::new().route("/new", post(new_ledger_entry_handler))
 }
 
+#[instrument(name = "new_ledger_entry", skip(state, user, data), err, fields(user_id = %user.profile_id))]
 pub async fn new_ledger_entry_handler(
     State(state): State<Arc<AppState>>,
     Artist(user): Artist,
-    Json(data): Json<LedgerEntryReq>,
+    AppJson(data): AppJson<LedgerEntryReq>,
 ) -> Result<ApiResponse, ApiError> {
   let entry = LedgerEntry{
     id: Uuid::new_v4(),
@@ -27,6 +29,8 @@ pub async fn new_ledger_entry_handler(
     post_impression: data.post_impression.map(|t| t.to_string()),
     status: data.status,
     entry_type: data.entry_type,
+    created_at: chrono::Utc::now(),
+    updated_at: chrono::Utc::now(),
   };
   let entry = insert_new_ledger_entry(&state.db_pool, entry).await?;
   Ok(ApiResponse::LedgerEntryLogged(entry))

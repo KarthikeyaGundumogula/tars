@@ -9,7 +9,7 @@ impl SetName {
         if name.len() > 100 {
             return Err("Name cannot be longer than 100 characters".to_string());
         }
-        if name.chars().all(|c| {
+        if !name.chars().all(|c| {
             c.is_alphabetic() || c.is_whitespace() || c == '.' || c == ',' || c == '!' || c == '?'
         }) {
             return Err("Name cannot contain special characters".to_string());
@@ -44,5 +44,38 @@ impl<'de> serde::Deserialize<'de> for SetName {
     {
         let s = String::deserialize(deserializer)?;
         Self::parse(s).map_err(serde::de::Error::custom)
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::SetName;
+
+    #[test]
+    fn valid_name_is_accepted() {
+        assert!(SetName::parse("My Awesome Set".to_string()).is_ok());
+    }
+
+    #[test]
+    fn empty_name_is_rejected() {
+        assert!(SetName::parse("".to_string()).is_err());
+    }
+
+    #[test]
+    fn long_name_is_rejected() {
+        let name = "a".repeat(101);
+        assert!(SetName::parse(name).is_err());
+    }
+
+    #[test]
+    fn special_characters_are_rejected() {
+        assert!(SetName::parse("Set #1".to_string()).is_err());
+        assert!(SetName::parse("Set @ Home".to_string()).is_err());
+    }
+
+    #[test]
+    fn leading_trailing_whitespace_is_rejected() {
+        assert!(SetName::parse(" Set".to_string()).is_err());
+        assert!(SetName::parse("Set ".to_string()).is_err());
     }
 }

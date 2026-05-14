@@ -9,8 +9,8 @@ impl FestivalRules {
         if rules.len() > 500 {
             return Err("Rules cannot be longer than 500 characters".to_string());
         }
-        if rules.chars().all(|c| {
-            c.is_alphabetic() || c.is_whitespace() || c == '.' || c == ',' || c == '!' || c == '?'
+        if !rules.chars().all(|c| {
+            c.is_alphanumeric() || c.is_whitespace() || c == '.' || c == ',' || c == '!' || c == '?'
         }) {
             return Err("Rules cannot contain special characters".to_string());
         }
@@ -43,3 +43,30 @@ impl<'de> serde::Deserialize<'de> for FestivalRules {
         Self::parse(s).map_err(serde::de::Error::custom)
     }
 }
+
+#[cfg(test)]
+mod tests {
+    use super::FestivalRules;
+
+    #[test]
+    fn valid_rules_are_accepted() {
+        assert!(FestivalRules::parse("Rule 1. Rule 2!".to_string()).is_ok());
+    }
+
+    #[test]
+    fn empty_rules_are_rejected() {
+        assert!(FestivalRules::parse("".to_string()).is_err());
+    }
+
+    #[test]
+    fn long_rules_are_rejected() {
+        let rules = "a".repeat(501);
+        assert!(FestivalRules::parse(rules).is_err());
+    }
+
+    #[test]
+    fn special_characters_are_rejected() {
+        assert!(FestivalRules::parse("Rule #1".to_string()).is_err());
+    }
+}
+

@@ -17,7 +17,7 @@ async fn create_ledger_entry_return_success_on_correct_data() {
     let body = serde_json::json!({
         "original_id": original_id,
         "episode_id": null,
-        "visibility": "PUBLIC",
+        "visibility": true,
         "tagged_works": [],
         "pre_thought": "I'm excited to watch this!",
         "post_impression": "It was amazing!",

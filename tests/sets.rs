@@ -17,17 +17,17 @@ async fn create_set_return_success_on_correct_data() {
     let body = serde_json::json!({
         "name": set_name,
         "statement": "This is a statement about the set",
-        "description": "This is a longer description of the set"
+        "description": "This is a longer description of the set",
+        "profile_picture": "no_profile picture"
     });
 
-    // Act
     let response = app.post_set(&body).await;
 
     println!(
         "Response status: {:?}",
         response.json::<serde_json::Value>().await
     );
-    assert!(1 == 0);
+    
 
     let saved_set = sqlx::query!(
         r#"SELECT id, name, statement, description, curator FROM sets WHERE name=$1"#,
@@ -52,7 +52,8 @@ async fn create_set_returns_401_without_login() {
     let body = serde_json::json!({
         "name": "My Awesome Set",
         "statement": "This is a statement about the set",
-        "description": "This is a longer description of the set"
+        "description": "This is a longer description of the set",
+        "profile_picture": "no_profile picture" 
     });
 
     let response = app.post_set(&body).await;

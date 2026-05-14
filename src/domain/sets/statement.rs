@@ -48,3 +48,25 @@ impl<'de> serde::Deserialize<'de> for Statement {
         Self::parse(s).map_err(serde::de::Error::custom)
     }
 }
+
+#[cfg(test)]
+mod tests {
+    use super::Statement;
+
+    #[test]
+    fn valid_statement_is_accepted() {
+        assert!(Statement::parse("A powerful artistic statement".to_string()).is_ok());
+    }
+
+    #[test]
+    fn empty_statement_is_rejected() {
+        assert!(Statement::parse("".to_string()).is_err());
+    }
+
+    #[test]
+    fn long_statement_is_rejected() {
+        let statement = "a".repeat(101);
+        assert!(Statement::parse(statement).is_err());
+    }
+}
+

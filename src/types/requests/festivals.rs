@@ -8,6 +8,7 @@ use crate::domain::{FestivalDescription, FestivalName};
 pub struct CreateFestivalReq {
     pub name: FestivalName,
     pub description: FestivalDescription,
+    pub rules: crate::domain::festivals::fest_rules::FestivalRules,
     pub start_date: DateTime<Utc>,
     pub end_date: DateTime<Utc>,
     pub set_id: Uuid,

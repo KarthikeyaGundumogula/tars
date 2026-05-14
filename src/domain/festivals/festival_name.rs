@@ -38,3 +38,25 @@ impl<'de> serde::Deserialize<'de> for FestivalName {
         Self::parse(s).map_err(serde::de::Error::custom)
     }
 }
+
+#[cfg(test)]
+mod tests {
+    use super::FestivalName;
+
+    #[test]
+    fn valid_name_is_accepted() {
+        assert!(FestivalName::parse("Cannes Film Festival".to_string()).is_ok());
+    }
+
+    #[test]
+    fn empty_name_is_rejected() {
+        assert!(FestivalName::parse("".to_string()).is_err());
+    }
+
+    #[test]
+    fn long_name_is_rejected() {
+        let name = "a".repeat(101);
+        assert!(FestivalName::parse(name).is_err());
+    }
+}
+

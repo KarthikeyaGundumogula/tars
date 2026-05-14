@@ -14,6 +14,7 @@ pub struct Set {
     pub name: String,
     pub statement: String,
     pub description: String,
+    pub profile_picture: String,
     pub presence: i64,
     pub curator: Uuid,
     pub created_at: DateTime<Utc>,

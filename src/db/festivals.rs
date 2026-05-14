@@ -5,7 +5,7 @@ use crate::{errors::ApiError, types::db::festivals::{Festival, Panelist}};
 pub async fn insert_new_festival(txn: &mut sqlx::Transaction<'_, sqlx::Postgres>, festival: Festival) -> Result<Uuid, ApiError> {
     Ok(
     sqlx::query_scalar!(
-      "INSERT INTO festivals (id, name, description, set_id, organizer, start_date, end_date, created_at) VALUES ($1, $2, $3, $4, $5, $6, $7, $8) RETURNING id",
+      "INSERT INTO festivals (id, name, description, set_id, organizer, start_date, end_date, rules, created_at) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9) RETURNING id",
       festival.id,
       festival.name,
       festival.description,
@@ -13,6 +13,7 @@ pub async fn insert_new_festival(txn: &mut sqlx::Transaction<'_, sqlx::Postgres>
       festival.organizer,
       festival.start_date,
       festival.end_date,
+      festival.rules,
       festival.created_at
     )
     .fetch_one(&mut **txn)

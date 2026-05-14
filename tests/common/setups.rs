@@ -84,12 +84,12 @@ pub async fn setup_set_creation() -> (Vec<Uuid>, TestApp, Uuid) {
     let body = serde_json::json!({
         "name": set_name,
         "statement": "Set statement",
-        "description": "Set description"
+        "description": "Set description",
+        "profile_picture":"ajojojfoo"
     });
 
     let response = app.post_set(&body).await;
-    println!("Response status: {:?}", response.json::<serde_json::Value>().await);
-    assert!(1==0);
+    assert!(response.status().is_success());
 
     let set_id = sqlx::query_scalar!(
         r#"SELECT id FROM sets WHERE name=$1"#,

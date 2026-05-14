@@ -29,4 +29,6 @@ pub struct LedgerEntry {
     pub post_impression: Option<String>,
     pub status: WatchlistStatus, // it should not be null
     pub entry_type: LedgerEntryType,
+    pub created_at: chrono::DateTime<chrono::Utc>,
+    pub updated_at: chrono::DateTime<chrono::Utc>,
 }

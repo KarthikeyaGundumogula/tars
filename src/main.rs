@@ -21,7 +21,7 @@ async fn main() -> Result<(), std::io::Error> {
     let address = format!("{}:{}", config.application.host, config.application.port);
     let listener = TcpListener::bind(address).await.unwrap();
     let db_pool = PgPoolOptions::new()
-        .max_connections(5)
+        .max_connections(50)
         .connect(&config.database.connection_string())
         .await
         .expect("failed to connect to the database");

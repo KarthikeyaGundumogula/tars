@@ -11,6 +11,7 @@ pub struct Festival {
     pub organizer: Uuid,
     pub start_date: DateTime<Utc>,
     pub end_date: DateTime<Utc>,
+    pub rules: String,
     pub created_at: DateTime<Utc>
 }
 

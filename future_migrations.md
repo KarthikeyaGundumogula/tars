@@ -39,9 +39,9 @@
     --- completed migration 7 ---
 35. **Add Profile picture column to the sets table**
 36. **Add Unique Constraint to the sets name column**
-37. **Add Unique Constraint to the festivals name column**
-38. **Add rules coloumn to festivals its a text**
-39. **Add NOT NULL contraint to the pub_visibility column in the ledger table**
-40. **Add NOT NULL constraint to the entry type column in the ledger table**
-41. **Update the foreign key constraint on the episode id to ON DELETE CASCADE**
-42. **Add created_at and updated_at columns to the ledger table**
+37. **Add rules coloumn to festivals its a text**
+38. **Add NOT NULL contraint to the pub_visibility column in the ledger table**
+39. **Add NOT NULL constraint to the entry type column in the ledger table**
+40. **Update the foreign key constraint on the original id to ON DELETE set null on ledger**
+41. **Add created_at and updated_at columns to the ledger table**
+42. **Remove the NOT NULL contraint on the work_id of the panelists table**

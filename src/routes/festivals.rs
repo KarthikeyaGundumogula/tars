@@ -5,9 +5,9 @@ use crate::{
     types::{
         db::festivals::{Festival, Panelist}, requests::festivals::CreateFestivalReq, response::ApiResponse,
     },
-    utils::auth::extractor::Artist,
+    utils::{auth::extractor::Artist, json_extractor::AppJson},
 };
-use axum::{Json, Router, extract::State, routing::post};
+use axum::{Router, extract::State, routing::post};
 use tracing::instrument;
 use std::sync::Arc;
 
@@ -15,7 +15,7 @@ use std::sync::Arc;
 pub async fn create_new_set(
     State(state): State<Arc<AppState>>,
     Artist(user): Artist,
-    Json(data): Json<CreateFestivalReq>,
+    AppJson(data): AppJson<CreateFestivalReq>,
 ) -> Result<ApiResponse, ApiError> {
     let festival = Festival {
         id: uuid::Uuid::new_v4(),
@@ -25,6 +25,7 @@ pub async fn create_new_set(
         organizer: user.profile_id,
         start_date: data.start_date,
         end_date: data.end_date,
+        rules: data.rules.to_string(),
         created_at: chrono::Utc::now(),
     };
     let mut txn = state.db_pool.begin().await?;

@@ -1,0 +1,22 @@
+-- Add migration script here
+ALTER TABLE sets
+ADD COLUMN profile_picture TEXT;
+ALTER TABLE sets
+ADD CONSTRAINT uq_set_name UNIQUE (name);
+ALTER TABLE festivals
+ADD COLUMN rules TEXT;
+ALTER TABLE ledger
+ALTER COLUMN pub_visibility
+SET NOT NULL;
+ALTER TABLE ledger
+ALTER COLUMN entry_type
+SET NOT NULL;
+ALTER TABLE ledger DROP CONSTRAINT fk_original;
+ALTER TABLE ledger
+ADD CONSTRAINT fk_orignal FOREIGN KEY (original_id) REFERENCES originals(id) ON DELETE
+SET NULL;
+ALTER TABLE ledger
+ADD COLUMN created_at TIMESTAMPTZ DEFAULT NOW(),
+  ADD COLUMN updated_at TIMESTAMPTZ DEFAULT NOW();
+ALTER TABLE panelists
+ALTER COLUMN work_id DROP NOT NULL;

@@ -1,6 +1,6 @@
 use std::sync::Arc;
 
-use axum::{Json, Router, extract::State, routing::post};
+use axum::{Router, extract::State, routing::post};
 use axum_extra::extract::{
     CookieJar,
     cookie::{Cookie, SameSite},
@@ -77,7 +77,7 @@ pub async fn login_profile(
     let token = create_jwt(&user.user_name, "artist", &app.jwt_secret, user.id)?;
     let cookie = Cookie::build(("auth_token", token))
         .http_only(true)
-        .secure(false)
+        .secure(true)
         .same_site(SameSite::Lax)
         .path("/")
         .build();
@@ -96,10 +96,11 @@ pub async fn logout_profile(jar: CookieJar) -> Result<ApiResponse, ApiError> {
     Ok(ApiResponse::ProfileAuthenticated(jar.remove(cookie)))
 }
 
+#[instrument(name = "reset_password", skip(app, user, data), err, fields(user_id = %user.profile_id))]
 pub async fn reset_password(
     State(app): State<Arc<AppState>>,
     Artist(user): Artist,
-    Json(data): Json<ResetPasswordReq>,
+    AppJson(data): AppJson<ResetPasswordReq>,
 ) -> Result<ApiResponse, ApiError> {
     let old_profile = get_profile_auth_details(&app.db_pool, &user.handle).await?;
     let password_hash = match &old_profile {
