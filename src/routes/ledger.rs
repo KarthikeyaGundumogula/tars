@@ -1,6 +1,7 @@
 use std::sync::Arc;
 
 use axum::{Router, extract::State, routing::post};
+use chrono::Utc;
 use tracing::instrument;
 use uuid::Uuid;
 
@@ -23,14 +24,14 @@ pub async fn new_ledger_entry_handler(
     original_id: data.original_id,
     episode_id: data.episode_id,
     profile_id: user.profile_id,
-    visibility: data.visibility,
+    pub_visibility: data.visibility,
     tagged_works: data.tagged_works,
     pre_thought: data.pre_thought.map(|t| t.to_string()),
     post_impression: data.post_impression.map(|t| t.to_string()),
-    status: data.status,
+    status: Some(data.status),
     entry_type: data.entry_type,
-    created_at: chrono::Utc::now(),
-    updated_at: chrono::Utc::now(),
+    created_at: Some(Utc::now()),
+    updated_at: Some(Utc::now()),
   };
   let entry = insert_new_ledger_entry(&state.db_pool, entry).await?;
   Ok(ApiResponse::LedgerEntryLogged(entry))

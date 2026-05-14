@@ -79,7 +79,7 @@ pub trait Resource: Send + Sync + Sized {
     fn fetch_by_id(
         db: &PgPool,
         resource_id: Uuid,
-    ) -> impl Future<Output = Result<Option<(Uuid, Self)>, sqlx::Error>> + Send
+    ) -> impl Future<Output = Result<Option<(Uuid, Self)>, ApiError>> + Send
     where
         Self: Send;
 }

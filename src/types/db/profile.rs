@@ -2,6 +2,8 @@ use chrono::{DateTime, Utc};
 use serde::Serialize;
 use uuid::Uuid;
 
+use crate::{errors::ApiError, utils::auth::extractor::Resource};
+
 #[derive(Clone, Serialize, sqlx::Type)]
 #[sqlx(type_name = "profile_type")]
 pub enum ProfileType {
@@ -22,13 +24,13 @@ pub struct Profile {
     pub id: Uuid,
     pub user_name: String,
     pub tag_line: String,
+    pub is_claimed: bool,
     pub presence: i64,
     pub profile_picture: String,
     pub youtube_profile: Option<String>,
     pub twitter_profile: Option<String>,
     pub instagram_profile: Option<String>,
     pub password_hash: String,
-    pub is_claimed: bool,
     pub profile_type: ProfileType,
     pub created_at: DateTime<Utc>,
 }
@@ -40,4 +42,24 @@ pub struct Role {
     pub role_name: String,
     pub category: RoleType,
     pub created_at: DateTime<Utc>,
+}
+
+impl Resource for Profile {
+    async fn fetch_by_id(
+        db: &sqlx::PgPool,
+        resource_id: Uuid,
+    ) -> Result<Option<(Uuid, Self)>, ApiError>
+    where
+        Self: Send,
+    {
+        let profile = sqlx::query_as!(
+            Profile,
+            r#"SELECT id, user_name, tag_line, presence, profile_picture, youtube_profile, twitter_profile, instagram_profile, password_hash, is_claimed, profile_type as "profile_type:ProfileType", created_at FROM profiles WHERE id = $1"#,
+            resource_id
+        )
+        .fetch_optional(db)
+        .await?
+        .ok_or(ApiError::NotFound)?;
+        Ok(Some((profile.id, profile)))
+    }
 }

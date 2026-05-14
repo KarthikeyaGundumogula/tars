@@ -25,7 +25,7 @@ pub async fn create_new_set(
         organizer: user.profile_id,
         start_date: data.start_date,
         end_date: data.end_date,
-        rules: data.rules.to_string(),
+        rules: data.rules.map(|r| r.to_string()),
         created_at: chrono::Utc::now(),
     };
     let mut txn = state.db_pool.begin().await?;

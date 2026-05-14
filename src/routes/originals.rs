@@ -32,11 +32,14 @@ pub async fn create_new_original_handler(
         release_date: data.release_date,
         description: data.description.to_string(),
         cover_img: data.cover_img,
-        presence: 100,
+        presence: Some(100),
         password_hash,
-        associated_with: data.associated_with,
-        genres: data.genres.into_iter().map(|g| g.to_string()).collect(),
+        associated_with: Some(data.associated_with),
+        genres: data.genres.into_iter().map(|g| Some(g.to_string())).collect(),
         created_at: Utc::now(),
+        parent: None,
+        category: crate::types::db::original::OriginalCategory::MOVIE,
+        duration: None,
     };
     let original_id = insert_new_original(&mut txn, original).await?;
     for star in data.stars.iter() {

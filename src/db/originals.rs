@@ -38,7 +38,7 @@ pub async fn insert_new_original(
         data.password_hash,
         data.associated_with,
         data.release_date,
-        &data.genres
+        data.genres.as_deref()
     )
     .fetch_one(&mut **txn)
     .await?)

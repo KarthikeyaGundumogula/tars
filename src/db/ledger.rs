@@ -36,11 +36,11 @@ pub async fn insert_new_ledger_entry(pool: &PgPool, data: LedgerEntry) -> Result
       "#,
         data.original_id,
         data.profile_id,
-        data.visibility,
+        data.pub_visibility,
         data.tagged_works.as_deref(),
         data.pre_thought,
         data.post_impression,
-        data.status as WatchlistStatus,
+        data.status as Option<WatchlistStatus>,
         data.entry_type as LedgerEntryType,
         data.episode_id,
         data.id

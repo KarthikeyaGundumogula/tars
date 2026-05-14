@@ -67,7 +67,7 @@ async fn upload_edit(data: UploadEditReq, pool: &PgPool, user: AuthUser) -> Resu
         id: Uuid::new_v4(),
         artist_id: user.profile_id,
         title: data.title.map(|t| t.to_string()),
-        credits: 0,
+        credits: Some(0),
         created_at: Utc::now(),
         category: WorkType::EDIT,
     };
@@ -76,7 +76,6 @@ async fn upload_edit(data: UploadEditReq, pool: &PgPool, user: AuthUser) -> Resu
         src_id: data.src_id,
         platform: data.platform,
         format: data.format,
-        created_at: Utc::now(),
     };
     let mut txn = pool.begin().await?;
     let new_work_id = insert_new_work(&mut txn, new_work).await?;
@@ -94,7 +93,7 @@ async fn upload_poster(
         id: Uuid::new_v4(),
         artist_id: user.profile_id,
         title: data.title.map(|t| t.to_string()),
-        credits: 0,
+        credits: Some(0),
         created_at: Utc::now(),
         category: WorkType::POSTER,
     };
@@ -102,7 +101,6 @@ async fn upload_poster(
         work_id: new_work.id,
         src_id: data.src_id,
         format: data.format,
-        created_at: Utc::now(),
     };
     let mut txn = pool.begin().await?;
     let new_work_id = insert_new_work(&mut txn, new_work).await?;
@@ -120,7 +118,7 @@ async fn upload_script(
         id: Uuid::new_v4(),
         artist_id: user.profile_id,
         title: data.title.map(|t| t.to_string()),
-        credits: 0,
+        credits: Some(0),
         created_at: Utc::now(),
         category: WorkType::SCRIPT,
     };
@@ -128,7 +126,6 @@ async fn upload_script(
         work_id: new_work.id,
         img_src_ids: data.src_ids,
         thoughts: data.thoughts.iter().map(|t| t.to_string()).collect(),
-        created_at: Utc::now(),
     };
     let mut txn = pool.begin().await?;
     let new_work_id = insert_new_work(&mut txn, new_work).await?;

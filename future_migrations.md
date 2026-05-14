@@ -37,11 +37,17 @@
 33. **Create a table for festival works(festival_id,work_id)** - ✅
 34. **Create a table for set_works(set_id,work_id)** - ✅
     --- completed migration 7 ---
-35. **Add Profile picture column to the sets table**
-36. **Add Unique Constraint to the sets name column**
-37. **Add rules coloumn to festivals its a text**
-38. **Add NOT NULL contraint to the pub_visibility column in the ledger table**
-39. **Add NOT NULL constraint to the entry type column in the ledger table**
-40. **Update the foreign key constraint on the original id to ON DELETE set null on ledger**
-41. **Add created_at and updated_at columns to the ledger table**
-42. **Remove the NOT NULL contraint on the work_id of the panelists table**
+35. **Add Profile picture column to the sets table** - ✅
+36. **Add Unique Constraint to the sets name column** - ✅
+37. **Add rules coloumn to festivals its a text** - ✅
+38. **Add NOT NULL contraint to the pub_visibility column in the ledger table** - ✅
+39. **Add NOT NULL constraint to the entry type column in the ledger table** - ✅
+40. **Update the foreign key constraint on the original id to ON DELETE set null on ledger** - ✅
+41. **Add created_at and updated_at columns to the ledger table** - ✅
+42. **Remove the NOT NULL contraint on the work_id of the panelists table** - ✅
+    --- completed migration 8 ---
+43. **Remove the Not Null constraint on the original_id column in the originals_credits table and add a Reference column which points to profiles table and add a check to ensure that atleast one of them is present**
+44. **ADD not null contraint to the created_at,updated_at,status columns int the ledger table**
+45. **Add Not NULL contraint to the presence in the originals table**
+46. **Add NOT NULL contraint to the profile picture column in sets table**
+47. **Add NOT NULL contraint to the credits column in works table**

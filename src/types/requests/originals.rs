@@ -17,7 +17,7 @@ pub struct CreateOriginalReq {
     pub cover_img: String,
     pub password: Password,
     pub associated_with: Uuid,
-    pub release_date: DateTime<Utc>,
+    pub release_date: Option<DateTime<Utc>>,
     pub genres: Vec<Genre>,
     pub stars: Vec<Crew>,
     pub makers: Vec<Crew>,
