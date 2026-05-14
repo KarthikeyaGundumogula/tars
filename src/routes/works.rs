@@ -134,6 +134,17 @@ async fn upload_script(
     Ok(new_work_id)
 }
 
+async fn update_work_handler() -> Result<ApiResponse, ApiError> {
+    todo!()
+}
+
+async fn like_work_handler() -> Result<ApiResponse, ApiError> {
+    todo!()
+}
+
 pub fn router() -> Router<Arc<AppState>> {
-    Router::new().route("/new/{work_type}", post(create_new_work_handler))
+    Router::new()
+        .route("/new/{work_type}", post(create_new_work_handler))
+        .route("/update_work", post(update_work_handler))
+        .route("/like", post(like_work_handler))
 }

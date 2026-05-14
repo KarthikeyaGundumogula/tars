@@ -5,6 +5,7 @@ pub mod works;
 pub mod sets;
 pub mod festivals;
 pub mod ledger;
+pub mod artists;
 
 use crate::AppState;
 use axum::Router;

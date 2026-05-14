@@ -35,6 +35,20 @@ pub async fn create_new_set_handler(
     Ok(ApiResponse::SetCreated(set_id))
 }
 
+async fn update_set_details_handler() -> Result<ApiResponse, ApiError> {
+    todo!()
+}
+async fn join_set_handler() -> Result<ApiResponse, ApiError> {
+    todo!()
+}
+async fn leave_set_handler() -> Result<ApiResponse, ApiError> {
+    todo!()
+}
+
 pub fn router() -> Router<Arc<AppState>> {
-    Router::new().route("/new", post(create_new_set_handler))
+    Router::new()
+        .route("/new", post(create_new_set_handler))
+        .route("/update_set_details", post(update_set_details_handler))
+        .route("/join", post(join_set_handler))
+        .route("/leave", post(leave_set_handler))
 }
