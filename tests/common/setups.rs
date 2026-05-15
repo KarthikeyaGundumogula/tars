@@ -14,7 +14,10 @@ pub async fn setup_original_registration() -> (Vec<Uuid>, TestApp) {
             "tag_line": "I dont give a dmn about your opinion",
             "password": "kApten@1023",
             "profile_picture": "aofdjosfjosf",
-            "youtube_profile": "aojojfosjf"
+            "youtube_profile": "aojojfosjf",
+            "stage_name":"kapten",
+            "background_color":"#FF0000",
+            "text_color":"#000000"
         });
         
         let response = app.post_register(&body).await;

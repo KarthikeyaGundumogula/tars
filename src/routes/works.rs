@@ -145,6 +145,6 @@ async fn like_work_handler() -> Result<ApiResponse, ApiError> {
 pub fn router() -> Router<Arc<AppState>> {
     Router::new()
         .route("/new/{work_type}", post(create_new_work_handler))
-        .route("/update_work", post(update_work_handler))
+        .route("/{resource_id}/update", post(update_work_handler))
         .route("/like", post(like_work_handler))
 }

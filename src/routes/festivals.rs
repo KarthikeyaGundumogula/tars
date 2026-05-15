@@ -61,7 +61,7 @@ async fn submit_memeber_work_handler() -> Result<ApiResponse, ApiError> {
 pub fn router() -> Router<Arc<AppState>> {
     Router::new()
         .route("/new", post(create_new_set))
-        .route("/update_festival_details", post(update_festival_details))
+        .route("/{resource_id}/update", post(update_festival_details))
         .route("/panelist/submit_work", post(submit_panelist_work_handler))
         .route("/member/submit_work", post(submit_memeber_work_handler))
 }

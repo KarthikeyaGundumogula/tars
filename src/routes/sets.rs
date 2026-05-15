@@ -48,7 +48,7 @@ async fn leave_set_handler() -> Result<ApiResponse, ApiError> {
 pub fn router() -> Router<Arc<AppState>> {
     Router::new()
         .route("/new", post(create_new_set_handler))
-        .route("/update_set_details", post(update_set_details_handler))
+        .route("/{resource_id}/update", post(update_set_details_handler))
         .route("/join", post(join_set_handler))
         .route("/leave", post(leave_set_handler))
 }

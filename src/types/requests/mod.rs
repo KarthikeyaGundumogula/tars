@@ -4,3 +4,4 @@ pub mod works;
 pub mod sets;
 pub mod festivals;
 pub mod ledger;
+pub mod artist;

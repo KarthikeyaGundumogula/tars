@@ -48,6 +48,6 @@ async fn tag_work_handler() -> Result<ApiResponse, ApiError> {
 pub fn router() -> Router<Arc<AppState>> {
     Router::new()
         .route("/new", post(new_ledger_entry_handler))
-        .route("/update_ledger_entry", post(update_ledger_entry_handler))
-        .route("/tag_work", post(tag_work_handler))
+        .route("/{resource_id}/update", post(update_ledger_entry_handler))
+        .route("/{resource_id}/tag_work", post(tag_work_handler))
 }

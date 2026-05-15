@@ -23,4 +23,5 @@ pub fn build_router() -> Router<Arc<AppState>> {
         .nest("/sets", sets::router())
         .nest("/festivals", festivals::router())
         .nest("/ledger", ledger::router())
+        .nest("/artists", artists::router())
 }

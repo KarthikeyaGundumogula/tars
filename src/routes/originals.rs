@@ -78,6 +78,6 @@ async fn new_release_handler() -> Result<ApiResponse, ApiError> {
 pub fn router() -> Router<Arc<AppState>> {
     Router::new()
         .route("/new", post(create_new_original_handler))
-        .route("/update_original_details", post(update_original_details))
+        .route("/{resource_id}/update", post(update_original_details))
         .route("/new_release", post(new_release_handler))
 }

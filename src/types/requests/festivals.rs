@@ -14,3 +14,13 @@ pub struct CreateFestivalReq {
     pub set_id: Uuid,
     pub panelists: Vec<Uuid>,
 }
+
+#[derive(Deserialize)]
+pub struct UpdateFestivalReq {
+    pub name: Option<FestivalName>,
+    pub description: Option<FestivalDescription>,
+    pub rules: Option<FestivalRules>,
+    pub start_date: Option<DateTime<Utc>>,
+    pub end_date: Option<DateTime<Utc>>,
+    pub panelists: Option<Vec<Uuid>>,
+}

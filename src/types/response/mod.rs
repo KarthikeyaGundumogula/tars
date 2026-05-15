@@ -9,6 +9,11 @@ pub enum ApiResponse {
     ProfileAuthenticated(CookieJar),
     PasswordUpdated(Uuid),
     LedgerEntryLogged(Uuid),
+    ProfileUpdated(Uuid),
+    FollowedArtist(bool),
+    UnfollowedArtist(bool),
+    FavoritedArtist(bool),
+    FavoriteArtistRemoved(bool)
 }
 
 impl IntoResponse for ApiResponse {
@@ -32,6 +37,21 @@ impl IntoResponse for ApiResponse {
             }
             Self::LedgerEntryLogged(id) => {
                 (StatusCode::OK, Json(serde_json::json!({"id": id}))).into_response()
+            }
+            Self::ProfileUpdated(id) => {
+                (StatusCode::OK, Json(serde_json::json!({"id": id}))).into_response()
+            }
+            Self::FollowedArtist(status) => {
+                (StatusCode::OK, Json(serde_json::json!({"status": status}))).into_response()
+            }
+            Self::UnfollowedArtist(status) => {
+                (StatusCode::OK, Json(serde_json::json!({"status": status}))).into_response()
+            }
+            Self::FavoritedArtist(status) => {
+                (StatusCode::OK, Json(serde_json::json!({"status": status}))).into_response()
+            }
+            Self::FavoriteArtistRemoved(status) => {
+                (StatusCode::OK, Json(serde_json::json!({"status": status}))).into_response()
             }
         }
     }

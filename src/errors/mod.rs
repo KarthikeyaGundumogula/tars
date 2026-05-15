@@ -98,11 +98,11 @@ impl IntoResponse for ApiError {
                 )),
             )
                 .into_response(),
-            Self::Unauthorized(_) => (
+            Self::Unauthorized(e) => (
                 StatusCode::UNAUTHORIZED,
                 Json(ErrorResponse::new(
                     StatusCode::UNAUTHORIZED.to_string(),
-                    message,
+                    e,
                 )),
             )
                 .into_response(),

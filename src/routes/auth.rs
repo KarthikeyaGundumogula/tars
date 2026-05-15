@@ -77,7 +77,6 @@ pub async fn login_profile(
     let token = create_jwt(&user.user_name, "artist", &app.jwt_secret, user.id)?;
     let cookie = Cookie::build(("auth_token", token))
         .http_only(true)
-        .secure(true)
         .same_site(SameSite::Lax)
         .path("/")
         .build();
@@ -94,6 +93,11 @@ pub async fn logout_profile(jar: CookieJar) -> Result<ApiResponse, ApiError> {
         .max_age(time::Duration::seconds(0))
         .build();
     Ok(ApiResponse::ProfileAuthenticated(jar.remove(cookie)))
+}
+
+pub async fn admin_login_handler(
+) -> Result<ApiResponse, ApiError> {
+    todo!()
 }
 
 #[instrument(name = "reset_password", skip(app, user, data), err, fields(user_id = %user.profile_id))]
@@ -125,4 +129,5 @@ pub fn router() -> Router<Arc<AppState>> {
         .route("/login", post(login_profile))
         .route("/logout", post(logout_profile))
         .route("/reset-password", post(reset_password))
+        .route("/admin/login",post(admin_login_handler))
 }

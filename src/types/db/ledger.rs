@@ -19,7 +19,7 @@ pub enum LedgerEntryType {
     EPISODE,
     SEASON,
 }
-
+ 
 #[derive(sqlx::FromRow)]
 pub struct LedgerEntry {
     pub id: Uuid,

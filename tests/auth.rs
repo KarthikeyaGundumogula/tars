@@ -9,7 +9,10 @@ async fn register_profile_return_200_on_correct_data() {
         "tag_line": "I dont give a dmn about your opinion",
         "password": "kApten@1023",
         "profile_picture": "aofdjosfjosf",
-        "youtube_profile": "aojojfosjf"
+        "youtube_profile": "aojojfosjf",
+        "stage_name":"kapten",
+        "text_color":"#000000",
+        "background_color":"#FFFFFF"
     });
     
     let response = app.post_register(&body).await;
@@ -36,7 +39,10 @@ async fn login_artist_return_200_on_correct_data() {
         "tag_line": "I dont give a dmn about your opinion",
         "password": "kApten@1023",
         "profile_picture": "aofdjosfjosf",
-        "youtube_profile": "aojojfosjf"
+        "youtube_profile": "aojojfosjf",
+        "stage_name":"kapten",
+        "text_color":"#000000",
+        "background_color":"#FFFFFF"
     });
     let register_response = app.post_register(&register_body).await;
     assert_eq!(register_response.status(), reqwest::StatusCode::OK);
