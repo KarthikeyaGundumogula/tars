@@ -13,7 +13,10 @@ pub enum ApiResponse {
     FollowedArtist(bool),
     UnfollowedArtist(bool),
     FavoritedArtist(bool),
-    FavoriteArtistRemoved(bool)
+    FavoriteArtistRemoved(bool),
+    FestivalDetailsUpdated(Uuid),
+    PanelistAdded(Uuid),
+    PanelistDeleted(Uuid)
 }
 
 impl IntoResponse for ApiResponse {
@@ -52,6 +55,15 @@ impl IntoResponse for ApiResponse {
             }
             Self::FavoriteArtistRemoved(status) => {
                 (StatusCode::OK, Json(serde_json::json!({"status": status}))).into_response()
+            }
+            Self::FestivalDetailsUpdated(id) => {
+                (StatusCode::OK, Json(serde_json::json!({"id": id}))).into_response()
+            }
+            Self::PanelistAdded(id) => {
+                (StatusCode::OK, Json(serde_json::json!({"id": id}))).into_response()
+            }
+            Self::PanelistDeleted(id) => {
+                (StatusCode::OK, Json(serde_json::json!({"id": id}))).into_response()
             }
         }
     }

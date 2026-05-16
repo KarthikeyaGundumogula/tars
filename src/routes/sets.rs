@@ -10,7 +10,7 @@ use crate::{
     db::sets::insert_new_set,
     errors::ApiError,
     types::{db::sets::Set, requests::sets::CreateSetReq, response::ApiResponse},
-    utils::{auth::extractor::Artist, json_extractor::AppJson},
+    shared::{auth::extractor::Artist, json_extractor::AppJson},
 };
 
 #[instrument(name = "create_new_set", skip(state, user, data), fields(curator= %user.handle, set_name = %data.name))]

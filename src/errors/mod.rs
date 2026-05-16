@@ -28,7 +28,7 @@ impl ErrorResponse {
 pub enum ApiError {
     #[error("Server responded with nothing")]
     NotFound,
-    #[error("Unble to process the incoming request")]
+    #[error("Unable to process the incoming request")]
     Serialization(#[from] JsonRejection),
     #[error("Invalid Url")]
     UrlError(#[from] PathRejection),
@@ -110,6 +110,14 @@ impl IntoResponse for ApiError {
                 StatusCode::BAD_REQUEST,
                 Json(ErrorResponse::new(
                     StatusCode::BAD_REQUEST.to_string(),
+                    message,
+                )),
+            )
+                .into_response(),
+            Self::CookieJarRejection(_) => (
+                StatusCode::INTERNAL_SERVER_ERROR,
+                Json(ErrorResponse::new(
+                    StatusCode::INTERNAL_SERVER_ERROR.to_string(),
                     message,
                 )),
             )

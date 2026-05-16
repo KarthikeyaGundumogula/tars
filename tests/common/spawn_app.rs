@@ -1,3 +1,4 @@
+#![allow(dead_code)]
 use tars::{AppState, configuration::get_configuration, startup::run};
 use tokio::net::TcpListener;
 use uuid::Uuid;
@@ -77,6 +78,51 @@ impl TestApp {
     pub async fn post_update_profile(&self, body: &serde_json::Value) -> reqwest::Response {
         self.api_client
             .post(&format!("{}/artists/update", &self.address))
+            .json(body)
+            .send()
+            .await
+            .expect("Failed to execute request.")
+    }
+
+    pub async fn post_follow(&self, body: &serde_json::Value) -> reqwest::Response {
+        self.api_client
+            .post(&format!("{}/artists/follow", &self.address))
+            .json(body)
+            .send()
+            .await
+            .expect("Failed to execute request.")
+    }
+
+    pub async fn post_unfollow(&self, body: &serde_json::Value) -> reqwest::Response {
+        self.api_client
+            .post(&format!("{}/artists/unfollow", &self.address))
+            .json(body)
+            .send()
+            .await
+            .expect("Failed to execute request.")
+    }
+
+    pub async fn post_favorite(&self, body: &serde_json::Value) -> reqwest::Response {
+        self.api_client
+            .post(&format!("{}/artists/favorite", &self.address))
+            .json(body)
+            .send()
+            .await
+            .expect("Failed to execute request.")
+    }
+
+    pub async fn post_unfavorite(&self, body: &serde_json::Value) -> reqwest::Response {
+        self.api_client
+            .post(&format!("{}/artists/unfavorite", &self.address))
+            .json(body)
+            .send()
+            .await
+            .expect("Failed to execute request.")
+    }
+
+    pub async fn post_reset_password(&self, body: &serde_json::Value) -> reqwest::Response {
+        self.api_client
+            .post(&format!("{}/auth/reset-password", &self.address))
             .json(body)
             .send()
             .await

@@ -11,7 +11,7 @@ use crate::{
         requests::artist::{ArtistActionReq, UpdateProfileReq},
         response::ApiResponse,
     },
-    utils::auth::extractor::Artist,
+    shared::auth::extractor::Artist,
 };
 
 #[instrument(name = "update profile details", skip(app, user, data),fields(profile_id = %user.profile_id.to_string()))]

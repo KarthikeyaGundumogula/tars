@@ -1,41 +1,14 @@
 mod common;
 use chrono::Utc;
-
-use crate::common::setups::setup_original_registration;
+use common::{fixtures, setups::setup_original_registration};
 
 #[tokio::test]
 async fn create_original_return_success_on_correct_data() {
-    // Arrange
     let (artists, app) = setup_original_registration().await;
 
-    let body = serde_json::json!({
-        "title": "They Call him Og",
-        "description": "fuck you staya dada",
-        "cover_img": "canada is fucked",
-        "password": "Kap@123456",
-        "associated_with": artists[0],
-        "release_date": Utc::now(),
-        "genres": ["action", "drama"],
-        "stars": [{
-            "role": "Ojas Ghambheera",
-            "artist": artists[1]
-        },{
-            "role": "Kanmani",
-            "artist": artists[2]
-        }],
-        "makers": [{
-            "role": "Music Director",
-            "artist": artists[3]
-        },{
-            "role": "Director",
-            "artist": artists[1]
-        }]
-    });
-
-    // Act
+    let body = fixtures::create_original_body(&artists);
     let response = app.post_original(&body).await;
 
-    // Assert
     assert_eq!(response.status(), reqwest::StatusCode::OK);
 
     let description = sqlx::query_scalar!(
@@ -52,56 +25,52 @@ async fn create_original_return_success_on_correct_data() {
     .fetch_all(&app.state.db_pool)
     .await
     .expect("db query failed");
-    println!("actors: {:?}", actors);
-    assert_eq!(description, "fuck you staya dada".to_string());
+
+    assert_eq!(description, "A cinematic masterpiece from the streets");
     assert_eq!(actors[0], "Ojas Ghambheera".to_string());
     assert_eq!(actors[2], "Kanmani".to_string());
 }
 
 #[tokio::test]
-async fn create_original_returns_400_when_data_is_missing_or_invalid() {
-    // Arrange
+async fn create_original_returns_422_when_data_is_missing() {
     let (artists, app) = setup_original_registration().await;
-    
-    // Table-driven tests for validation
+
     let test_cases = vec![
         (
             serde_json::json!({
-                // missing password - should faail
-                "description": "fuck you staya dada",
-                "cover_img": "canada is fucked",
+                // missing `password` and `title`
+                "description": "A cinematic masterpiece",
+                "cover_img": "https://cdn.example.com/og_cover.jpg",
                 "associated_with": artists[0],
                 "release_date": Utc::now(),
                 "genres": ["action", "drama"],
                 "stars": [],
                 "makers": []
             }),
-            "missing password",
+            "missing password and title",
         ),
         (
             serde_json::json!({
                 "title": "They Call him Og",
-                "description": "<>", 
+                "description": "<>",
                 "password": "Kap@123456",
                 "associated_with": artists[0],
                 "release_date": Utc::now(),
                 "genres": ["action", "drama"],
                 "stars": [],
                 "makers": []
+                // missing cover_img
             }),
             "missing cover image",
         ),
     ];
 
     for (invalid_body, error_message) in test_cases {
-        // Act
         let response = app.post_original(&invalid_body).await;
-
-        // Assert
         assert_eq!(
             response.status().as_u16(),
             422,
-            "The API did not fail with 422 Unprocessable Entity when the payload was {}",
+            "Expected 422 when payload was: {}",
             error_message
         );
     }

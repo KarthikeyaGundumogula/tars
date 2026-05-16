@@ -2,7 +2,7 @@ use chrono::{DateTime, Utc};
 use serde::{Deserialize, Serialize};
 pub use uuid::Uuid;
 
-use crate::{errors::ApiError, utils::auth::extractor::Resource};
+use crate::{errors::ApiError, shared::auth::extractor::Resource};
 
 #[derive(Serialize, Deserialize, sqlx::Type)]
 #[sqlx(type_name = "original_category")]

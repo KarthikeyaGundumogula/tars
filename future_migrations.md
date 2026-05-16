@@ -52,3 +52,4 @@
 46. **Add NOT NULL contraint to the profile picture column in sets table**
 47. **Add NOT NULL contraint to the credits column in works table**
 48. **Add NOT NULL constraint to the stage_name,text_color,background_color columns in profiles table**
+49. **Rename roles table to cast_and_crew_roles**

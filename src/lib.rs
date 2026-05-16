@@ -7,7 +7,7 @@ pub mod errors;
 pub mod routes;
 pub mod startup;
 pub mod types;
-pub mod utils;
+pub mod shared;
 
 #[derive(Clone)]
 pub struct AppState {

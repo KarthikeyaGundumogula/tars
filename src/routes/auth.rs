@@ -19,7 +19,7 @@ use crate::{
         requests::auth::{ProfileLogin, ProfileSignupReq, ResetPasswordReq},
         response::ApiResponse,
     },
-    utils::{
+    shared::{
         auth::{
             extractor::Artist,
             password::{create_jwt, get_password_hash, verify_password},
@@ -114,7 +114,7 @@ pub async fn reset_password(
     let valid_password = verify_password(data.old_password.as_ref(), password_hash)?;
     let user = match (old_profile, valid_password) {
         (Some(profile), true) => profile,
-        _ => return Err(ApiError::Unauthorized("Invlaid Operation".to_string())),
+        _ => return Err(ApiError::Unauthorized("Invalid Operation".to_string())),
     };
     let password_hash = get_password_hash(data.new_password.as_ref())?;
     let user_id = update_profile_password(&app.db_pool, user.id, password_hash)

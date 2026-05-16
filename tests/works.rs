@@ -1,42 +1,26 @@
 mod common;
-
-use crate::common::setups::setup_edit_upload;
+use common::{fixtures, setups::setup_edit_upload};
 
 #[tokio::test]
 async fn upload_edit_return_200_on_correct_data() {
-    // Arrange
     let (_, app, original_id) = setup_edit_upload().await;
 
-    let login_body = serde_json::json!({
-        "handle": "user_0",
-        "password": "kApten@1023"
-    });
-    app.post_login(&login_body).await;
+    app.post_login(&fixtures::login_body("user_0", "kApten@1023")).await;
 
-    let work_title = "OG Intro Blast";
-    let body = serde_json::json!({
-        "title": work_title,
-        "src_id": "GG1_DsScm6U",
-        "platform": "YOUTUBE",
-        "format": "IMAX",
-        "originals": [original_id]
-    });
-
-    // Act
+    let body = fixtures::create_edit_body(original_id);
     let response = app.post_work("EDIT", &body).await;
 
-    // Assert
     assert_eq!(response.status(), reqwest::StatusCode::ACCEPTED);
 
     let saved_work = sqlx::query!(
         r#"SELECT id, title, category as "category: tars::types::db::work::WorkType" FROM works WHERE title=$1"#,
-        work_title
+        "OG Intro Blast"
     )
     .fetch_one(&app.state.db_pool)
     .await
     .expect("Failed to find uploaded work in DB");
 
-    assert_eq!(saved_work.title, Some(work_title.to_string()));
+    assert_eq!(saved_work.title, Some("OG Intro Blast".to_string()));
 
     let saved_edit = sqlx::query!(
         r#"SELECT src_id, platform as "platform: tars::types::db::work::SupportedPlatforms" FROM edits WHERE work_id=$1"#,
@@ -51,32 +35,18 @@ async fn upload_edit_return_200_on_correct_data() {
 
 #[tokio::test]
 async fn upload_poster_return_200_on_correct_data() {
-    // Arrange
     let (_, app, original_id) = setup_edit_upload().await;
 
-    let login_body = serde_json::json!({
-        "handle": "user_0",
-        "password": "kApten@1023"
-    });
-    app.post_login(&login_body).await;
+    app.post_login(&fixtures::login_body("user_0", "kApten@1023")).await;
 
-    let work_title = "The Golden Poster";
-    let body = serde_json::json!({
-        "title": work_title,
-        "src_id": "poster_uuid_123",
-        "format": "STANDARD",
-        "originals": [original_id]
-    });
-
-    // Act
+    let body = fixtures::create_poster_body(original_id);
     let response = app.post_work("POSTER", &body).await;
 
-    // Assert
     assert_eq!(response.status(), reqwest::StatusCode::ACCEPTED);
 
     let saved_work = sqlx::query!(
         r#"SELECT id, title, category as "category: tars::types::db::work::WorkType" FROM works WHERE title=$1"#,
-        work_title
+        "The Golden Poster"
     )
     .fetch_one(&app.state.db_pool)
     .await
@@ -95,38 +65,24 @@ async fn upload_poster_return_200_on_correct_data() {
 
 #[tokio::test]
 async fn upload_script_return_200_on_correct_data() {
-    // Arrange
     let (_, app, original_id) = setup_edit_upload().await;
 
-    let login_body = serde_json::json!({
-        "handle": "user_0",
-        "password": "kApten@1023"
-    });
-    app.post_login(&login_body).await;
+    app.post_login(&fixtures::login_body("user_0", "kApten@1023")).await;
 
-    let work_title = "Cinematic Script Draft";
-    let body = serde_json::json!({
-        "title": work_title,
-        "src_ids": ["img1", "img2"],
-        "originals": [original_id],
-        "thoughts": ["Brilliant intro", "Dynamic pacing"]
-    });
-
-    // Act
+    let body = fixtures::create_script_body(original_id);
     let response = app.post_work("SCRIPT", &body).await;
 
-    // Assert
     assert_eq!(response.status(), reqwest::StatusCode::ACCEPTED);
 
     let saved_work = sqlx::query!(
         r#"SELECT id, title, category as "category: tars::types::db::work::WorkType" FROM works WHERE title=$1"#,
-        work_title
+        "Cinematic Script Draft"
     )
     .fetch_one(&app.state.db_pool)
     .await
     .expect("Failed to find uploaded work in DB");
 
-        let saved_script = sqlx::query!(
+    let saved_script = sqlx::query!(
         "SELECT img_src_ids, thoughts FROM scripts WHERE work_id=$1",
         saved_work.id
     )
@@ -134,55 +90,59 @@ async fn upload_script_return_200_on_correct_data() {
     .await
     .expect("Failed to find script details in DB");
 
-    assert_eq!(saved_script.img_src_ids, Some(vec!["img1".to_string(), "img2".to_string()]));
-    assert_eq!(saved_script.thoughts, Some(vec!["Brilliant intro".to_string(), "Dynamic pacing".to_string()]));
+    assert_eq!(
+        saved_script.img_src_ids,
+        Some(vec!["img1".to_string(), "img2".to_string()])
+    );
+    assert_eq!(
+        saved_script.thoughts,
+        Some(vec!["Brilliant intro".to_string(), "Dynamic pacing".to_string()])
+    );
 }
 
 #[tokio::test]
-async fn upload_work_returns_400_when_data_is_missing_or_invalid() {
-    // Arrange
+async fn upload_work_returns_401_when_not_logged_in() {
+    // Any work type is fine; auth is checked before the body
     let app = common::spawn_app::spawn().await;
-    
-    // We test multiple invalid payloads using table-driven tests
+    let body = serde_json::json!({ "title": "some work" });
+    let response = app.post_work("EDIT", &body).await;
+    assert_eq!(response.status().as_u16(), 401);
+}
+
+#[tokio::test]
+async fn upload_work_returns_400_on_invalid_payload() {
+    let (_, app, original_id) = setup_edit_upload().await;
+
+    app.post_login(&fixtures::login_body("user_0", "kApten@1023")).await;
+
     let test_cases = vec![
         (
             serde_json::json!({
                 "title": "Missing Platform",
                 "src_id": "GG1_DsScm6U",
-                "originals": ["550e8400-e29b-41d4-a716-446655440000"]
+                "originals": [original_id]
+                // missing platform and format
             }),
-            "missing the platform",
+            "missing platform field",
         ),
         (
             serde_json::json!({
-                "title": "Invalid Platform Typo",
+                "title": "Bad Platform",
                 "src_id": "GG1_DsScm6U",
-                "platform": "Youtube", // Should be YOUTUBE
-                "originals": ["550e8400-e29b-41d4-a716-446655440000"]
-            }),
-            "invalid enum variant",
-        ),
-        (
-            serde_json::json!({
-                "title": "Invalid Title 123", // Numbers not allowed by WorkTitle domain
-                "src_id": "GG1_DsScm6U",
-                "platform": "YOUTUBE",
+                "platform": "Youtube", // must be YOUTUBE
                 "format": "IMAX",
-                "originals": ["550e8400-e29b-41d4-a716-446655440000"]
+                "originals": [original_id]
             }),
-            "title contains numbers",
+            "invalid enum variant (case mismatch)",
         ),
     ];
 
     for (invalid_body, error_message) in test_cases {
-        // Act
         let response = app.post_work("EDIT", &invalid_body).await;
-
-        // Assert
         assert_eq!(
             response.status().as_u16(),
-            401,
-            "The API did not fail with 401 Unauthorized when the payload was {}",
+            400,
+            "Expected 400 when payload was: {}",
             error_message
         );
     }

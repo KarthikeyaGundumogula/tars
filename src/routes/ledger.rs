@@ -10,7 +10,7 @@ use crate::{
     db::ledger::insert_new_ledger_entry,
     errors::ApiError,
     types::{db::ledger::LedgerEntry, requests::ledger::LedgerEntryReq, response::ApiResponse},
-    utils::{auth::extractor::Artist, json_extractor::AppJson},
+    shared::{auth::extractor::Artist, json_extractor::AppJson},
 };
 
 #[instrument(name = "new_ledger_entry", skip(state, user, data), err, fields(user_id = %user.profile_id))]

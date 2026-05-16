@@ -1,67 +1,49 @@
-use chrono::Utc;
+#![allow(dead_code)]
 use uuid::Uuid;
 
-use crate::common::spawn_app::{self, TestApp};
+use crate::common::{fixtures, spawn_app::{self, TestApp}};
 
+/// Creates 4 registered artists and returns their IDs + the running TestApp.
+/// All subsequent setup functions build on this as the base layer.
 pub async fn setup_original_registration() -> (Vec<Uuid>, TestApp) {
     let mut artists = Vec::new();
     let app = spawn_app::spawn().await;
+
     for i in 0..4 {
-        let user_name = format!("user_{}", i);
-        println!("Creating artist {}", user_name);
-        let body = serde_json::json!({
-            "handle": user_name,
-            "tag_line": "I dont give a dmn about your opinion",
-            "password": "kApten@1023",
-            "profile_picture": "aofdjosfjosf",
-            "youtube_profile": "aojojfosjf",
-            "stage_name":"kapten",
-            "background_color":"#FF0000",
-            "text_color":"#000000"
-        });
-        
+        let handle = format!("user_{}", i);
+        let body = fixtures::register_body(&handle, "kApten@1023");
+
         let response = app.post_register(&body).await;
-        assert!(response.status().is_success());
-        
+        assert!(
+            response.status().is_success(),
+            "Failed to register artist {}: status {}",
+            handle,
+            response.status()
+        );
+
         let artist =
-            sqlx::query_scalar!(r#"SELECT id FROM profiles WHERE user_name=$1"#, user_name)
+            sqlx::query_scalar!(r#"SELECT id FROM profiles WHERE user_name=$1"#, handle)
                 .fetch_one(&app.state.db_pool)
                 .await
                 .expect("db query failed");
         artists.push(artist);
     }
+
     (artists, app)
 }
 
+/// Registers 4 artists, creates an original, and returns all IDs + the TestApp.
 pub async fn setup_edit_upload() -> (Vec<Uuid>, TestApp, Uuid) {
     let (artists, app) = setup_original_registration().await;
-    let body = serde_json::json!({
-        "title": "They Call him Og",
-        "description": "fuck you staya dada",
-        "cover_img": "canada is fucked",
-        "password": "Kap@123456",
-        "associated_with": artists[0],
-        "release_date": Utc::now(),
-        "genres": ["action", "drama"],
-        "stars": [{
-            "role": "Ojas Ghambheera",
-            "artist": artists[1]
-        },{
-            "role": "Kanmani",
-            "artist": artists[2]
-        }],
-        "makers": [{
-            "role": "Music Director",
-            "artist": artists[3]
-        },{
-            "role": "Director",
-            "artist": artists[1]
-        }]
-    });
-    
+
+    let body = fixtures::create_original_body(&artists);
     let response = app.post_original(&body).await;
-    assert!(response.status().is_success());
-    
+    assert!(
+        response.status().is_success(),
+        "Failed to create original: status {}",
+        response.status()
+    );
+
     let original_id = sqlx::query_scalar!(
         r#"SELECT id FROM originals WHERE title=$1"#,
         "They Call him Og"
@@ -69,34 +51,27 @@ pub async fn setup_edit_upload() -> (Vec<Uuid>, TestApp, Uuid) {
     .fetch_one(&app.state.db_pool)
     .await
     .expect("db query failed");
-    
+
     (artists, app, original_id)
 }
 
+/// Registers 4 artists, logs in as user_0, creates a Set, and returns all IDs + the TestApp.
 pub async fn setup_set_creation() -> (Vec<Uuid>, TestApp, Uuid) {
     let (artists, app) = setup_original_registration().await;
 
-    // Login user
-    let login_body = serde_json::json!({
-        "handle": "user_0",
-        "password": "kApten@1023"
-    });
-    app.post_login(&login_body).await;
+    app.post_login(&fixtures::login_body("user_0", "kApten@1023")).await;
 
-    let set_name = "Base Set For Festival";
-    let body = serde_json::json!({
-        "name": set_name,
-        "statement": "Set statement",
-        "description": "Set description",
-        "profile_picture":"ajojojfoo"
-    });
-
+    let body = fixtures::create_set_body();
     let response = app.post_set(&body).await;
-    assert!(response.status().is_success());
+    assert!(
+        response.status().is_success(),
+        "Failed to create set: status {}",
+        response.status()
+    );
 
     let set_id = sqlx::query_scalar!(
         r#"SELECT id FROM sets WHERE name=$1"#,
-        set_name
+        "My Awesome Set"
     )
     .fetch_one(&app.state.db_pool)
     .await

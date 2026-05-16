@@ -17,7 +17,7 @@ use crate::{
         requests::originals::CreateOriginalReq,
         response::ApiResponse,
     },
-    utils::{auth::password::get_password_hash, json_extractor::AppJson},
+    shared::{auth::password::get_password_hash, json_extractor::AppJson},
 };
 #[instrument(name = "create_new_original", skip(app, data), err, fields(title = %data.title))]
 pub async fn create_new_original_handler(

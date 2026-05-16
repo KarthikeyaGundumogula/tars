@@ -1,17 +1,34 @@
 use crate::{
     AppState,
-    db::festivals::{insert_new_festival, insert_new_panelist},
+    db::festivals::{
+        delete_panelist, insert_new_festival, insert_new_festival_work, insert_new_panelist,
+        update_festival_details, update_panelist_work,
+    },
     errors::ApiError,
+    shared::{
+        auth::extractor::{Artist, EntityMemberOrAdmin, OwnedResourceOrAdmin},
+        json_extractor::AppJson,
+        works::upload_work,
+    },
     types::{
-        db::festivals::{Festival, Panelist},
-        requests::festivals::CreateFestivalReq,
+        db::{
+            festivals::{Festival, Panelist},
+            sets::SetMember,
+            work::WorkType,
+        },
+        requests::festivals::{CreateFestivalReq, UpdateFestivalPanlist, UpdateFestivalReq},
         response::ApiResponse,
     },
-    utils::{auth::extractor::Artist, json_extractor::AppJson},
 };
-use axum::{Router, extract::State, routing::post};
+use axum::{
+    Json, Router,
+    body::Bytes,
+    extract::{Path, State},
+    routing::post,
+};
 use std::sync::Arc;
 use tracing::instrument;
+use uuid::Uuid;
 
 #[instrument(name="create_new_set", skip(state, user, data), fields(user_id = %user.profile_id, festival_name = %data.name))]
 pub async fn create_new_set(
@@ -46,22 +63,95 @@ pub async fn create_new_set(
     Ok(ApiResponse::OK)
 }
 
-async fn update_festival_details() -> Result<ApiResponse, ApiError> {
-    todo!()
+#[instrument(name = "update festival details",skip(app,data),fields(festival_id = %resource_id))]
+async fn update_festival_details_handler(
+    State(app): State<Arc<AppState>>,
+    OwnedResourceOrAdmin { resource_id, .. }: OwnedResourceOrAdmin<Festival>,
+    Json(data): Json<UpdateFestivalReq>,
+) -> Result<ApiResponse, ApiError> {
+    let res = update_festival_details(&app.db_pool, resource_id, data)
+        .await?
+        .ok_or(ApiError::NotFound)?;
+    Ok(ApiResponse::FestivalDetailsUpdated(res))
 }
 
-async fn submit_panelist_work_handler() -> Result<ApiResponse, ApiError> {
-    todo!()
+#[instrument(name = "update festival panelists",skip(app,data),fields(festival_id = %resource_id, artist_id = %data.artist_id, is_insert= %data.insert))]
+async fn update_panelists_handler(
+    State(app): State<Arc<AppState>>,
+    OwnedResourceOrAdmin { resource_id, .. }: OwnedResourceOrAdmin<Festival>,
+    Json(data): Json<UpdateFestivalPanlist>,
+) -> Result<ApiResponse, ApiError> {
+    if data.insert {
+        let panelist = Panelist {
+            festival_id: resource_id,
+            profile_id: data.artist_id,
+            work_id: None,
+            created_at: chrono::Utc::now(),
+        };
+        let mut txn = app.db_pool.begin().await?;
+        let res = insert_new_panelist(&mut txn, panelist).await?;
+        txn.commit().await?;
+        Ok(ApiResponse::PanelistAdded(res))
+    } else {
+        let res = delete_panelist(&app.db_pool, resource_id, data.artist_id)
+            .await?
+            .ok_or(ApiError::NotFound)?;
+        Ok(ApiResponse::PanelistDeleted(res))
+    }
 }
 
-async fn submit_memeber_work_handler() -> Result<ApiResponse, ApiError> {
-    todo!()
+async fn submit_panelist_work_handler(
+    State(app): State<Arc<AppState>>,
+    Path((_, work_type)): Path<(Uuid, WorkType)>,
+    EntityMemberOrAdmin {
+        user_id, entity, ..
+    }: EntityMemberOrAdmin<Panelist>,
+    data: Bytes,
+) -> Result<ApiResponse, ApiError> {
+    let mut txn = app.db_pool.begin().await?;
+    let work_id = upload_work(data, &mut txn, user_id, work_type).await?;
+    let res = update_panelist_work(&mut txn, entity.festival_id, user_id, work_id)
+        .await?
+        .ok_or(ApiError::NotFound)?;
+
+    txn.commit().await?;
+    Ok(ApiResponse::WorkCreated(res))
+}
+
+async fn submit_memeber_work_handler(
+    State(app): State<Arc<AppState>>,
+    EntityMemberOrAdmin {
+        entity, entity_id, ..
+    }: EntityMemberOrAdmin<SetMember>,
+    Path((_entity_id, work_type)): Path<(Uuid, WorkType)>,
+    data: Bytes,
+) -> Result<ApiResponse, ApiError> {
+    let mut txn = app.db_pool.begin().await?;
+    let work_id = upload_work(data, &mut txn, entity.profile_id, work_type).await?;
+    let res = insert_new_festival_work(&mut txn, entity_id, work_id)
+        .await?
+        .ok_or(ApiError::NotFound)?;
+    txn.commit().await?;
+    Ok(ApiResponse::WorkCreated(res))
 }
 
 pub fn router() -> Router<Arc<AppState>> {
     Router::new()
         .route("/new", post(create_new_set))
-        .route("/{resource_id}/update", post(update_festival_details))
-        .route("/panelist/submit_work", post(submit_panelist_work_handler))
-        .route("/member/submit_work", post(submit_memeber_work_handler))
+        .route(
+            "/{resource_id}/update",
+            post(update_festival_details_handler),
+        )
+        .route(
+            "/{resource_id}/panelists/update",
+            post(update_panelists_handler),
+        )
+        .route(
+            "/{entity_id}/panelist/new/{work_type}",
+            post(submit_panelist_work_handler),
+        )
+        .route(
+            "/{entity_id}/member/new/{work_type}",
+            post(submit_memeber_work_handler),
+        )
 }
