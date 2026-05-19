@@ -25,9 +25,12 @@ pub async fn insert_new_profile(pool: &PgPool, data: Profile) -> Result<Option<P
           profile_picture,
           password_hash,
           profile_type,
-          presence
+          presence,
+          stage_name,
+          background_color,
+          text_color
         )
-      VALUES ($1, $2, $3, false, $4, $5, $6, NOW (), $7, $8, $9, $10)
+      VALUES ($1, $2, $3, false, $4, $5, $6, NOW (), $7, $8, $9, $10, $11, $12, $13)
       RETURNING id,
         user_name,
         tag_line,
@@ -39,7 +42,10 @@ pub async fn insert_new_profile(pool: &PgPool, data: Profile) -> Result<Option<P
         profile_picture,
         password_hash,
         profile_type as "profile_type: ProfileType",
-        presence 
+        presence,
+        stage_name,
+        background_color,
+        text_color
         "#,
         data.id,
         data.user_name,
@@ -50,7 +56,10 @@ pub async fn insert_new_profile(pool: &PgPool, data: Profile) -> Result<Option<P
         data.profile_picture,
         data.password_hash,
         data.profile_type as ProfileType,
-        data.presence
+        data.presence,
+        data.stage_name,
+        data.background_color,
+        data.text_color
     )
     .fetch_optional(pool)
     .await?)
@@ -217,7 +226,10 @@ pub async fn get_profile_auth_details(
             profile_picture,
             password_hash,
             profile_type as "profile_type: ProfileType",
-            presence
+            presence,
+            stage_name,
+            background_color,
+            text_color
             FROM profiles
             WHERE user_name = $1
         "#,

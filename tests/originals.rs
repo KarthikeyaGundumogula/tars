@@ -82,7 +82,7 @@ async fn add_role_returns_200_on_valid_request() {
     );
 
     let count: i64 = sqlx::query_scalar(
-        r#"SELECT COUNT(*) FROM roles WHERE original_id=$1 AND profile_id=$2 AND role_name='Cinematographer'"#,
+        r#"SELECT COUNT(*) FROM cast_and_crew_roles WHERE original_id=$1 AND profile_id=$2 AND role_name='Cinematographer'"#,
     )
     .bind(original_id)
     .bind(artists[0])
@@ -135,7 +135,7 @@ async fn delete_role_returns_200_after_adding() {
     );
 
     let count: i64 = sqlx::query_scalar(
-        r#"SELECT COUNT(*) FROM roles WHERE original_id=$1 AND profile_id=$2 AND role_name='Cinematographer'"#,
+        r#"SELECT COUNT(*) FROM cast_and_crew_roles WHERE original_id=$1 AND profile_id=$2 AND role_name='Cinematographer'"#,
     )
     .bind(original_id)
     .bind(artists[0])
@@ -182,7 +182,7 @@ async fn delete_original_cascades_to_roles() {
 
     // Verify roles exist before deletion (the original setup inserts stars + makers)
     let count_before: i64 =
-        sqlx::query_scalar(r#"SELECT COUNT(*) FROM roles WHERE original_id=$1"#)
+        sqlx::query_scalar(r#"SELECT COUNT(*) FROM cast_and_crew_roles WHERE original_id=$1"#)
             .bind(original_id)
             .fetch_one(&app.state.db_pool)
             .await
@@ -195,7 +195,7 @@ async fn delete_original_cascades_to_roles() {
     app.delete_original(original_id).await;
 
     let count_after: i64 =
-        sqlx::query_scalar(r#"SELECT COUNT(*) FROM roles WHERE original_id=$1"#)
+        sqlx::query_scalar(r#"SELECT COUNT(*) FROM cast_and_crew_roles  WHERE original_id=$1"#)
             .bind(original_id)
             .fetch_one(&app.state.db_pool)
             .await

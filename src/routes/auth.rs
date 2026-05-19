@@ -47,6 +47,7 @@ pub async fn sign_up_artist_handler(
     let artist = Profile {
         user_name: data.handle.as_ref().to_string(),
         is_claimed: false,
+        stage_name:data.stage_name.to_string(),
         presence: 100,
         id: Uuid::new_v4(),
         tag_line: data.tag_line.as_ref().to_string(),
@@ -56,6 +57,8 @@ pub async fn sign_up_artist_handler(
         twitter_profile: data.twitter_profile,
         instagram_profile: data.instagram_profile,
         password_hash,
+        text_color:data.text_color,
+        background_color:data.background_color,
         created_at: Utc::now(),
     };
     let profile = insert_new_profile(&app.db_pool, artist).await?;

@@ -12,7 +12,7 @@ pub enum ProfileType {
     MAKER,
 }
 
-#[derive(Clone, Serialize,Deserialize,Debug, sqlx::Type)]
+#[derive(Clone, Serialize, Deserialize, Debug, sqlx::Type)]
 #[sqlx(type_name = "role_type")]
 pub enum RoleType {
     STAR,
@@ -23,6 +23,7 @@ pub enum RoleType {
 pub struct Profile {
     pub id: Uuid,
     pub user_name: String,
+    pub stage_name: String,
     pub tag_line: String,
     pub is_claimed: bool,
     pub presence: i64,
@@ -32,6 +33,8 @@ pub struct Profile {
     pub instagram_profile: Option<String>,
     pub password_hash: String,
     pub profile_type: ProfileType,
+    pub background_color: String,
+    pub text_color: String,
     pub created_at: DateTime<Utc>,
 }
 
@@ -54,7 +57,7 @@ impl Resource for Profile {
     {
         let profile = sqlx::query_as!(
             Profile,
-            r#"SELECT id, user_name, tag_line, presence, profile_picture, youtube_profile, twitter_profile, instagram_profile, password_hash, is_claimed, profile_type as "profile_type:ProfileType", created_at FROM profiles WHERE id = $1"#,
+            r#"SELECT id, user_name, stage_name, tag_line, presence, profile_picture, youtube_profile, twitter_profile, instagram_profile, password_hash, is_claimed, profile_type as "profile_type:ProfileType", background_color, text_color, created_at FROM profiles WHERE id = $1"#,
             resource_id
         )
         .fetch_optional(db)

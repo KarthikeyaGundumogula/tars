@@ -54,7 +54,7 @@ pub async fn insert_new_role(
 ) -> Result<String, ApiError> {
     Ok(sqlx::query_scalar!(
         r#"
-    INSERT INTO roles (
+    INSERT INTO cast_and_crew_roles (
         profile_id,
         original_id,
         category,
@@ -110,7 +110,7 @@ pub async fn delete_original(pool: &sqlx::PgPool, id: Uuid) -> Result<bool, ApiE
 pub async fn add_new_role_if_not_exists(pool: &PgPool, data: Role) -> Result<bool, ApiError> {
     Ok(sqlx::query!(
         "
-            INSERT INTO roles (profile_id, original_id, category, role_name, created_at)
+            INSERT INTO cast_and_crew_roles (profile_id, original_id, category, role_name, created_at)
             VALUES ($1, $2, $3, $4, $5)
             ON CONFLICT (profile_id, original_id, role_name) DO NOTHING;
             ",
@@ -134,7 +134,7 @@ pub async fn delete_role(
 ) -> Result<bool, ApiError> {
     Ok(sqlx::query!(
         "
-            DELETE FROM roles
+            DELETE FROM cast_and_crew_roles
             WHERE role_name = $1 AND original_id = $2 AND profile_id = $3;
             ",
         role_name,

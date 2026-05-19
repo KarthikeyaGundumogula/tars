@@ -25,7 +25,7 @@ async fn update_profile_returns_200_for_valid_data() {
     .expect("Failed to fetch profile");
 
     assert_eq!(saved.tag_line, "updated tagline");
-    assert_eq!(saved.stage_name, Some("kapten og".to_string()));
+    assert_eq!(saved.stage_name, "kapten og".to_string());
 }
 
 #[tokio::test]
