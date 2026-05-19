@@ -1,20 +1,24 @@
 use std::sync::Arc;
 
-use axum::{Json, Router, extract::State, routing::post};
+use axum::{
+    Router,
+    extract::State,
+    routing::{delete, post},
+};
 use chrono::Utc;
 use tracing::instrument;
 use uuid::Uuid;
 
 use crate::{
     AppState,
-    db::sets::{insert_new_set, insert_new_set_member, update_set},
+    db::sets::{delete_set_member, insert_new_set, insert_set_member, update_set},
     errors::ApiError,
     shared::{
-        auth::extractor::{Artist, OwnedResourceOrAdmin},
+        auth::extractor::{Artist, EntityMemberOrAdmin, OwnedResourceOrAdmin},
         json_extractor::AppJson,
     },
     types::{
-        db::sets::{Set, SetRole},
+        db::sets::{Set, SetMember, SetRole},
         requests::sets::{CreateSetReq, JoinSetRequest, UpdateSetReq},
         response::ApiResponse,
     },
@@ -38,7 +42,7 @@ pub async fn create_new_set_handler(
     };
     let mut txn = app.db_pool.begin().await?;
     let set_id = insert_new_set(&mut txn, set).await?;
-    let role = insert_new_set_member(
+    insert_set_member(
         &mut txn,
         user.profile_id,
         set_id,
@@ -64,7 +68,7 @@ async fn join_set_handler(
     AppJson(data): AppJson<JoinSetRequest>,
 ) -> Result<ApiResponse, ApiError> {
     let mut txn = app.db_pool.begin().await?;
-    let role = insert_new_set_member(
+    let role = insert_set_member(
         &mut txn,
         user.profile_id,
         data.set_id,
@@ -75,8 +79,14 @@ async fn join_set_handler(
     txn.commit().await?;
     Ok(ApiResponse::JoinedSet(role))
 }
-async fn leave_set_handler() -> Result<ApiResponse, ApiError> {
-    todo!()
+async fn leave_set_handler(
+    State(app): State<Arc<AppState>>,
+    EntityMemberOrAdmin {
+        entity_id, user_id, ..
+    }: EntityMemberOrAdmin<SetMember>,
+) -> Result<ApiResponse, ApiError> {
+    delete_set_member(&app.db_pool, user_id, entity_id).await?;
+    Ok(ApiResponse::SetMemberDeleted(entity_id, user_id))
 }
 
 pub fn router() -> Router<Arc<AppState>> {
@@ -84,5 +94,5 @@ pub fn router() -> Router<Arc<AppState>> {
         .route("/new", post(create_new_set_handler))
         .route("/{resource_id}/update", post(update_set_details_handler))
         .route("/join", post(join_set_handler))
-        .route("/leave", post(leave_set_handler))
+        .route("/{entity_id}/leave", delete(leave_set_handler))
 }

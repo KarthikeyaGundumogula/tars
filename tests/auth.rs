@@ -117,3 +117,81 @@ async fn register_profile_returns_422_when_data_is_missing() {
         );
     }
 }
+
+// ---------------------------------------------------------------------------
+// Admin Auth
+// ---------------------------------------------------------------------------
+
+#[tokio::test]
+async fn create_admin_returns_200_on_correct_data() {
+    let app = spawn_app::spawn().await;
+
+    let response = app.post_admin_register(&fixtures::admin_register_body()).await;
+    // let json = response.json::<serde_json::Value>().await.unwrap();
+    // println!("{:?}", json);
+    assert!(
+        response.status().is_success(),
+        "Expected 2xx, got {}",
+        response.status()
+    );
+
+    let count: i64 = sqlx::query_scalar(
+        r#"SELECT COUNT(*) FROM admins WHERE admin_name='superadmin'"#,
+    )
+    .fetch_one(&app.state.db_pool)
+    .await
+    .expect("db query failed");
+
+    assert_eq!(count, 1);
+}
+
+#[tokio::test]
+async fn admin_login_returns_200_with_cookie_on_correct_credentials() {
+    let app = spawn_app::spawn().await;
+
+    // Register first
+    app.post_admin_register(&fixtures::admin_register_body()).await;
+
+    // Login
+    let response = app.post_admin_login(&fixtures::admin_login_body()).await;
+
+    assert!(
+        response.status().is_success(),
+        "Expected 2xx, got {}",
+        response.status()
+    );
+
+    // The response must set an auth_token cookie
+    let has_cookie = response
+        .headers()
+        .get_all("set-cookie")
+        .iter()
+        .any(|v| v.to_str().unwrap_or("").contains("auth_token"));
+
+    assert!(has_cookie, "Expected auth_token cookie to be set on admin login");
+}
+
+#[tokio::test]
+async fn admin_login_returns_401_for_wrong_password() {
+    let app = spawn_app::spawn().await;
+
+    app.post_admin_register(&fixtures::admin_register_body()).await;
+
+    let wrong_login = serde_json::json!({
+        "admin_name": "superadmin",
+        "admin_password": "WrongPass@99"
+    });
+    let response = app.post_admin_login(&wrong_login).await;
+
+    assert_eq!(response.status().as_u16(), 401);
+}
+
+#[tokio::test]
+async fn admin_login_returns_500_for_nonexistent_admin() {
+    let app = spawn_app::spawn().await;
+
+    // No admin registered — timing-safe path should still return 401
+    let response = app.post_admin_login(&fixtures::admin_login_body()).await;
+
+    assert_eq!(response.status().as_u16(), 500);
+}

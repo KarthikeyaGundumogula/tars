@@ -12,19 +12,28 @@ use uuid::Uuid;
 
 use crate::{
     AppState,
-    db::artists::{get_profile_auth_details, insert_new_profile, update_profile_password},
-    errors::ApiError,
-    types::{
-        db::profile::{Profile, ProfileType},
-        requests::auth::{ProfileLogin, ProfileSignupReq, ResetPasswordReq},
-        response::ApiResponse,
+    db::{
+        admins::{get_admin_auth_details, insert_new_admin},
+        artists::{get_profile_auth_details, insert_new_profile, update_profile_password},
     },
+    errors::ApiError,
     shared::{
         auth::{
             extractor::Artist,
             password::{create_jwt, get_password_hash, verify_password},
         },
         json_extractor::AppJson,
+    },
+    types::{
+        db::{
+            admin::Admin,
+            profile::{Profile, ProfileType},
+        },
+        requests::{
+            admin::AdminAuthRequest,
+            auth::{ProfileLogin, ProfileSignupReq, ResetPasswordReq},
+        },
+        response::ApiResponse,
     },
 };
 
@@ -87,7 +96,6 @@ pub async fn login_profile(
 pub async fn logout_profile(jar: CookieJar) -> Result<ApiResponse, ApiError> {
     let cookie = Cookie::build(("auth_token", ""))
         .http_only(true)
-        .secure(true)
         .same_site(SameSite::Lax)
         .path("/")
         .max_age(time::Duration::seconds(0))
@@ -95,9 +103,54 @@ pub async fn logout_profile(jar: CookieJar) -> Result<ApiResponse, ApiError> {
     Ok(ApiResponse::ProfileAuthenticated(jar.remove(cookie)))
 }
 
-pub async fn admin_login_handler(
+pub async fn insert_new_admin_handler(
+    State(app): State<Arc<AppState>>,
+    AppJson(data): AppJson<AdminAuthRequest>,
 ) -> Result<ApiResponse, ApiError> {
-    todo!()
+    let password = data.admin_password;
+    let password_hash = get_password_hash(password.as_ref())?;
+    let admin = Admin {
+        admin_name: data.admin_name.to_string(),
+        admin_password_hash: password_hash,
+        admin_id: Uuid::new_v4(),
+        created_at: Utc::now(),
+    };
+    let res = insert_new_admin(&app.db_pool, admin).await?;
+    Ok(ApiResponse::AdminCreated(res))
+}
+pub async fn admin_login_handler(
+    State(app): State<Arc<AppState>>,
+    jar: CookieJar,
+    AppJson(data): AppJson<AdminAuthRequest>,
+) -> Result<ApiResponse, ApiError> {
+    let password = data.admin_password;
+    let admin = get_admin_auth_details(&app.db_pool, &data.admin_name.to_string()).await?;
+    let password_hash = match &admin {
+        Some(admin) => &admin.admin_password_hash,
+        None => "$argon2id$v=19$m=19456,t=2,p=1$dummysaltdummysalt$dummyhash",
+    };
+    let valid_password = verify_password(password.as_ref(), password_hash)?;
+    let user = match (admin, valid_password) {
+        (Some(admin), true) => admin,
+        _ => return Err(ApiError::Unauthorized("Invalid credentials".to_string())),
+    };
+    let token = create_jwt(&user.admin_name, "admin", &app.jwt_secret, user.admin_id)?;
+    let cookie = Cookie::build(("auth_token", token))
+        .http_only(true)
+        .same_site(SameSite::Lax)
+        .path("/")
+        .build();
+    Ok(ApiResponse::AdminAuthenticated(jar.add(cookie)))
+}
+
+pub async fn logout_admin(jar: CookieJar) -> Result<ApiResponse, ApiError> {
+    let cookie = Cookie::build(("auth_token", ""))
+        .http_only(true)
+        .same_site(SameSite::Lax)
+        .path("/")
+        .max_age(time::Duration::seconds(0))
+        .build();
+    Ok(ApiResponse::AdminAuthenticated(jar.remove(cookie)))
 }
 
 #[instrument(name = "reset_password", skip(app, user, data), err, fields(user_id = %user.profile_id))]
@@ -129,5 +182,6 @@ pub fn router() -> Router<Arc<AppState>> {
         .route("/login", post(login_profile))
         .route("/logout", post(logout_profile))
         .route("/reset-password", post(reset_password))
-        .route("/admin/login",post(admin_login_handler))
+        .route("/admin/login", post(admin_login_handler))
+        .route("/admin/register", post(insert_new_admin_handler))
 }

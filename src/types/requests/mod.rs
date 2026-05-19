@@ -5,3 +5,4 @@ pub mod sets;
 pub mod festivals;
 pub mod ledger;
 pub mod artist;
+pub mod admin;

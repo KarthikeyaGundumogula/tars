@@ -27,3 +27,13 @@ pub struct UploadScriptReq {
     pub originals: Vec<Uuid>,
     pub thoughts: Vec<ScriptThought>,
 }
+
+#[derive(Deserialize)]
+pub struct UpdateWorkReq {
+    pub title: WorkTitle,
+}
+
+#[derive(Deserialize)]
+pub struct LikeWork{
+    pub work_id: Uuid
+}

@@ -30,6 +30,14 @@ pub enum ApiResponse {
     RoleDeleted(Uuid),
     RoleCreated(Uuid),
     RoleExists(Uuid), 
+    OrignalReleaseCreated(Uuid),
+    SetMemberDeleted(Uuid,Uuid),
+    WorkUpdated(Uuid),
+    AddedWorkLike(bool),
+    RemovedWorkLike(bool),
+    WorkDeleted(Uuid),
+    AdminCreated(Uuid),
+    AdminAuthenticated(CookieJar),
 }
 
 impl IntoResponse for ApiResponse {
@@ -110,6 +118,30 @@ impl IntoResponse for ApiResponse {
             }
             Self::UpdatedSet(id) => {
                 (StatusCode::OK, Json(serde_json::json!({"id": id}))).into_response()
+            }
+            Self::OrignalReleaseCreated(id) => {
+                (StatusCode::OK, Json(serde_json::json!({"release_id": id}))).into_response()
+            }
+            Self::SetMemberDeleted(set_id, profile_id) => {
+                (StatusCode::OK, Json(serde_json::json!({"set_id": set_id, "profile_id": profile_id}))).into_response()
+            }
+            Self::WorkUpdated(id) => {
+                (StatusCode::OK, Json(serde_json::json!({"id": id}))).into_response()
+            }
+            Self::AddedWorkLike(status) => {
+                (StatusCode::OK, Json(serde_json::json!({"is_addded": status}))).into_response()
+            }
+            Self::RemovedWorkLike(status) => {
+                (StatusCode::OK, Json(serde_json::json!({"Is_removed": status}))).into_response()
+            }
+            Self::WorkDeleted(id) => {
+                (StatusCode::OK, Json(serde_json::json!({"id": id}))).into_response()
+            }
+            Self::AdminCreated(id) => {
+                (StatusCode::OK, Json(serde_json::json!({"id": id}))).into_response()
+            }
+            Self::AdminAuthenticated(jar) => {
+                (StatusCode::OK, jar).into_response()
             }
         }
     }

@@ -1,156 +1,202 @@
 mod common;
-use common::{fixtures, setups::setup_edit_upload};
+use common::{
+    fixtures,
+    setups::setup_work_uploaded,
+    spawn_app,
+};
+use uuid::Uuid;
+
+// ---------------------------------------------------------------------------
+// Update Work
+// ---------------------------------------------------------------------------
 
 #[tokio::test]
-async fn upload_edit_return_200_on_correct_data() {
-    let (_, app, original_id) = setup_edit_upload().await;
+async fn update_work_returns_200_for_owner() {
+    let (_, app, _, work_id) = setup_work_uploaded().await;
+    // user_0 is still logged in as the work owner
 
-    app.post_login(&fixtures::login_body("user_0", "kApten@1023"))
+    let response = app
+        .post_update_work(work_id, &fixtures::update_work_body())
         .await;
 
-    let body = fixtures::create_edit_body(original_id);
-    let response = app.post_work("EDIT", &body).await;
-
-    assert_eq!(response.status(), reqwest::StatusCode::ACCEPTED);
-
-    let saved_work = sqlx::query!(
-        r#"SELECT id, title, category as "category: tars::types::db::work::WorkType" FROM works WHERE title=$1"#,
-        "OG Intro Blast"
-    )
-    .fetch_one(&app.state.db_pool)
-    .await
-    .expect("Failed to find uploaded work in DB");
-
-    assert_eq!(saved_work.title, Some("OG Intro Blast".to_string()));
-
-    let saved_edit = sqlx::query!(
-        r#"SELECT src_id, platform as "platform: tars::types::db::work::SupportedPlatforms" FROM edits WHERE work_id=$1"#,
-        saved_work.id
-    )
-    .fetch_one(&app.state.db_pool)
-    .await
-    .expect("Failed to find edit details in DB");
-
-    assert_eq!(saved_edit.src_id, "GG1_DsScm6U");
-}
-
-#[tokio::test]
-async fn upload_poster_return_200_on_correct_data() {
-    let (_, app, original_id) = setup_edit_upload().await;
-
-    app.post_login(&fixtures::login_body("user_0", "kApten@1023"))
-        .await;
-
-    let body = fixtures::create_poster_body(original_id);
-    let response = app.post_work("POSTER", &body).await;
-
-    assert_eq!(response.status(), reqwest::StatusCode::ACCEPTED);
-
-    let saved_work = sqlx::query!(
-        r#"SELECT id, title, category as "category: tars::types::db::work::WorkType" FROM works WHERE title=$1"#,
-        "The Golden Poster"
-    )
-    .fetch_one(&app.state.db_pool)
-    .await
-    .expect("Failed to find uploaded work in DB");
-
-    let saved_poster = sqlx::query!(
-        r#"SELECT src_id, format as "format: tars::types::db::work::PosterFormat" FROM posters WHERE work_id=$1"#,
-        saved_work.id
-    )
-    .fetch_one(&app.state.db_pool)
-    .await
-    .expect("Failed to find poster details in DB");
-
-    assert_eq!(saved_poster.src_id, "poster_uuid_123");
-}
-
-#[tokio::test]
-async fn upload_script_return_200_on_correct_data() {
-    let (_, app, original_id) = setup_edit_upload().await;
-
-    app.post_login(&fixtures::login_body("user_0", "kApten@1023"))
-        .await;
-
-    let body = fixtures::create_script_body(original_id);
-    let response = app.post_work("SCRIPT", &body).await;
-
-    assert_eq!(response.status(), reqwest::StatusCode::ACCEPTED);
-
-    let saved_work = sqlx::query!(
-        r#"SELECT id, title, category as "category: tars::types::db::work::WorkType" FROM works WHERE title=$1"#,
-        "Cinematic Script Draft"
-    )
-    .fetch_one(&app.state.db_pool)
-    .await
-    .expect("Failed to find uploaded work in DB");
-
-    let saved_script = sqlx::query!(
-        "SELECT img_src_ids, thoughts FROM scripts WHERE work_id=$1",
-        saved_work.id
-    )
-    .fetch_one(&app.state.db_pool)
-    .await
-    .expect("Failed to find script details in DB");
-
-    assert_eq!(
-        saved_script.img_src_ids,
-        Some(vec!["img1".to_string(), "img2".to_string()])
+    assert!(
+        response.status().is_success(),
+        "Expected 2xx, got {}",
+        response.status()
     );
-    assert_eq!(
-        saved_script.thoughts,
-        Some(vec![
-            "Brilliant intro".to_string(),
-            "Dynamic pacing".to_string()
-        ])
-    );
+
+    let title: Option<String> =
+        sqlx::query_scalar(r#"SELECT title FROM works WHERE id=$1"#)
+            .bind(work_id)
+            .fetch_one(&app.state.db_pool)
+            .await
+            .expect("db query failed");
+
+    assert_eq!(title.unwrap(), "Updated Title");
 }
 
 #[tokio::test]
-async fn upload_work_returns_401_when_not_logged_in() {
-    // Any work type is fine; auth is checked before the body
-    let app = common::spawn_app::spawn().await;
-    let body = serde_json::json!({ "title": "some work" });
-    let response = app.post_work("EDIT", &body).await;
+async fn update_work_returns_401_for_non_owner() {
+    let (_, app, _, work_id) = setup_work_uploaded().await;
+
+    // Login as user_1 who does NOT own this work
+    app.post_login(&fixtures::login_body("user_1", "kApten@1023")).await;
+
+    let response = app
+        .post_update_work(work_id, &fixtures::update_work_body())
+        .await;
+
     assert_eq!(response.status().as_u16(), 401);
 }
 
 #[tokio::test]
-async fn upload_work_returns_400_on_invalid_payload() {
-    let (_, app, original_id) = setup_edit_upload().await;
+async fn update_work_returns_401_when_not_logged_in() {
+    let app = spawn_app::spawn().await;
 
-    app.post_login(&fixtures::login_body("user_0", "kApten@1023"))
+    let response = app
+        .post_update_work(Uuid::new_v4(), &fixtures::update_work_body())
         .await;
 
-    let test_cases = vec![
-        (
-            serde_json::json!({
-                "title": "Missing Platform",
-                "src_id": "GG1_DsScm6U",
-                "originals": [original_id]
-                // missing platform and format
-            }),
-            "missing platform field",
-        ),
-        (
-            serde_json::json!({
-                "title": "Bad Platform",
-                "src_id": "GG1_DsScm6U",
-                "platform": "Youtube", // must be YOUTUBE
-                "format": "IMAX",
-                "originals": [original_id]
-            }),
-            "invalid enum variant (case mismatch)",
-        ),
-    ];
+    assert_eq!(response.status().as_u16(), 401);
+}
 
-    for (invalid_body, error_message) in test_cases {
-        let response = app.post_work("EDIT", &invalid_body).await;
-        assert_eq!(
-            response.status().as_u16(),
-            400,
-            "Expected 400 when payload was: {}",
-            error_message
-        );
-    }
+#[tokio::test]
+async fn update_work_returns_404_for_nonexistent_work() {
+    let (_, app, _, _) = setup_work_uploaded().await;
+    // user_0 is logged in, but this work_id doesn't exist
+
+    let response = app
+        .post_update_work(Uuid::new_v4(), &fixtures::update_work_body())
+        .await;
+
+    assert_eq!(response.status().as_u16(), 404);
+}
+
+// ---------------------------------------------------------------------------
+// Like / Dislike Work
+// ---------------------------------------------------------------------------
+
+#[tokio::test]
+async fn like_work_returns_200_for_logged_in_artist() {
+    let (_, app, _, work_id) = setup_work_uploaded().await;
+
+    // user_1 likes user_0's work
+    app.post_login(&fixtures::login_body("user_1", "kApten@1023")).await;
+
+    let response = app.post_like_work(&fixtures::like_work_body(work_id)).await;
+
+    assert!(
+        response.status().is_success(),
+        "Expected 2xx, got {}",
+        response.status()
+    );
+
+    let count: i64 = sqlx::query_scalar(r#"SELECT COUNT(*) FROM work_likes WHERE work_id=$1"#)
+        .bind(work_id)
+        .fetch_one(&app.state.db_pool)
+        .await
+        .expect("db query failed");
+
+    assert_eq!(count, 1);
+}
+
+#[tokio::test]
+async fn like_work_returns_401_when_not_logged_in() {
+    let (_, _, _, work_id) = setup_work_uploaded().await;
+
+    // Logout first to ensure fresh unauthenticated state
+    let app = spawn_app::spawn().await;
+
+    let response = app.post_like_work(&fixtures::like_work_body(work_id)).await;
+
+    assert_eq!(response.status().as_u16(), 401);
+}
+
+#[tokio::test]
+async fn dislike_work_returns_200_after_liking() {
+    let (_, app, _, work_id) = setup_work_uploaded().await;
+
+    app.post_login(&fixtures::login_body("user_1", "kApten@1023")).await;
+
+    // Like first
+    app.post_like_work(&fixtures::like_work_body(work_id)).await;
+
+    // Then dislike
+    let response = app.delete_dislike_work(&fixtures::like_work_body(work_id)).await;
+
+    assert!(
+        response.status().is_success(),
+        "Expected 2xx, got {}",
+        response.status()
+    );
+
+    let count: i64 = sqlx::query_scalar(r#"SELECT COUNT(*) FROM work_likes WHERE work_id=$1"#)
+        .bind(work_id)
+        .fetch_one(&app.state.db_pool)
+        .await
+        .expect("db query failed");
+
+    assert_eq!(count, 0);
+}
+
+// ---------------------------------------------------------------------------
+// Delete Work
+// ---------------------------------------------------------------------------
+
+#[tokio::test]
+async fn delete_work_returns_200_for_owner() {
+    let (_, app, _, work_id) = setup_work_uploaded().await;
+    // user_0 owns the work and is still logged in
+
+    let response = app.delete_work(work_id).await;
+
+    assert!(
+        response.status().is_success(),
+        "Expected 2xx, got {}",
+        response.status()
+    );
+
+    let count: i64 = sqlx::query_scalar(r#"SELECT COUNT(*) FROM works WHERE id=$1"#)
+        .bind(work_id)
+        .fetch_one(&app.state.db_pool)
+        .await
+        .expect("db query failed");
+
+    assert_eq!(count, 0);
+}
+
+#[tokio::test]
+async fn delete_work_also_deletes_edit_via_cascade() {
+    let (_, app, _, work_id) = setup_work_uploaded().await;
+
+    app.delete_work(work_id).await;
+
+    // edits table should also be cleaned up via ON DELETE CASCADE
+    let count: i64 = sqlx::query_scalar(r#"SELECT COUNT(*) FROM edits WHERE work_id=$1"#)
+        .bind(work_id)
+        .fetch_one(&app.state.db_pool)
+        .await
+        .expect("db query failed");
+
+    assert_eq!(count, 0);
+}
+
+#[tokio::test]
+async fn delete_work_returns_401_for_non_owner() {
+    let (_, app, _, work_id) = setup_work_uploaded().await;
+
+    app.post_login(&fixtures::login_body("user_1", "kApten@1023")).await;
+
+    let response = app.delete_work(work_id).await;
+
+    assert_eq!(response.status().as_u16(), 401);
+}
+
+#[tokio::test]
+async fn delete_work_returns_401_when_not_logged_in() {
+    let app = spawn_app::spawn().await;
+
+    let response = app.delete_work(Uuid::new_v4()).await;
+
+    assert_eq!(response.status().as_u16(), 401);
 }

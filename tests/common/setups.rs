@@ -79,3 +79,72 @@ pub async fn setup_set_creation() -> (Vec<Uuid>, TestApp, Uuid) {
 
     (artists, app, set_id)
 }
+
+/// Registers 4 artists, logs in as user_0, creates a Set and a Festival.
+/// Returns (artists, app, set_id, festival_id).
+pub async fn setup_festival_creation() -> (Vec<Uuid>, TestApp, Uuid, Uuid) {
+    let (artists, app, set_id) = setup_set_creation().await;
+
+    let body = fixtures::create_festival_body(set_id, &[artists[1], artists[2]]);
+    let response = app.post_festival(&body).await;
+    assert!(
+        response.status().is_success(),
+        "Failed to create festival: status {}",
+        response.status()
+    );
+
+    let festival_id = sqlx::query_scalar!(
+        r#"SELECT id FROM festivals WHERE name=$1"#,
+        "Grand Cinematic Festival"
+    )
+    .fetch_one(&app.state.db_pool)
+    .await
+    .expect("db query failed");
+
+    (artists, app, set_id, festival_id)
+}
+
+/// Full stack setup: 4 artists, an original, a work upload.
+/// Returns (artists, app, original_id, work_id).
+pub async fn setup_work_uploaded() -> (Vec<Uuid>, TestApp, Uuid, Uuid) {
+    let (artists, app, original_id) = setup_edit_upload().await;
+
+    // Login as user_0 and upload a work
+    app.post_login(&fixtures::login_body("user_0", "kApten@1023")).await;
+    let body = fixtures::create_edit_body(original_id);
+    let res = app.post_work("EDIT", &body).await;
+    assert!(
+        res.status().is_success(),
+        "Failed to upload work: status {}",
+        res.status()
+    );
+
+    let work_id: Uuid = sqlx::query_scalar!(
+        r#"SELECT id FROM works WHERE title=$1"#,
+        "OG Intro Blast"
+    )
+    .fetch_one(&app.state.db_pool)
+    .await
+    .expect("db query failed");
+
+    (artists, app, original_id, work_id)
+}
+
+/// Registers and logs in an admin user in an EXISTING TestApp.
+/// This ensures the admin operates in the SAME database as all artist data.
+/// Call this AFTER setup_edit_upload / setup_set_creation so the original/set
+/// data already exists in the app's database before the admin acts on it.
+pub async fn login_as_admin(app: &TestApp) {
+    let res = app.post_admin_register(&fixtures::admin_register_body()).await;
+    assert!(
+        res.status().is_success(),
+        "Failed to register admin: status {}",
+        res.status()
+    );
+    let res = app.post_admin_login(&fixtures::admin_login_body()).await;
+    assert!(
+        res.status().is_success(),
+        "Failed to login admin: status {}",
+        res.status()
+    );
+}

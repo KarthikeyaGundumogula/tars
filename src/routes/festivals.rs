@@ -13,22 +13,21 @@ use crate::{
     types::{
         db::{
             festivals::{Festival, Panelist},
-            sets::SetMember,
-            work::WorkType,
+            sets::FestivalMember,
+            work::WorkTypeParam,
         },
         requests::festivals::{CreateFestivalReq, UpdateFestivalPanlist, UpdateFestivalReq},
         response::ApiResponse,
     },
 };
 use axum::{
-     Router,
+    Router,
     body::Bytes,
     extract::{Path, State},
     routing::post,
 };
 use std::sync::Arc;
 use tracing::instrument;
-use uuid::Uuid;
 
 #[instrument(name="create_new_set", skip(state, user, data), fields(user_id = %user.profile_id, festival_name = %data.name))]
 pub async fn create_new_set(
@@ -100,13 +99,13 @@ async fn update_panelists_handler(
     }
 }
 
-#[instrument(name = "submit panelist work",skip(app,data),fields(festival_id = %festival_id, profile_id = %user_id))]
+#[instrument(name = "submit panelist work",skip(app,data),fields(festival_id = %entity.festival_id, profile_id = %user_id))]
 async fn submit_panelist_work_handler(
     State(app): State<Arc<AppState>>,
-    Path((festival_id, work_type)): Path<(Uuid, WorkType)>,
     EntityMemberOrAdmin {
         user_id, entity, ..
     }: EntityMemberOrAdmin<Panelist>,
+    Path(WorkTypeParam { work_type }): Path<WorkTypeParam>,
     data: Bytes,
 ) -> Result<ApiResponse, ApiError> {
     let mut txn = app.db_pool.begin().await?;
@@ -119,17 +118,17 @@ async fn submit_panelist_work_handler(
     Ok(ApiResponse::WorkCreated(res))
 }
 
-#[instrument(name = "submit member work",skip(app,data),fields(set_id = %entity_id, profile_id = %entity.profile_id))]
+#[instrument(name = "submit member work",skip(app,data),fields(set_id = %entity_id, profile_id = %entity.0.profile_id))]
 async fn submit_memeber_work_handler(
     State(app): State<Arc<AppState>>,
     EntityMemberOrAdmin {
         entity, entity_id, ..
-    }: EntityMemberOrAdmin<SetMember>,
-    Path((_entity_id, work_type)): Path<(Uuid, WorkType)>,
+    }: EntityMemberOrAdmin<FestivalMember>,
+    Path(WorkTypeParam { work_type }): Path<WorkTypeParam>,
     data: Bytes,
 ) -> Result<ApiResponse, ApiError> {
     let mut txn = app.db_pool.begin().await?;
-    let work_id = upload_work(data, &mut txn, entity.profile_id, work_type).await?;
+    let work_id = upload_work(data, &mut txn, entity.0.profile_id, work_type).await?;
     let res = insert_new_festival_work(&mut txn, entity_id, work_id)
         .await?
         .ok_or(ApiError::NotFound)?;

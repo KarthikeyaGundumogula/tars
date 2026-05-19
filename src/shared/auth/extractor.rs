@@ -7,7 +7,7 @@ use sqlx::PgPool;
 use std::sync::Arc;
 use uuid::Uuid;
 
-use crate::{AppState, errors::ApiError, shared::auth::password::validate_jwt, types::db::work::WorkType};
+use crate::{AppState, errors::ApiError, shared::auth::password::validate_jwt};
 
 #[derive(Debug, Clone)]
 pub struct AuthUser {
@@ -112,6 +112,11 @@ pub struct EntityMemberOrAdmin<T: Entity> {
     pub entity: T,
 }
 
+#[derive(serde::Deserialize)]
+pub struct EntityParam {
+    pub entity_id: Uuid,
+}
+
 pub trait Entity: Send + Sync + Sized {
     fn fetch_membership_and_entity(
         db: &PgPool,
@@ -130,7 +135,8 @@ impl<T: Entity + Send> FromRequestParts<Arc<AppState>> for EntityMemberOrAdmin<T
         state: &Arc<AppState>,
     ) -> Result<Self, Self::Rejection> {
         let auth_user = AuthUser::from_request_parts(parts, state).await?;
-        let Path((entity_id, _)) = Path::<(Uuid, WorkType)>::from_request_parts(parts, state).await?;
+        let Path(EntityParam { entity_id }) =
+            Path::<EntityParam>::from_request_parts(parts, state).await?;
         let (is_member, entity) =
             T::fetch_membership_and_entity(&state.db_pool, entity_id, auth_user.profile_id)
                 .await?
@@ -145,4 +151,3 @@ impl<T: Entity + Send> FromRequestParts<Arc<AppState>> for EntityMemberOrAdmin<T
         })
     }
 }
-

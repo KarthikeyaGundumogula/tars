@@ -11,9 +11,18 @@ use tracing::instrument;
 
 use crate::{
     AppState,
+    db::works::{delete_work, delete_work_like, insert_work_like, update_work_title},
     errors::ApiError,
-    shared::{auth::extractor::Artist, works::upload_work},
-    types::{db::work::WorkType, response::ApiResponse},
+    shared::{
+        auth::extractor::{Artist, OwnedResourceOrAdmin},
+        json_extractor::AppJson,
+        works::upload_work,
+    },
+    types::{
+        db::work::{Work, WorkType},
+        requests::works::{LikeWork, UpdateWorkReq},
+        response::ApiResponse,
+    },
 };
 
 #[instrument(name = "create_new_work", skip(app, body), err)]
@@ -29,16 +38,43 @@ pub async fn create_new_work_handler(
     Ok(ApiResponse::WorkCreated(res))
 }
 
-async fn update_work_handler() -> Result<ApiResponse, ApiError> {
-    todo!()
+async fn update_work_handler(
+    State(app): State<Arc<AppState>>,
+    OwnedResourceOrAdmin { resource_id, .. }: OwnedResourceOrAdmin<Work>,
+    AppJson(data): AppJson<UpdateWorkReq>,
+) -> Result<ApiResponse, ApiError> {
+    let res = update_work_title(&app.db_pool, resource_id, data.title.to_string()).await?;
+    match res {
+        true => Ok(ApiResponse::WorkUpdated(resource_id)),
+        false => Err(ApiError::NotFound),
+    }
 }
 
-async fn like_work_handler() -> Result<ApiResponse, ApiError> {
-    todo!()
+async fn like_work_handler(
+    State(app): State<Arc<AppState>>,
+    Artist(user): Artist,
+    AppJson(data): AppJson<LikeWork>,
+) -> Result<ApiResponse, ApiError> {
+    let res = insert_work_like(&app.db_pool, data.work_id, user.profile_id).await?;
+
+    Ok(ApiResponse::AddedWorkLike(res))
 }
 
-async fn delete_work_handler() -> Result<ApiResponse, ApiError> {
-    todo!()
+async fn dislike_work_handler(
+    State(app): State<Arc<AppState>>,
+    Artist(user): Artist,
+    AppJson(data): AppJson<LikeWork>,
+) -> Result<ApiResponse, ApiError> {
+    let res = delete_work_like(&app.db_pool, data.work_id, user.profile_id).await?;
+    Ok(ApiResponse::RemovedWorkLike(res))
+}
+
+async fn delete_work_handler(
+    State(app): State<Arc<AppState>>,
+    OwnedResourceOrAdmin { resource_id, .. }: OwnedResourceOrAdmin<Work>,
+) -> Result<ApiResponse, ApiError> {
+    delete_work(&app.db_pool, resource_id).await?;
+    Ok(ApiResponse::WorkDeleted(resource_id))
 }
 
 pub fn router() -> Router<Arc<AppState>> {
@@ -46,5 +82,6 @@ pub fn router() -> Router<Arc<AppState>> {
         .route("/new/{work_type}", post(create_new_work_handler))
         .route("/{resource_id}/update", post(update_work_handler))
         .route("/like", post(like_work_handler))
+        .route("/dislike", delete(dislike_work_handler))
         .route("/{resource_id}/delete", delete(delete_work_handler))
 }

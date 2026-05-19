@@ -2,6 +2,7 @@ use std::sync::Arc;
 
 use axum::{
     Router,
+    body::Bytes,
     extract::{Path, State},
     routing::{delete, post},
 };
@@ -19,11 +20,13 @@ use crate::{
     shared::{
         auth::{extractor::AdminUser, password::get_password_hash},
         json_extractor::AppJson,
+        works::upload_work,
     },
     types::{
         db::{
             original::Original,
             profile::{Role, RoleType},
+            work::WorkType,
         },
         requests::originals::{AddNewRoleReq, CreateOriginalReq, RemoveRoleReq, UpdateOrignalReq},
         response::ApiResponse,
@@ -116,7 +119,7 @@ async fn add_new_role_handler(
     }
 }
 
-#[instrument(name = "delete_role_from_original", skip(app, data), fields(original_id = %original_id,profile=%data.profile_id))]
+#[instrument(name = "delete_role_in_original", skip(app, data), fields(original_id = %original_id,profile=%data.profile_id))]
 async fn delete_role_from_original_handler(
     State(app): State<Arc<AppState>>,
     Path(original_id): Path<Uuid>,
@@ -134,6 +137,7 @@ async fn delete_role_from_original_handler(
     Ok(ApiResponse::RoleDeleted(data.profile_id))
 }
 
+#[instrument(name = "delete original", skip(app),fields(original_id = %original_id))]
 async fn delete_original_handler(
     State(app): State<Arc<AppState>>,
     AdminUser(_): AdminUser,
@@ -141,6 +145,19 @@ async fn delete_original_handler(
 ) -> Result<ApiResponse, ApiError> {
     delete_original(&app.db_pool, original_id).await?;
     Ok(ApiResponse::OriginalDeleted(original_id))
+}
+
+#[instrument(name = "upload_release", skip(app, data), fields(resource_id = %resource_id))]
+async fn new_release_handler(
+    State(app): State<Arc<AppState>>,
+    Path((resource_id, release_type)): Path<(Uuid, WorkType)>,
+    AdminUser(_): AdminUser,
+    data: Bytes,
+) -> Result<ApiResponse, ApiError> {
+    let mut txn = app.db_pool.begin().await?;
+    let res = upload_work(data, &mut txn, resource_id, release_type).await?;
+    txn.commit().await?;
+    Ok(ApiResponse::OrignalReleaseCreated(res))
 }
 
 pub fn router() -> Router<Arc<AppState>> {
@@ -153,4 +170,8 @@ pub fn router() -> Router<Arc<AppState>> {
             delete(delete_role_from_original_handler),
         )
         .route("/{original_id}/delete", delete(delete_original_handler))
+        .route(
+            "/{resource_id}/new_release/{release_type}",
+            post(new_release_handler),
+        )
 }

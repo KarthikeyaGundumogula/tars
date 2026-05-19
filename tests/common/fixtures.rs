@@ -156,3 +156,112 @@ pub fn update_profile_body() -> serde_json::Value {
         "stage_name": "kapten og"
     })
 }
+
+// ---------------------------------------------------------------------------
+// Admin fixtures — same credential shape as artist for simplicity
+// ---------------------------------------------------------------------------
+
+pub fn admin_register_body() -> serde_json::Value {
+    serde_json::json!({
+        "admin_name": "superadmin",
+        "admin_password": "Admin@12345"
+    })
+}
+
+pub fn admin_login_body() -> serde_json::Value {
+    serde_json::json!({
+        "admin_name": "superadmin",
+        "admin_password": "Admin@12345"
+    })
+}
+
+// ---------------------------------------------------------------------------
+// Set fixtures — update/join
+// ---------------------------------------------------------------------------
+
+pub fn update_set_body() -> serde_json::Value {
+    serde_json::json!({
+        "name": "Updated Set Name",
+        "statement": "New statement",
+        "description": "New longer description",
+        "profile_picture": null
+    })
+}
+
+pub fn join_set_body(set_id: Uuid) -> serde_json::Value {
+    serde_json::json!({
+        "set_id": set_id
+    })
+}
+
+// ---------------------------------------------------------------------------
+// Work fixtures — update/like
+// ---------------------------------------------------------------------------
+
+pub fn update_work_body() -> serde_json::Value {
+    serde_json::json!({
+        "title": "Updated Title"
+    })
+}
+
+pub fn like_work_body(work_id: Uuid) -> serde_json::Value {
+    serde_json::json!({
+        "work_id": work_id
+    })
+}
+
+// ---------------------------------------------------------------------------
+// Original fixtures — update/role management
+// ---------------------------------------------------------------------------
+
+pub fn update_original_body() -> serde_json::Value {
+    serde_json::json!({
+        "title": "They Call Him OG Redux",
+        "description": "Updated description",
+        "cover_image": null,
+        "release_date": null
+    })
+}
+
+pub fn add_role_body(profile_id: Uuid) -> serde_json::Value {
+    serde_json::json!({
+        "profile_id": profile_id,
+        "role_name": "Cinematographer",
+        "category": "MAKER"
+    })
+}
+
+pub fn remove_role_body(profile_id: Uuid) -> serde_json::Value {
+    serde_json::json!({
+        "profile_id": profile_id,
+        "role_name": "Cinematographer"
+    })
+}
+
+// ---------------------------------------------------------------------------
+// Festival fixtures — update/panelist update
+// ---------------------------------------------------------------------------
+
+pub fn update_festival_body() -> serde_json::Value {
+    serde_json::json!({
+        "name": "Updated Festival Name",
+        "description": "Updated description",
+        "rules": null,
+        "start_date": null,
+        "end_date": null
+    })
+}
+
+pub fn add_panelist_body(artist_id: Uuid) -> serde_json::Value {
+    serde_json::json!({
+        "insert": true,
+        "artist_id": artist_id
+    })
+}
+
+pub fn remove_panelist_body(artist_id: Uuid) -> serde_json::Value {
+    serde_json::json!({
+        "insert": false,
+        "artist_id": artist_id
+    })
+}

@@ -1,3 +1,4 @@
+#![allow(non_camel_case_types)]
 use chrono::{DateTime, Utc};
 use serde::Deserialize;
 use uuid::Uuid;

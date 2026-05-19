@@ -41,6 +41,11 @@ pub enum WorkType {
     SCRIPT,
 }
 
+#[derive(Deserialize, Debug)]
+pub struct WorkTypeParam {
+    pub work_type: WorkType,
+}
+
 #[derive(sqlx::FromRow, Serialize, Debug)]
 pub struct Work {
     pub id: Uuid,

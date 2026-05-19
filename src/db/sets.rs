@@ -33,7 +33,25 @@ pub async fn insert_new_set(
     Ok(set_id)
 }
 
-pub async fn insert_new_set_member(
+pub async fn update_set(pool: &PgPool, set: UpdateSetReq, id: Uuid) -> Result<Uuid, ApiError> {
+    Ok(
+ sqlx::query_scalar!(
+        "
+        UPDATE sets
+        SET name = COALESCE($1, name), statement = COALESCE($2, statement), description = COALESCE($3, description), profile_picture = COALESCE($4, profile_picture)
+        WHERE id = $5 RETURNING id;
+        ",
+        set.name.as_ref().map(|n| n.as_str()),
+        set.statement.as_ref().map(|s| s.as_str()),
+        set.description.as_ref().map(|d| d.as_str()),
+        set.profile_picture.as_ref().map(|p| p.as_str()),
+        id
+    )
+    .fetch_one(pool)
+    .await?)
+}
+
+pub async fn insert_set_member(
     txn: &mut sqlx::Transaction<'_, sqlx::Postgres>,
     profile_id: Uuid,
     set_id: Uuid,
@@ -54,20 +72,43 @@ pub async fn insert_new_set_member(
     .await?)
 }
 
-pub async fn update_set(pool: &PgPool, set: UpdateSetReq, id: Uuid) -> Result<Uuid, ApiError> {
-    Ok(
- sqlx::query_scalar!(
+pub async fn delete_set_member(
+    pool: &PgPool,
+    profile_id: Uuid,
+    set_id: Uuid,
+) -> Result<bool, ApiError> {
+    Ok(sqlx::query!(
         "
-        UPDATE sets
-        SET name = COALESCE($1, name), statement = COALESCE($2, statement), description = COALESCE($3, description), profile_picture = COALESCE($4, profile_picture)
-        WHERE id = $5 RETURNING id;
+        DELETE FROM set_members
+        WHERE profile_id = $1 AND set_id = $2;
         ",
-        set.name.as_ref().map(|n| n.as_str()),
-        set.statement.as_ref().map(|s| s.as_str()),
-        set.description.as_ref().map(|d| d.as_str()),
-        set.profile_picture.as_ref().map(|p| p.as_str()),
-        id
+        profile_id,
+        set_id
     )
-    .fetch_one(pool)
-    .await?)
+    .execute(pool)
+    .await?
+    .rows_affected()
+        == 1)
+}
+
+pub async fn update_set_member_status(
+    pool: &PgPool,
+    profile_id: Uuid,
+    role: SetRole,
+    set_id: Uuid,
+) -> Result<bool, ApiError> {
+    Ok(sqlx::query!(
+        "
+        UPDATE set_members
+        SET set_role = $1
+        WHERE profile_id = $2 AND set_id = $3;
+        ",
+        role as SetRole,
+        profile_id,
+        set_id
+    )
+    .execute(pool)
+    .await?
+    .rows_affected()
+        == 1)
 }

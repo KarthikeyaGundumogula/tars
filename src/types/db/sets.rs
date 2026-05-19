@@ -54,7 +54,10 @@ impl Resource for Set {
     }
 }
 
-impl Entity for SetMember {
+#[derive(Debug)]
+pub struct FestivalMember(pub SetMember);
+
+impl Entity for FestivalMember {
     async fn fetch_membership_and_entity(
         db: &sqlx::PgPool,
         entity_id: Uuid,
@@ -78,6 +81,28 @@ impl Entity for SetMember {
         .fetch_optional(db)
         .await?
         .ok_or(ApiError::NotFound)?;
-        Ok(Some((true, set_member)))
+        Ok(Some((true, FestivalMember(set_member))))
+    }
+}
+
+impl Entity for SetMember {
+    async fn fetch_membership_and_entity(
+        db: &sqlx::PgPool,
+        entity_id: Uuid,
+        member_id: Uuid,
+    ) -> Result<Option<(bool, Self)>, ApiError>
+    where
+        Self: Send
+    {
+        let set_member = sqlx::query_as!(
+            SetMember,
+            r#"SELECT set_id, profile_id, set_role as "set_role: SetRole", created_at FROM set_members WHERE set_id = $1 AND profile_id = $2"#,
+            entity_id,
+            member_id
+        )
+        .fetch_optional(db)
+        .await?
+        .ok_or(ApiError::NotFound)?;
+    Ok(Some((true, set_member)))
     }
 }

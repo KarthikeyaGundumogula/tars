@@ -1,5 +1,5 @@
+use sqlx::{self, PgPool};
 use uuid::Uuid;
-use sqlx;
 
 use crate::{
     errors::ApiError,
@@ -8,7 +8,10 @@ use crate::{
     },
 };
 
-pub async fn insert_new_work(txn: &mut sqlx::Transaction<'_, sqlx::Postgres>, data: Work) -> Result<Uuid, ApiError> {
+pub async fn insert_new_work(
+    txn: &mut sqlx::Transaction<'_, sqlx::Postgres>,
+    data: Work,
+) -> Result<Uuid, ApiError> {
     Ok(
    sqlx::query_scalar!(
     r#"
@@ -21,7 +24,81 @@ pub async fn insert_new_work(txn: &mut sqlx::Transaction<'_, sqlx::Postgres>, da
    ).fetch_one(&mut **txn).await?
   )
 }
-pub async fn insert_new_edit(txn: &mut sqlx::Transaction<'_, sqlx::Postgres>, data: Edit) -> Result<Uuid, ApiError> {
+
+pub async fn update_work_title(
+    pool: &PgPool,
+    id: Uuid,
+    new_title: String,
+) -> Result<bool, ApiError> {
+    Ok(sqlx::query!(
+        r#"
+            UPDATE works SET title = $1 WHERE id = $2;
+            "#,
+        new_title,
+        id
+    )
+    .execute(pool)
+    .await?
+    .rows_affected()
+        == 1)
+}
+
+pub async fn insert_work_like(
+    pool: &PgPool,
+    work_id: Uuid,
+    profile_id: Uuid,
+) -> Result<bool, ApiError> {
+    Ok(sqlx::query!(
+        r#"
+            INSERT INTO work_likes (work_id,profile_id,created_at) VALUES ($1,$2,NOW()) ON CONFLICT(work_id,profile_id) DO NOTHING;
+            "#,
+        work_id,
+        profile_id
+    )
+    .execute(pool)
+    .await?
+    .rows_affected()
+        == 1)
+}
+
+pub async fn delete_work_like(
+    pool: &PgPool,
+    work_id: Uuid,
+    profile_id: Uuid,
+) -> Result<bool, ApiError> {
+    Ok(sqlx::query!(
+        r#"
+            DELETE FROM work_likes WHERE work_id = $1 AND profile_id = $2;
+            "#,
+        work_id,
+        profile_id
+    )
+    .execute(pool)
+    .await?
+    .rows_affected()
+        == 1)
+}
+
+pub async fn delete_work(
+    pool: &PgPool,
+    work_id: Uuid,
+) -> Result<bool, ApiError> {
+    Ok(sqlx::query!(
+        r#"
+            DELETE FROM works WHERE id = $1;
+            "#,
+        work_id
+    )
+    .execute(pool)
+    .await?
+    .rows_affected()
+        == 1)
+}
+
+pub async fn insert_new_edit(
+    txn: &mut sqlx::Transaction<'_, sqlx::Postgres>,
+    data: Edit,
+) -> Result<Uuid, ApiError> {
     Ok(sqlx::query_scalar!(
         "
     INSERT INTO edits (
@@ -42,7 +119,10 @@ pub async fn insert_new_edit(txn: &mut sqlx::Transaction<'_, sqlx::Postgres>, da
     .await?)
 }
 
-pub async fn insert_new_poster(txn: &mut sqlx::Transaction<'_, sqlx::Postgres>, data: Poster) -> Result<Uuid, ApiError> {
+pub async fn insert_new_poster(
+    txn: &mut sqlx::Transaction<'_, sqlx::Postgres>,
+    data: Poster,
+) -> Result<Uuid, ApiError> {
     Ok(sqlx::query_scalar!(
         r#"
 INSERT INTO posters (work_id, src_id, format)
@@ -57,7 +137,10 @@ RETURNING work_id;
     .await?)
 }
 
-pub async fn insert_new_script(txn: &mut sqlx::Transaction<'_, sqlx::Postgres>, data: Script) -> Result<Uuid, ApiError> {
+pub async fn insert_new_script(
+    txn: &mut sqlx::Transaction<'_, sqlx::Postgres>,
+    data: Script,
+) -> Result<Uuid, ApiError> {
     Ok(sqlx::query_scalar!(
         r#"
             INSERT INTO scripts (
