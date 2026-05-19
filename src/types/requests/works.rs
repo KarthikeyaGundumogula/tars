@@ -9,7 +9,8 @@ pub struct UploadEditReq {
     pub src_id: String,
     pub platform: SupportedPlatforms,
     pub format: EditFormat,
-    pub originals: Vec<Uuid>,
+    pub originals: Option<Vec<Uuid>>,
+    pub independent: bool
 }
 
 #[derive(Deserialize)]
@@ -17,15 +18,17 @@ pub struct UploadPosterReq {
     pub title: Option<WorkTitle>,
     pub src_id: String,
     pub format: PosterFormat,
-    pub originals: Vec<Uuid>,
+    pub originals: Option<Vec<Uuid>>,
+    pub independent:bool
 }
 
 #[derive(Deserialize)]
 pub struct UploadScriptReq {
     pub title: Option<WorkTitle>,
     pub src_ids: Vec<String>,
-    pub originals: Vec<Uuid>,
     pub thoughts: Vec<ScriptThought>,
+    pub originals: Option<Vec<Uuid>>,
+    pub independent:bool
 }
 
 #[derive(Deserialize)]

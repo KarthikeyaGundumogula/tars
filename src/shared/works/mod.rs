@@ -4,7 +4,7 @@ use sqlx::Transaction;
 use uuid::Uuid;
 
 use crate::{
-    db::works::{insert_new_edit, insert_new_poster, insert_new_script, insert_new_work},
+    db::works::{insert_new_edit, insert_new_poster, insert_new_script, insert_new_work, insert_new_work_credit},
     errors::ApiError,
     shared::json_extractor::AppJson,
     types::{
@@ -42,6 +42,11 @@ pub async fn upload_work(
             };
             let new_work_id = insert_new_work(txn, new_work).await?;
             insert_new_edit(txn, edit).await?;
+            if let Some(originals) = data.originals {
+                for original in originals {
+                    insert_new_work_credit(txn, original, new_work_id).await?;
+                }
+            }
             Ok(new_work_id)
         }
         WorkType::POSTER => {

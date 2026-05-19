@@ -79,10 +79,7 @@ pub async fn delete_work_like(
         == 1)
 }
 
-pub async fn delete_work(
-    pool: &PgPool,
-    work_id: Uuid,
-) -> Result<bool, ApiError> {
+pub async fn delete_work(pool: &PgPool, work_id: Uuid) -> Result<bool, ApiError> {
     Ok(sqlx::query!(
         r#"
             DELETE FROM works WHERE id = $1;
@@ -157,6 +154,26 @@ pub async fn insert_new_script(
         data.work_id,
         &data.img_src_ids,
         &data.thoughts
+    )
+    .fetch_one(&mut **txn)
+    .await?)
+}
+
+pub async fn insert_new_work_credit(
+    txn: &mut sqlx::Transaction<'_, sqlx::Postgres>,
+    original_id: Uuid,
+    work_id: Uuid,
+) -> Result<Uuid, ApiError> {
+    Ok(sqlx::query_scalar!(
+        "
+            INSERT INTO originals_credits (
+            original_id,
+            work_id)
+            VALUES ($1, $2)
+            RETURNING original_id;
+            ",
+        original_id,
+        work_id
     )
     .fetch_one(&mut **txn)
     .await?)
