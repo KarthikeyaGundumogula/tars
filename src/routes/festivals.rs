@@ -21,7 +21,7 @@ use crate::{
     },
 };
 use axum::{
-    Json, Router,
+     Router,
     body::Bytes,
     extract::{Path, State},
     routing::post,
@@ -67,7 +67,7 @@ pub async fn create_new_set(
 async fn update_festival_details_handler(
     State(app): State<Arc<AppState>>,
     OwnedResourceOrAdmin { resource_id, .. }: OwnedResourceOrAdmin<Festival>,
-    Json(data): Json<UpdateFestivalReq>,
+    AppJson(data): AppJson<UpdateFestivalReq>,
 ) -> Result<ApiResponse, ApiError> {
     let res = update_festival_details(&app.db_pool, resource_id, data)
         .await?
@@ -79,7 +79,7 @@ async fn update_festival_details_handler(
 async fn update_panelists_handler(
     State(app): State<Arc<AppState>>,
     OwnedResourceOrAdmin { resource_id, .. }: OwnedResourceOrAdmin<Festival>,
-    Json(data): Json<UpdateFestivalPanlist>,
+    AppJson(data): AppJson<UpdateFestivalPanlist>,
 ) -> Result<ApiResponse, ApiError> {
     if data.insert {
         let panelist = Panelist {
@@ -100,9 +100,10 @@ async fn update_panelists_handler(
     }
 }
 
+#[instrument(name = "submit panelist work",skip(app,data),fields(festival_id = %festival_id, profile_id = %user_id))]
 async fn submit_panelist_work_handler(
     State(app): State<Arc<AppState>>,
-    Path((_, work_type)): Path<(Uuid, WorkType)>,
+    Path((festival_id, work_type)): Path<(Uuid, WorkType)>,
     EntityMemberOrAdmin {
         user_id, entity, ..
     }: EntityMemberOrAdmin<Panelist>,
@@ -118,6 +119,7 @@ async fn submit_panelist_work_handler(
     Ok(ApiResponse::WorkCreated(res))
 }
 
+#[instrument(name = "submit member work",skip(app,data),fields(set_id = %entity_id, profile_id = %entity.profile_id))]
 async fn submit_memeber_work_handler(
     State(app): State<Arc<AppState>>,
     EntityMemberOrAdmin {

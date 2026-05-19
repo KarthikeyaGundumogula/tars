@@ -1,23 +1,33 @@
 use std::sync::Arc;
 
-use axum::{extract::State, Router, routing::post};
+use axum::{
+    Router,
+    extract::{Path, State},
+    routing::{delete, post},
+};
 use chrono::Utc;
 use tracing::instrument;
 use uuid::Uuid;
 
 use crate::{
     AppState,
-    db::originals::{insert_new_original, insert_new_role},
+    db::originals::{
+        add_new_role_if_not_exists, delete_original, delete_role, insert_new_original,
+        insert_new_role, update_original,
+    },
     errors::ApiError,
+    shared::{
+        auth::{extractor::AdminUser, password::get_password_hash},
+        json_extractor::AppJson,
+    },
     types::{
         db::{
             original::Original,
             profile::{Role, RoleType},
         },
-        requests::originals::CreateOriginalReq,
+        requests::originals::{AddNewRoleReq, CreateOriginalReq, RemoveRoleReq, UpdateOrignalReq},
         response::ApiResponse,
     },
-    shared::{auth::password::get_password_hash, json_extractor::AppJson},
 };
 #[instrument(name = "create_new_original", skip(app, data), err, fields(title = %data.title))]
 pub async fn create_new_original_handler(
@@ -35,7 +45,11 @@ pub async fn create_new_original_handler(
         presence: Some(100),
         password_hash,
         associated_with: Some(data.associated_with),
-        genres: data.genres.into_iter().map(|g| Some(g.to_string())).collect(),
+        genres: data
+            .genres
+            .into_iter()
+            .map(|g| Some(g.to_string()))
+            .collect(),
         created_at: Utc::now(),
         parent: None,
         category: crate::types::db::original::OriginalCategory::MOVIE,
@@ -67,17 +81,76 @@ pub async fn create_new_original_handler(
     Ok(ApiResponse::OK)
 }
 
-async fn update_original_details() -> Result<ApiResponse, ApiError> {
-    todo!()
+#[instrument(
+    name = "update_original_details",
+    skip(app, data),
+    fields(original_id = %original_id)
+)]
+async fn update_original_details(
+    State(app): State<Arc<AppState>>,
+    AdminUser(_): AdminUser,
+    Path(original_id): Path<Uuid>,
+    AppJson(data): AppJson<UpdateOrignalReq>,
+) -> Result<ApiResponse, ApiError> {
+    let res = update_original(&app.db_pool, data, original_id).await?;
+    Ok(ApiResponse::OriginalUpdated(res))
 }
 
-async fn new_release_handler() -> Result<ApiResponse, ApiError> {
-    todo!()
+#[instrument(name = "add_new_role_to_original",skip(app,data),fields(original_id = %original_id,profile_id=%data.profile_id))]
+async fn add_new_role_handler(
+    State(app): State<Arc<AppState>>,
+    Path(original_id): Path<Uuid>,
+    AppJson(data): AppJson<AddNewRoleReq>,
+) -> Result<ApiResponse, ApiError> {
+    let role = Role {
+        profile_id: data.profile_id,
+        category: data.category,
+        original_id,
+        role_name: data.role_name.to_string(),
+        created_at: Utc::now(),
+    };
+    let res = add_new_role_if_not_exists(&app.db_pool, role).await?;
+    match res {
+        true => Ok(ApiResponse::RoleCreated(data.profile_id)),
+        false => Ok(ApiResponse::RoleExists(data.profile_id)),
+    }
+}
+
+#[instrument(name = "delete_role_from_original", skip(app, data), fields(original_id = %original_id,profile=%data.profile_id))]
+async fn delete_role_from_original_handler(
+    State(app): State<Arc<AppState>>,
+    Path(original_id): Path<Uuid>,
+    AppJson(data): AppJson<RemoveRoleReq>,
+) -> Result<ApiResponse, ApiError> {
+    let mut txn = app.db_pool.begin().await?;
+    delete_role(
+        &mut txn,
+        data.role_name.to_string(),
+        original_id,
+        data.profile_id,
+    )
+    .await?;
+    txn.commit().await?;
+    Ok(ApiResponse::RoleDeleted(data.profile_id))
+}
+
+async fn delete_original_handler(
+    State(app): State<Arc<AppState>>,
+    AdminUser(_): AdminUser,
+    Path(original_id): Path<Uuid>,
+) -> Result<ApiResponse, ApiError> {
+    delete_original(&app.db_pool, original_id).await?;
+    Ok(ApiResponse::OriginalDeleted(original_id))
 }
 
 pub fn router() -> Router<Arc<AppState>> {
     Router::new()
         .route("/new", post(create_new_original_handler))
-        .route("/{resource_id}/update", post(update_original_details))
-        .route("/new_release", post(new_release_handler))
+        .route("/{original_id}/update", post(update_original_details))
+        .route("/{original_id}/new_role", post(add_new_role_handler))
+        .route(
+            "/{original_id}/delete_role",
+            delete(delete_role_from_original_handler),
+        )
+        .route("/{original_id}/delete", delete(delete_original_handler))
 }

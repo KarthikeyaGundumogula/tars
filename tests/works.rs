@@ -5,7 +5,8 @@ use common::{fixtures, setups::setup_edit_upload};
 async fn upload_edit_return_200_on_correct_data() {
     let (_, app, original_id) = setup_edit_upload().await;
 
-    app.post_login(&fixtures::login_body("user_0", "kApten@1023")).await;
+    app.post_login(&fixtures::login_body("user_0", "kApten@1023"))
+        .await;
 
     let body = fixtures::create_edit_body(original_id);
     let response = app.post_work("EDIT", &body).await;
@@ -37,7 +38,8 @@ async fn upload_edit_return_200_on_correct_data() {
 async fn upload_poster_return_200_on_correct_data() {
     let (_, app, original_id) = setup_edit_upload().await;
 
-    app.post_login(&fixtures::login_body("user_0", "kApten@1023")).await;
+    app.post_login(&fixtures::login_body("user_0", "kApten@1023"))
+        .await;
 
     let body = fixtures::create_poster_body(original_id);
     let response = app.post_work("POSTER", &body).await;
@@ -67,7 +69,8 @@ async fn upload_poster_return_200_on_correct_data() {
 async fn upload_script_return_200_on_correct_data() {
     let (_, app, original_id) = setup_edit_upload().await;
 
-    app.post_login(&fixtures::login_body("user_0", "kApten@1023")).await;
+    app.post_login(&fixtures::login_body("user_0", "kApten@1023"))
+        .await;
 
     let body = fixtures::create_script_body(original_id);
     let response = app.post_work("SCRIPT", &body).await;
@@ -96,7 +99,10 @@ async fn upload_script_return_200_on_correct_data() {
     );
     assert_eq!(
         saved_script.thoughts,
-        Some(vec!["Brilliant intro".to_string(), "Dynamic pacing".to_string()])
+        Some(vec![
+            "Brilliant intro".to_string(),
+            "Dynamic pacing".to_string()
+        ])
     );
 }
 
@@ -113,7 +119,8 @@ async fn upload_work_returns_401_when_not_logged_in() {
 async fn upload_work_returns_400_on_invalid_payload() {
     let (_, app, original_id) = setup_edit_upload().await;
 
-    app.post_login(&fixtures::login_body("user_0", "kApten@1023")).await;
+    app.post_login(&fixtures::login_body("user_0", "kApten@1023"))
+        .await;
 
     let test_cases = vec![
         (

@@ -1,24 +1,20 @@
 use std::sync::Arc;
 
-use axum::{Json, Router, extract::State, routing::post};
+use axum::{Router, extract::State, routing::post};
 use tracing::instrument;
 
 use crate::{
-    AppState,
-    db::artists::{delete_follower, delete_favorite, insert_new_favorite, insert_new_follwing, update_profile_details},
-    errors::ApiError,
-    types::{
+    AppState, db::artists::{delete_favorite, delete_follower, insert_new_favorite, insert_new_follwing, update_profile_details}, errors::ApiError, shared::{auth::extractor::Artist, json_extractor::AppJson}, types::{
         requests::artist::{ArtistActionReq, UpdateProfileReq},
         response::ApiResponse,
-    },
-    shared::auth::extractor::Artist,
+    }
 };
 
 #[instrument(name = "update profile details", skip(app, user, data),fields(profile_id = %user.profile_id.to_string()))]
 pub async fn update_stage_details_handler(
     State(app): State<Arc<AppState>>,
     Artist(user): Artist,
-    Json(data): Json<UpdateProfileReq>,
+    AppJson(data): AppJson<UpdateProfileReq>,
 ) -> Result<ApiResponse, ApiError> {
     let res = update_profile_details(&app.db_pool, data, user.profile_id)
         .await?
@@ -26,37 +22,41 @@ pub async fn update_stage_details_handler(
     Ok(ApiResponse::ProfileUpdated(res))
 }
 
+#[instrument(name = "follow artist", skip(app, user, data),fields(user_id = %user.profile_id.to_string(), artist_id = %data.artist_id))]
 async fn follow_artist_handler(
     State(app): State<Arc<AppState>>,
     Artist(user): Artist,
-    data: Json<ArtistActionReq>,
+    AppJson(data): AppJson<ArtistActionReq>,
 ) -> Result<ApiResponse, ApiError> {
     let res = insert_new_follwing(&app.db_pool, user.profile_id, data.artist_id).await?;
     Ok(ApiResponse::FollowedArtist(res))
 }
 
+#[instrument(name = "unfollow artist", skip(app, user, data),fields(user_id = %user.profile_id.to_string(), artist_id = %data.artist_id))]
 async fn unfollow_artist_handler(
     State(app): State<Arc<AppState>>,
     Artist(user): Artist,
-    Json(data): Json<ArtistActionReq>,
+    AppJson(data): AppJson<ArtistActionReq>,
 ) -> Result<ApiResponse, ApiError> {
     let res = delete_follower(&app.db_pool, user.profile_id, data.artist_id).await?;
     Ok(ApiResponse::FollowedArtist(res))
 }
 
+#[instrument(name = "add to favorite profiles", skip(app, user, data),fields(user_id = %user.profile_id.to_string(), artist_id = %data.artist_id))]
 async fn add_to_favorite_profiles_handler(
     State(app): State<Arc<AppState>>,
     Artist(user): Artist,
-    Json(data): Json<ArtistActionReq>,
+    AppJson(data): AppJson<ArtistActionReq>,
 ) -> Result<ApiResponse, ApiError> {
     let res = insert_new_favorite(&app.db_pool, user.profile_id, data.artist_id).await?;
     Ok(ApiResponse::FavoritedArtist(res))
 }
 
+#[instrument(name = "remove from favorite profiles", skip(app, user, data),fields(user_id = %user.profile_id.to_string(), artist_id = %data.artist_id))]
 async fn remove_from_favorite_profiles_handler(
     State(app): State<Arc<AppState>>,
     Artist(user): Artist,
-    Json(data): Json<ArtistActionReq>,
+    AppJson(data): AppJson<ArtistActionReq>,
 ) -> Result<ApiResponse, ApiError> {
     let res = delete_favorite(&app.db_pool, user.profile_id, data.artist_id).await?;
     Ok(ApiResponse::FavoriteArtistRemoved(res))

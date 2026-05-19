@@ -1,21 +1,28 @@
 use std::sync::Arc;
 
-use axum::{Router, extract::State, routing::post};
+use axum::{Json, Router, extract::State, routing::post};
 use chrono::Utc;
 use tracing::instrument;
 use uuid::Uuid;
 
 use crate::{
     AppState,
-    db::sets::insert_new_set,
+    db::sets::{insert_new_set, insert_new_set_member, update_set},
     errors::ApiError,
-    types::{db::sets::Set, requests::sets::CreateSetReq, response::ApiResponse},
-    shared::{auth::extractor::Artist, json_extractor::AppJson},
+    shared::{
+        auth::extractor::{Artist, OwnedResourceOrAdmin},
+        json_extractor::AppJson,
+    },
+    types::{
+        db::sets::{Set, SetRole},
+        requests::sets::{CreateSetReq, JoinSetRequest, UpdateSetReq},
+        response::ApiResponse,
+    },
 };
 
-#[instrument(name = "create_new_set", skip(state, user, data), fields(curator= %user.handle, set_name = %data.name))]
+#[instrument(name = "create_new_set", skip(app, user, data), fields(curator= %user.handle, set_name = %data.name))]
 pub async fn create_new_set_handler(
-    State(state): State<Arc<AppState>>,
+    State(app): State<Arc<AppState>>,
     Artist(user): Artist,
     AppJson(data): AppJson<CreateSetReq>,
 ) -> Result<ApiResponse, ApiError> {
@@ -29,17 +36,44 @@ pub async fn create_new_set_handler(
         presence: 0,
         created_at: Utc::now(),
     };
-    let mut txn = state.db_pool.begin().await?;
+    let mut txn = app.db_pool.begin().await?;
     let set_id = insert_new_set(&mut txn, set).await?;
+    let role = insert_new_set_member(
+        &mut txn,
+        user.profile_id,
+        set_id,
+        SetRole::CURATOR,
+        Utc::now(),
+    )
+    .await?;
     txn.commit().await?;
     Ok(ApiResponse::SetCreated(set_id))
 }
 
-async fn update_set_details_handler() -> Result<ApiResponse, ApiError> {
-    todo!()
+async fn update_set_details_handler(
+    State(app): State<Arc<AppState>>,
+    OwnedResourceOrAdmin { resource_id, .. }: OwnedResourceOrAdmin<Set>,
+    AppJson(data): AppJson<UpdateSetReq>,
+) -> Result<ApiResponse, ApiError> {
+    let res = update_set(&app.db_pool, data, resource_id).await?;
+    Ok(ApiResponse::UpdatedSet(res))
 }
-async fn join_set_handler() -> Result<ApiResponse, ApiError> {
-    todo!()
+async fn join_set_handler(
+    State(app): State<Arc<AppState>>,
+    Artist(user): Artist,
+    AppJson(data): AppJson<JoinSetRequest>,
+) -> Result<ApiResponse, ApiError> {
+    let mut txn = app.db_pool.begin().await?;
+    let role = insert_new_set_member(
+        &mut txn,
+        user.profile_id,
+        data.set_id,
+        SetRole::MEMBER,
+        Utc::now(),
+    )
+    .await?;
+    txn.commit().await?;
+    Ok(ApiResponse::JoinedSet(role))
 }
 async fn leave_set_handler() -> Result<ApiResponse, ApiError> {
     todo!()

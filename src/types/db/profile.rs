@@ -1,5 +1,5 @@
 use chrono::{DateTime, Utc};
-use serde::Serialize;
+use serde::{Deserialize, Serialize};
 use uuid::Uuid;
 
 use crate::{errors::ApiError, shared::auth::extractor::Resource};
@@ -12,7 +12,7 @@ pub enum ProfileType {
     MAKER,
 }
 
-#[derive(Clone, Serialize, sqlx::Type)]
+#[derive(Clone, Serialize,Deserialize,Debug, sqlx::Type)]
 #[sqlx(type_name = "role_type")]
 pub enum RoleType {
     STAR,

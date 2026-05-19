@@ -3,7 +3,10 @@ use uuid::Uuid;
 
 use crate::{
     errors::ApiError,
-    types::db::ledger::{LedgerEntry, LedgerEntryType, WatchlistStatus},
+    types::{
+        db::ledger::{LedgerEntry, LedgerEntryType, WatchlistStatus},
+        requests::ledger::{TagWorkToLedgerEntryReq, UpdateLedgerEntryReq},
+    },
 };
 
 pub async fn insert_new_ledger_entry(pool: &PgPool, data: LedgerEntry) -> Result<Uuid, ApiError> {
@@ -47,4 +50,60 @@ pub async fn insert_new_ledger_entry(pool: &PgPool, data: LedgerEntry) -> Result
     )
     .fetch_one(pool)
     .await?)
+}
+
+pub async fn update_ledger_entry(
+    pool: &PgPool,
+    data: UpdateLedgerEntryReq,
+    id: Uuid,
+) -> Result<Uuid, ApiError> {
+    Ok(sqlx::query_scalar!(
+        r#"
+      UPDATE ledger
+      SET
+          pre_thought = COALESCE($1, pre_thought),
+          post_impression = COALESCE($2, post_impression),
+          status = COALESCE($3,status)
+      WHERE id = $4
+      RETURNING id;
+      "#,
+        data.pre_thought.as_ref().map(|t| t.to_string()),
+        data.post_impression.as_ref().map(|t| t.to_string()),
+        data.status as Option<WatchlistStatus>,
+        id
+    )
+    .fetch_one(pool)
+    .await?)
+}
+
+pub async fn add_new_tagged_work(
+    pool: &PgPool,
+    data: TagWorkToLedgerEntryReq,
+    entry_id: Uuid,
+) -> Result<Uuid, ApiError> {
+    Ok(sqlx::query_scalar!(
+        "
+      Update ledger
+      SET tagged_works = array_append(tagged_works, $1)
+      WHERE id = $2
+      RETURNING id;
+      ",
+        data.work_id,
+        entry_id
+    )
+    .fetch_one(pool)
+    .await?)
+}
+
+pub async fn delete_ledger_entry(pool: &PgPool, entry_id: Uuid) -> Result<(), ApiError> {
+    sqlx::query!(
+        "
+      DELETE FROM ledger
+      WHERE id = $1
+      ",
+        entry_id
+    )
+    .execute(pool)
+    .await?;
+    Ok(())
 }

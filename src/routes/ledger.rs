@@ -1,16 +1,29 @@
 use std::sync::Arc;
 
-use axum::{Router, extract::State, routing::post};
+use axum::{
+    Router,
+    extract::State,
+    routing::{delete, post},
+};
 use chrono::Utc;
 use tracing::instrument;
 use uuid::Uuid;
 
 use crate::{
     AppState,
-    db::ledger::insert_new_ledger_entry,
+    db::ledger::{
+        add_new_tagged_work, delete_ledger_entry, insert_new_ledger_entry, update_ledger_entry,
+    },
     errors::ApiError,
-    types::{db::ledger::LedgerEntry, requests::ledger::LedgerEntryReq, response::ApiResponse},
-    shared::{auth::extractor::Artist, json_extractor::AppJson},
+    shared::{
+        auth::extractor::{Artist, OwnedResourceOrAdmin},
+        json_extractor::AppJson,
+    },
+    types::{
+        db::ledger::LedgerEntry,
+        requests::ledger::{LedgerEntryReq, TagWorkToLedgerEntryReq, UpdateLedgerEntryReq},
+        response::ApiResponse,
+    },
 };
 
 #[instrument(name = "new_ledger_entry", skip(state, user, data), err, fields(user_id = %user.profile_id))]
@@ -37,12 +50,33 @@ pub async fn new_ledger_entry_handler(
     Ok(ApiResponse::LedgerEntryLogged(entry))
 }
 
-async fn update_ledger_entry_handler() -> Result<ApiResponse, ApiError> {
-    todo!()
+#[instrument(name = "update_ledger_entry", skip(app, data), err, fields(entry_id = %resource_id))]
+async fn update_ledger_entry_handler(
+    State(app): State<Arc<AppState>>,
+    OwnedResourceOrAdmin { resource_id, .. }: OwnedResourceOrAdmin<LedgerEntry>,
+    AppJson(data): AppJson<UpdateLedgerEntryReq>,
+) -> Result<ApiResponse, ApiError> {
+    let res = update_ledger_entry(&app.db_pool, data, resource_id).await?;
+    Ok(ApiResponse::LedgerEntryUpdated(res))
 }
 
-async fn tag_work_handler() -> Result<ApiResponse, ApiError> {
-    todo!()
+#[instrument(name = "tag_work", skip(app, data), err, fields(entry_id = %resource_id,work_id=%data.work_id))]
+async fn tag_work_handler(
+    State(app): State<Arc<AppState>>,
+    OwnedResourceOrAdmin { resource_id, .. }: OwnedResourceOrAdmin<LedgerEntry>,
+    AppJson(data): AppJson<TagWorkToLedgerEntryReq>,
+) -> Result<ApiResponse, ApiError> {
+    let res = add_new_tagged_work(&app.db_pool, data, resource_id).await?;
+    Ok(ApiResponse::LedgerEntryUpdated(res))
+}
+
+#[instrument(name = "delete_ledger_entry", skip(app), err, fields(entry_id = %resource_id))]
+async fn delete_ledger_entry_handler(
+    State(app): State<Arc<AppState>>,
+    OwnedResourceOrAdmin { resource_id, .. }: OwnedResourceOrAdmin<LedgerEntry>,
+) -> Result<ApiResponse, ApiError> {
+    delete_ledger_entry(&app.db_pool, resource_id).await?;
+    Ok(ApiResponse::LedgerEntryDeleted(resource_id))
 }
 
 pub fn router() -> Router<Arc<AppState>> {
@@ -50,4 +84,5 @@ pub fn router() -> Router<Arc<AppState>> {
         .route("/new", post(new_ledger_entry_handler))
         .route("/{resource_id}/update", post(update_ledger_entry_handler))
         .route("/{resource_id}/tag_work", post(tag_work_handler))
+        .route("/{resource_id}/delete", delete(delete_ledger_entry_handler))
 }

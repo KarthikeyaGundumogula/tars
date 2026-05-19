@@ -14,3 +14,15 @@ pub struct LedgerEntryReq {
     pub entry_type: LedgerEntryType,
     pub episode_id: Option<Uuid>,
 }
+
+#[derive(Deserialize)]
+pub struct UpdateLedgerEntryReq{
+    pub pre_thought: Option<LedgerThought>,
+    pub post_impression: Option<LedgerThought>,
+    pub status: Option<WatchlistStatus>,
+}
+
+#[derive(Deserialize)]
+pub struct TagWorkToLedgerEntryReq{
+    pub work_id: Uuid,
+}

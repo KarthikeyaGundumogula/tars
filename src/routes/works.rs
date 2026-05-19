@@ -4,7 +4,7 @@ use axum::{
     Router,
     body::Bytes,
     extract::{Path, State},
-    routing::post,
+    routing::{delete, post},
 };
 
 use tracing::instrument;
@@ -12,14 +12,8 @@ use tracing::instrument;
 use crate::{
     AppState,
     errors::ApiError,
-    types::{
-        db::work::WorkType,
-        response::ApiResponse,
-    },
-    shared::{
-        auth::extractor::Artist,
-        works::upload_work,
-    },
+    shared::{auth::extractor::Artist, works::upload_work},
+    types::{db::work::WorkType, response::ApiResponse},
 };
 
 #[instrument(name = "create_new_work", skip(app, body), err)]
@@ -43,9 +37,14 @@ async fn like_work_handler() -> Result<ApiResponse, ApiError> {
     todo!()
 }
 
+async fn delete_work_handler() -> Result<ApiResponse, ApiError> {
+    todo!()
+}
+
 pub fn router() -> Router<Arc<AppState>> {
     Router::new()
         .route("/new/{work_type}", post(create_new_work_handler))
         .route("/{resource_id}/update", post(update_work_handler))
         .route("/like", post(like_work_handler))
+        .route("/{resource_id}/delete", delete(delete_work_handler))
 }

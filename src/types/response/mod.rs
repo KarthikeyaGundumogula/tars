@@ -2,10 +2,15 @@ use axum::{Json, http::StatusCode, response::IntoResponse};
 use axum_extra::extract::CookieJar;
 use uuid::Uuid;
 
+use crate::types::db::sets::SetRole;
+
 pub enum ApiResponse {
     OK,
     WorkCreated(Uuid),
+    OriginalCreated(Uuid),
     SetCreated(Uuid),
+    UpdatedSet(Uuid),
+    JoinedSet(SetRole),
     ProfileAuthenticated(CookieJar),
     PasswordUpdated(Uuid),
     LedgerEntryLogged(Uuid),
@@ -16,7 +21,15 @@ pub enum ApiResponse {
     FavoriteArtistRemoved(bool),
     FestivalDetailsUpdated(Uuid),
     PanelistAdded(Uuid),
-    PanelistDeleted(Uuid)
+    PanelistDeleted(Uuid),
+    LedgerEntryUpdated(Uuid),
+    WorkTaggedTOLedgerEntry(Uuid,Uuid),
+    LedgerEntryDeleted(Uuid),
+    OriginalUpdated(Uuid),
+    OriginalDeleted(Uuid),
+    RoleDeleted(Uuid),
+    RoleCreated(Uuid),
+    RoleExists(Uuid), 
 }
 
 impl IntoResponse for ApiResponse {
@@ -26,8 +39,14 @@ impl IntoResponse for ApiResponse {
             Self::WorkCreated(id) => {
                 (StatusCode::ACCEPTED, Json(serde_json::json!({"id": id}))).into_response()
             }
+            Self::OriginalCreated(id) => {
+                (StatusCode::ACCEPTED, Json(serde_json::json!({"id": id}))).into_response()
+            }
             Self::SetCreated(id) => {
                 (StatusCode::ACCEPTED, Json(serde_json::json!({"id": id}))).into_response()
+            }
+            Self::JoinedSet(role) => {
+                (StatusCode::OK, Json(serde_json::json!({"role": role}))).into_response()
             }
             Self::ProfileAuthenticated(jar) => (
                 StatusCode::OK,
@@ -63,6 +82,33 @@ impl IntoResponse for ApiResponse {
                 (StatusCode::OK, Json(serde_json::json!({"id": id}))).into_response()
             }
             Self::PanelistDeleted(id) => {
+                (StatusCode::OK, Json(serde_json::json!({"id": id}))).into_response()
+            }
+            Self::LedgerEntryUpdated(id) => {
+                (StatusCode::OK, Json(serde_json::json!({"id": id}))).into_response()
+            }
+            Self::WorkTaggedTOLedgerEntry(work_id, ledger_entry_id) => {
+                (StatusCode::OK, Json(serde_json::json!({"work_id": work_id, "ledger_entry_id": ledger_entry_id}))).into_response()
+            }
+            Self::LedgerEntryDeleted(id) => {
+                (StatusCode::OK, Json(serde_json::json!({"id": id}))).into_response()
+            }
+            Self::OriginalUpdated(id) => {
+                (StatusCode::OK, Json(serde_json::json!({"id": id}))).into_response()
+            }
+            Self::OriginalDeleted(id) => {
+                (StatusCode::OK, Json(serde_json::json!({"id": id}))).into_response()
+            }
+            Self::RoleDeleted(id) => {
+                (StatusCode::OK, Json(serde_json::json!({"profile_id": id}))).into_response()
+            }
+            Self::RoleCreated(id) => {
+                (StatusCode::OK, Json(serde_json::json!({"profile_id": id}))).into_response()
+            }
+            Self::RoleExists(id) => {
+                (StatusCode::OK, Json(serde_json::json!({"profile_id": id}))).into_response()
+            }
+            Self::UpdatedSet(id) => {
                 (StatusCode::OK, Json(serde_json::json!({"id": id}))).into_response()
             }
         }
