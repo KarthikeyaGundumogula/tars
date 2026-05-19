@@ -66,12 +66,9 @@ impl Entity for FestivalMember {
     where
         Self: Send,
     {
-        let set_id = sqlx::query_scalar!(
-            "SELECT set_id from festivals WHERE id = $1",
-            entity_id
-        )
-        .fetch_one(db)
-        .await?;
+        let set_id = sqlx::query_scalar!("SELECT set_id from festivals WHERE id = $1", entity_id)
+            .fetch_one(db)
+            .await?;
         let set_member = sqlx::query_as!(
             SetMember,
             r#"SELECT set_id, profile_id, set_role as "set_role: SetRole", created_at FROM set_members WHERE set_id = $1 AND profile_id = $2"#,
@@ -92,7 +89,7 @@ impl Entity for SetMember {
         member_id: Uuid,
     ) -> Result<Option<(bool, Self)>, ApiError>
     where
-        Self: Send
+        Self: Send,
     {
         let set_member = sqlx::query_as!(
             SetMember,
@@ -103,6 +100,6 @@ impl Entity for SetMember {
         .fetch_optional(db)
         .await?
         .ok_or(ApiError::NotFound)?;
-    Ok(Some((true, set_member)))
+        Ok(Some((true, set_member)))
     }
 }

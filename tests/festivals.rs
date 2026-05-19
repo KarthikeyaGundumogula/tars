@@ -1,10 +1,45 @@
 mod common;
-use common::{
-    fixtures,
-    setups::setup_festival_creation,
-    spawn_app,
-};
+use common::{fixtures, setups::setup_festival_creation, spawn_app};
 use uuid::Uuid;
+
+// ---------------------------------------------------------------------------
+// Create Festival
+// ---------------------------------------------------------------------------
+
+#[tokio::test]
+async fn create_festival_returns_200_for_set_owner() {
+    let (artists, app, set_id) = common::setups::setup_set_creation().await;
+
+    let response = app
+        .post_festival(
+            set_id,
+            &fixtures::create_festival_body(set_id, &[artists[1], artists[2]]),
+        )
+        .await;
+
+    assert!(
+        response.status().is_success(),
+        "Expected 2xx, got {}",
+        response.status()
+    );
+}
+
+#[tokio::test]
+async fn create_festival_returns_401_for_non_owner() {
+    let (artists, app, set_id) = common::setups::setup_set_creation().await;
+
+    app.post_login(&fixtures::login_body("user_1", "kApten@1023"))
+        .await;
+
+    let response = app
+        .post_festival(
+            set_id,
+            &fixtures::create_festival_body(set_id, &[artists[1], artists[2]]),
+        )
+        .await;
+
+    assert_eq!(response.status().as_u16(), 401);
+}
 
 // ---------------------------------------------------------------------------
 // Update Festival Details
@@ -25,12 +60,11 @@ async fn update_festival_returns_200_for_organizer() {
         response.status()
     );
 
-    let name: String =
-        sqlx::query_scalar(r#"SELECT name FROM festivals WHERE id=$1"#)
-            .bind(festival_id)
-            .fetch_one(&app.state.db_pool)
-            .await
-            .expect("db query failed");
+    let name: String = sqlx::query_scalar(r#"SELECT name FROM festivals WHERE id=$1"#)
+        .bind(festival_id)
+        .fetch_one(&app.state.db_pool)
+        .await
+        .expect("db query failed");
 
     assert_eq!(name, "Updated Festival Name");
 }
@@ -40,7 +74,8 @@ async fn update_festival_returns_401_for_non_organizer() {
     let (_, app, _, festival_id) = setup_festival_creation().await;
 
     // user_2 is a panelist, NOT the organizer
-    app.post_login(&fixtures::login_body("user_2", "kApten@1023")).await;
+    app.post_login(&fixtures::login_body("user_2", "kApten@1023"))
+        .await;
 
     let response = app
         .post_update_festival(festival_id, &fixtures::update_festival_body())
@@ -79,13 +114,14 @@ async fn add_panelist_returns_200_for_organizer() {
         response.status()
     );
 
-    let count: i64 =
-        sqlx::query_scalar(r#"SELECT COUNT(*) FROM panelists WHERE festival_id=$1 AND profile_id=$2"#)
-            .bind(festival_id)
-            .bind(artists[3])
-            .fetch_one(&app.state.db_pool)
-            .await
-            .expect("db query failed");
+    let count: i64 = sqlx::query_scalar(
+        r#"SELECT COUNT(*) FROM panelists WHERE festival_id=$1 AND profile_id=$2"#,
+    )
+    .bind(festival_id)
+    .bind(artists[3])
+    .fetch_one(&app.state.db_pool)
+    .await
+    .expect("db query failed");
 
     assert_eq!(count, 1);
 }
@@ -106,13 +142,14 @@ async fn remove_panelist_returns_200_for_organizer() {
         response.status()
     );
 
-    let count: i64 =
-        sqlx::query_scalar(r#"SELECT COUNT(*) FROM panelists WHERE festival_id=$1 AND profile_id=$2"#)
-            .bind(festival_id)
-            .bind(artists[1])
-            .fetch_one(&app.state.db_pool)
-            .await
-            .expect("db query failed");
+    let count: i64 = sqlx::query_scalar(
+        r#"SELECT COUNT(*) FROM panelists WHERE festival_id=$1 AND profile_id=$2"#,
+    )
+    .bind(festival_id)
+    .bind(artists[1])
+    .fetch_one(&app.state.db_pool)
+    .await
+    .expect("db query failed");
 
     assert_eq!(count, 0);
 }
@@ -121,7 +158,8 @@ async fn remove_panelist_returns_200_for_organizer() {
 async fn update_panelists_returns_401_for_non_organizer() {
     let (artists, app, _, festival_id) = setup_festival_creation().await;
 
-    app.post_login(&fixtures::login_body("user_2", "kApten@1023")).await;
+    app.post_login(&fixtures::login_body("user_2", "kApten@1023"))
+        .await;
 
     let response = app
         .post_update_panelists(festival_id, &fixtures::add_panelist_body(artists[3]))

@@ -23,15 +23,15 @@ pub enum ApiResponse {
     PanelistAdded(Uuid),
     PanelistDeleted(Uuid),
     LedgerEntryUpdated(Uuid),
-    WorkTaggedTOLedgerEntry(Uuid,Uuid),
+    WorkTaggedTOLedgerEntry(Uuid, Uuid),
     LedgerEntryDeleted(Uuid),
     OriginalUpdated(Uuid),
     OriginalDeleted(Uuid),
     RoleDeleted(Uuid),
     RoleCreated(Uuid),
-    RoleExists(Uuid), 
+    RoleExists(Uuid),
     OrignalReleaseCreated(Uuid),
-    SetMemberDeleted(Uuid,Uuid),
+    SetMemberDeleted(Uuid, Uuid),
     WorkUpdated(Uuid),
     AddedWorkLike(bool),
     RemovedWorkLike(bool),
@@ -95,9 +95,11 @@ impl IntoResponse for ApiResponse {
             Self::LedgerEntryUpdated(id) => {
                 (StatusCode::OK, Json(serde_json::json!({"id": id}))).into_response()
             }
-            Self::WorkTaggedTOLedgerEntry(work_id, ledger_entry_id) => {
-                (StatusCode::OK, Json(serde_json::json!({"work_id": work_id, "ledger_entry_id": ledger_entry_id}))).into_response()
-            }
+            Self::WorkTaggedTOLedgerEntry(work_id, ledger_entry_id) => (
+                StatusCode::OK,
+                Json(serde_json::json!({"work_id": work_id, "ledger_entry_id": ledger_entry_id})),
+            )
+                .into_response(),
             Self::LedgerEntryDeleted(id) => {
                 (StatusCode::OK, Json(serde_json::json!({"id": id}))).into_response()
             }
@@ -122,27 +124,31 @@ impl IntoResponse for ApiResponse {
             Self::OrignalReleaseCreated(id) => {
                 (StatusCode::OK, Json(serde_json::json!({"release_id": id}))).into_response()
             }
-            Self::SetMemberDeleted(set_id, profile_id) => {
-                (StatusCode::OK, Json(serde_json::json!({"set_id": set_id, "profile_id": profile_id}))).into_response()
-            }
+            Self::SetMemberDeleted(set_id, profile_id) => (
+                StatusCode::OK,
+                Json(serde_json::json!({"set_id": set_id, "profile_id": profile_id})),
+            )
+                .into_response(),
             Self::WorkUpdated(id) => {
                 (StatusCode::OK, Json(serde_json::json!({"id": id}))).into_response()
             }
-            Self::AddedWorkLike(status) => {
-                (StatusCode::OK, Json(serde_json::json!({"is_addded": status}))).into_response()
-            }
-            Self::RemovedWorkLike(status) => {
-                (StatusCode::OK, Json(serde_json::json!({"Is_removed": status}))).into_response()
-            }
+            Self::AddedWorkLike(status) => (
+                StatusCode::OK,
+                Json(serde_json::json!({"is_addded": status})),
+            )
+                .into_response(),
+            Self::RemovedWorkLike(status) => (
+                StatusCode::OK,
+                Json(serde_json::json!({"Is_removed": status})),
+            )
+                .into_response(),
             Self::WorkDeleted(id) => {
                 (StatusCode::OK, Json(serde_json::json!({"id": id}))).into_response()
             }
             Self::AdminCreated(id) => {
                 (StatusCode::OK, Json(serde_json::json!({"id": id}))).into_response()
             }
-            Self::AdminAuthenticated(jar) => {
-                (StatusCode::OK, jar).into_response()
-            }
+            Self::AdminAuthenticated(jar) => (StatusCode::OK, jar).into_response(),
         }
     }
 }

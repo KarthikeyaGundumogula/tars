@@ -69,4 +69,3 @@ mod tests {
         assert!(FestivalRules::parse("Rule #1".to_string()).is_err());
     }
 }
-

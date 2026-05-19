@@ -35,6 +35,7 @@ use crate::{
 #[instrument(name = "create_new_original", skip(app, data), err, fields(title = %data.title))]
 pub async fn create_new_original_handler(
     State(app): State<Arc<AppState>>,
+    AdminUser(_): AdminUser,
     AppJson(data): AppJson<CreateOriginalReq>,
 ) -> Result<ApiResponse, ApiError> {
     let password_hash = get_password_hash(data.password.as_ref())?;
@@ -103,6 +104,7 @@ async fn update_original_details(
 async fn add_new_role_handler(
     State(app): State<Arc<AppState>>,
     Path(original_id): Path<Uuid>,
+    AdminUser(_): AdminUser,
     AppJson(data): AppJson<AddNewRoleReq>,
 ) -> Result<ApiResponse, ApiError> {
     let role = Role {
@@ -122,6 +124,7 @@ async fn add_new_role_handler(
 #[instrument(name = "delete_role_in_original", skip(app, data), fields(original_id = %original_id,profile=%data.profile_id))]
 async fn delete_role_from_original_handler(
     State(app): State<Arc<AppState>>,
+    AdminUser(_): AdminUser,
     Path(original_id): Path<Uuid>,
     AppJson(data): AppJson<RemoveRoleReq>,
 ) -> Result<ApiResponse, ApiError> {

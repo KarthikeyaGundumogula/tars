@@ -1,8 +1,8 @@
+pub mod admin;
+pub mod artist;
 pub mod auth;
-pub mod originals;
-pub mod works;
-pub mod sets;
 pub mod festivals;
 pub mod ledger;
-pub mod artist;
-pub mod admin;
+pub mod originals;
+pub mod sets;
+pub mod works;

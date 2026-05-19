@@ -19,8 +19,7 @@ where
     }
 }
 
-impl<'a, T: Deserialize<'a>> AppJson<T>
-{
+impl<'a, T: Deserialize<'a>> AppJson<T> {
     pub fn from_bytes(bytes: &'a [u8]) -> Result<Self, ApiError> {
         let res = serde_json::from_slice::<T>(bytes).map_err(|e| ApiError::from(e))?;
         Ok(AppJson(res))

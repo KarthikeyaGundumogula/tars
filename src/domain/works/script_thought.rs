@@ -60,4 +60,3 @@ mod tests {
         assert!(ScriptThought::parse(thought).is_err());
     }
 }
-

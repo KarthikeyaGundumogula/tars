@@ -1,4 +1,3 @@
-
 #[derive(Debug)]
 pub struct SetDescription(String);
 
@@ -70,4 +69,3 @@ mod tests {
         assert!(SetDescription::parse("Description #1".to_string()).is_err());
     }
 }
-

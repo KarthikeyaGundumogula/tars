@@ -1,2 +1,2 @@
-pub mod password;
 pub mod extractor;
+pub mod password;

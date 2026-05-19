@@ -1,17 +1,10 @@
 use std::sync::Arc;
 
-use axum::{
-    Router,
-    extract::DefaultBodyLimit,
-    serve::Serve,
-};
+use axum::{Router, extract::DefaultBodyLimit, serve::Serve};
 use tokio::net::TcpListener;
 use tower_http::trace::TraceLayer;
 
-use crate::{
-    AppState,
-    routes,
-};
+use crate::{AppState, routes};
 
 pub async fn run(
     listner: TcpListener,

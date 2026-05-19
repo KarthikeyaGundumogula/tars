@@ -63,7 +63,8 @@ pub async fn update_ledger_entry(
       SET
           pre_thought = COALESCE($1, pre_thought),
           post_impression = COALESCE($2, post_impression),
-          status = COALESCE($3,status)
+          status = COALESCE($3,status),
+          updated_at = NOW()
       WHERE id = $4
       RETURNING id;
       "#,

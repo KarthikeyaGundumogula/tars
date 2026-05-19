@@ -1,9 +1,5 @@
 mod common;
-use common::{
-    fixtures,
-    setups::setup_work_uploaded,
-    spawn_app,
-};
+use common::{fixtures, setups::setup_work_uploaded, spawn_app};
 use uuid::Uuid;
 
 // ---------------------------------------------------------------------------
@@ -25,12 +21,11 @@ async fn update_work_returns_200_for_owner() {
         response.status()
     );
 
-    let title: Option<String> =
-        sqlx::query_scalar(r#"SELECT title FROM works WHERE id=$1"#)
-            .bind(work_id)
-            .fetch_one(&app.state.db_pool)
-            .await
-            .expect("db query failed");
+    let title: Option<String> = sqlx::query_scalar(r#"SELECT title FROM works WHERE id=$1"#)
+        .bind(work_id)
+        .fetch_one(&app.state.db_pool)
+        .await
+        .expect("db query failed");
 
     assert_eq!(title.unwrap(), "Updated Title");
 }
@@ -40,7 +35,8 @@ async fn update_work_returns_401_for_non_owner() {
     let (_, app, _, work_id) = setup_work_uploaded().await;
 
     // Login as user_1 who does NOT own this work
-    app.post_login(&fixtures::login_body("user_1", "kApten@1023")).await;
+    app.post_login(&fixtures::login_body("user_1", "kApten@1023"))
+        .await;
 
     let response = app
         .post_update_work(work_id, &fixtures::update_work_body())
@@ -81,7 +77,8 @@ async fn like_work_returns_200_for_logged_in_artist() {
     let (_, app, _, work_id) = setup_work_uploaded().await;
 
     // user_1 likes user_0's work
-    app.post_login(&fixtures::login_body("user_1", "kApten@1023")).await;
+    app.post_login(&fixtures::login_body("user_1", "kApten@1023"))
+        .await;
 
     let response = app.post_like_work(&fixtures::like_work_body(work_id)).await;
 
@@ -116,13 +113,16 @@ async fn like_work_returns_401_when_not_logged_in() {
 async fn dislike_work_returns_200_after_liking() {
     let (_, app, _, work_id) = setup_work_uploaded().await;
 
-    app.post_login(&fixtures::login_body("user_1", "kApten@1023")).await;
+    app.post_login(&fixtures::login_body("user_1", "kApten@1023"))
+        .await;
 
     // Like first
     app.post_like_work(&fixtures::like_work_body(work_id)).await;
 
     // Then dislike
-    let response = app.delete_dislike_work(&fixtures::like_work_body(work_id)).await;
+    let response = app
+        .delete_dislike_work(&fixtures::like_work_body(work_id))
+        .await;
 
     assert!(
         response.status().is_success(),
@@ -185,7 +185,8 @@ async fn delete_work_also_deletes_edit_via_cascade() {
 async fn delete_work_returns_401_for_non_owner() {
     let (_, app, _, work_id) = setup_work_uploaded().await;
 
-    app.post_login(&fixtures::login_body("user_1", "kApten@1023")).await;
+    app.post_login(&fixtures::login_body("user_1", "kApten@1023"))
+        .await;
 
     let response = app.delete_work(work_id).await;
 

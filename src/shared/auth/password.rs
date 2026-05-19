@@ -20,8 +20,9 @@ pub fn get_password_hash(password: &str) -> Result<String, ApiError> {
 
 pub fn verify_password(password: &str, password_hash: &str) -> Result<bool, ApiError> {
     let parsed_hash = PasswordHash::new(password_hash)?;
-    Ok(Argon2::default().verify_password(password.as_bytes(), &parsed_hash).is_ok())
-    
+    Ok(Argon2::default()
+        .verify_password(password.as_bytes(), &parsed_hash)
+        .is_ok())
 }
 
 pub fn create_jwt(
@@ -56,7 +57,8 @@ pub fn validate_jwt(token: &str, secret: &str) -> Result<Claims, ApiError> {
         token,
         &DecodingKey::from_secret(secret.as_bytes()),
         &Validation::default(),
-    ).map_err(|e| {
+    )
+    .map_err(|e| {
         if e.kind() == &jsonwebtoken::errors::ErrorKind::ExpiredSignature {
             ApiError::Unauthorized("Token expired".into())
         } else {

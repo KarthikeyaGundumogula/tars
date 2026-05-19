@@ -1,4 +1,3 @@
-
 #[derive(Debug)]
 pub struct Statement(String);
 
@@ -69,4 +68,3 @@ mod tests {
         assert!(Statement::parse(statement).is_err());
     }
 }
-

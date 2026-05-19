@@ -1,5 +1,5 @@
+use serde::{Deserialize, Deserializer};
 use std::fmt;
-use serde::{Deserialize,Deserializer};
 
 #[derive(Debug)]
 pub struct Genre(String);
@@ -13,9 +13,7 @@ impl Genre {
             return Err("Genre cannot be longer than 50 characters".to_string());
         }
         if !genre.chars().all(|c| c.is_alphanumeric() || c == ' ') {
-            return Err(
-                "Genre can only contain alphanumeric characters and spaces".to_string(),
-            );
+            return Err("Genre can only contain alphanumeric characters and spaces".to_string());
         }
         if genre.starts_with(' ') || genre.ends_with(' ') {
             return Err("Genre cannot start or end with a space".to_string());
@@ -87,5 +85,3 @@ mod tests {
         assert!(Genre::parse("Action ".to_string()).is_err());
     }
 }
-
-

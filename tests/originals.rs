@@ -7,6 +7,51 @@ use common::{
 use uuid::Uuid;
 
 // ---------------------------------------------------------------------------
+// Create Original (admin-only)
+// ---------------------------------------------------------------------------
+
+#[tokio::test]
+async fn create_original_returns_200_for_admin() {
+    let (artists, app) = common::setups::setup_original_registration().await;
+    login_as_admin(&app).await;
+
+    let response = app
+        .post_original(&fixtures::create_original_body(&artists))
+        .await;
+
+    assert!(
+        response.status().is_success(),
+        "Expected 2xx, got {}",
+        response.status()
+    );
+}
+
+#[tokio::test]
+async fn create_original_returns_401_for_artist() {
+    let (artists, app) = common::setups::setup_original_registration().await;
+
+    app.post_login(&fixtures::login_body("user_0", "kApten@1023"))
+        .await;
+
+    let response = app
+        .post_original(&fixtures::create_original_body(&artists))
+        .await;
+
+    assert_eq!(response.status().as_u16(), 401);
+}
+
+#[tokio::test]
+async fn create_original_returns_401_when_not_logged_in() {
+    let (artists, app) = common::setups::setup_original_registration().await;
+
+    let response = app
+        .post_original(&fixtures::create_original_body(&artists))
+        .await;
+
+    assert_eq!(response.status().as_u16(), 401);
+}
+
+// ---------------------------------------------------------------------------
 // Update Original (admin-only)
 // ---------------------------------------------------------------------------
 
@@ -43,7 +88,8 @@ async fn update_original_returns_401_for_artist() {
     let (_, app, original_id) = setup_edit_upload().await;
 
     // user_0 is an artist — NOT an admin
-    app.post_login(&fixtures::login_body("user_0", "kApten@1023")).await;
+    app.post_login(&fixtures::login_body("user_0", "kApten@1023"))
+        .await;
 
     let response = app
         .post_update_original(original_id, &fixtures::update_original_body())
@@ -70,6 +116,7 @@ async fn update_original_returns_401_when_not_logged_in() {
 #[tokio::test]
 async fn add_role_returns_200_on_valid_request() {
     let (artists, app, original_id) = setup_edit_upload().await;
+    login_as_admin(&app).await;
 
     let response = app
         .post_add_role(original_id, &fixtures::add_role_body(artists[0]))
@@ -97,8 +144,10 @@ async fn add_role_returns_200_on_valid_request() {
 async fn add_role_returns_200_with_idempotent_behavior_when_role_exists() {
     // Inserting the same role twice must not crash — handler returns RoleExists variant
     let (artists, app, original_id) = setup_edit_upload().await;
+    login_as_admin(&app).await;
 
-    app.post_add_role(original_id, &fixtures::add_role_body(artists[0])).await;
+    app.post_add_role(original_id, &fixtures::add_role_body(artists[0]))
+        .await;
 
     let response = app
         .post_add_role(original_id, &fixtures::add_role_body(artists[0]))
@@ -112,6 +161,31 @@ async fn add_role_returns_200_with_idempotent_behavior_when_role_exists() {
     );
 }
 
+#[tokio::test]
+async fn add_role_returns_401_for_artist() {
+    let (artists, app, original_id) = setup_edit_upload().await;
+
+    app.post_login(&fixtures::login_body("user_0", "kApten@1023"))
+        .await;
+
+    let response = app
+        .post_add_role(original_id, &fixtures::add_role_body(artists[0]))
+        .await;
+
+    assert_eq!(response.status().as_u16(), 401);
+}
+
+#[tokio::test]
+async fn add_role_returns_401_when_not_logged_in() {
+    let app = spawn_app::spawn().await;
+
+    let response = app
+        .post_add_role(Uuid::new_v4(), &fixtures::add_role_body(Uuid::new_v4()))
+        .await;
+
+    assert_eq!(response.status().as_u16(), 401);
+}
+
 // ---------------------------------------------------------------------------
 // Delete Role from Original
 // ---------------------------------------------------------------------------
@@ -119,9 +193,11 @@ async fn add_role_returns_200_with_idempotent_behavior_when_role_exists() {
 #[tokio::test]
 async fn delete_role_returns_200_after_adding() {
     let (artists, app, original_id) = setup_edit_upload().await;
+    login_as_admin(&app).await;
 
     // Add role first
-    app.post_add_role(original_id, &fixtures::add_role_body(artists[0])).await;
+    app.post_add_role(original_id, &fixtures::add_role_body(artists[0]))
+        .await;
 
     // Then delete it
     let response = app
@@ -144,6 +220,35 @@ async fn delete_role_returns_200_after_adding() {
     .expect("db query failed");
 
     assert_eq!(count, 0);
+}
+
+#[tokio::test]
+async fn delete_role_returns_401_for_artist() {
+    let (artists, app, original_id) = setup_edit_upload().await;
+    login_as_admin(&app).await;
+
+    app.post_add_role(original_id, &fixtures::add_role_body(artists[0]))
+        .await;
+
+    app.post_login(&fixtures::login_body("user_0", "kApten@1023"))
+        .await;
+
+    let response = app
+        .delete_role(original_id, &fixtures::remove_role_body(artists[0]))
+        .await;
+
+    assert_eq!(response.status().as_u16(), 401);
+}
+
+#[tokio::test]
+async fn delete_role_returns_401_when_not_logged_in() {
+    let app = spawn_app::spawn().await;
+
+    let response = app
+        .delete_role(Uuid::new_v4(), &fixtures::remove_role_body(Uuid::new_v4()))
+        .await;
+
+    assert_eq!(response.status().as_u16(), 401);
 }
 
 // ---------------------------------------------------------------------------
@@ -209,7 +314,8 @@ async fn delete_original_returns_401_for_artist() {
     let (_, app, original_id) = setup_edit_upload().await;
 
     // user_0 is an artist — not admin
-    app.post_login(&fixtures::login_body("user_0", "kApten@1023")).await;
+    app.post_login(&fixtures::login_body("user_0", "kApten@1023"))
+        .await;
 
     let response = app.delete_original(original_id).await;
 

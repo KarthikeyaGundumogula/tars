@@ -26,11 +26,15 @@ async fn login_artist_return_200_on_correct_data() {
     let app = spawn_app::spawn().await;
 
     // Arrange: Register first
-    let register_res = app.post_register(&fixtures::register_body("kapten", "kApten@1023")).await;
+    let register_res = app
+        .post_register(&fixtures::register_body("kapten", "kApten@1023"))
+        .await;
     assert_eq!(register_res.status(), reqwest::StatusCode::OK);
 
     // Act: Login
-    let response = app.post_login(&fixtures::login_body("kapten", "kApten@1023")).await;
+    let response = app
+        .post_login(&fixtures::login_body("kapten", "kApten@1023"))
+        .await;
 
     assert_eq!(response.status(), reqwest::StatusCode::OK);
 }
@@ -40,12 +44,17 @@ async fn reset_password_returns_200_for_valid_credentials() {
     let app = spawn_app::spawn().await;
 
     // Register + Login
-    app.post_register(&fixtures::register_body("kapten", "kApten@1023")).await;
-    app.post_login(&fixtures::login_body("kapten", "kApten@1023")).await;
+    app.post_register(&fixtures::register_body("kapten", "kApten@1023"))
+        .await;
+    app.post_login(&fixtures::login_body("kapten", "kApten@1023"))
+        .await;
 
     // Act: Reset password
     let response = app
-        .post_reset_password(&fixtures::reset_password_body("kApten@1023", "NewPass@2024"))
+        .post_reset_password(&fixtures::reset_password_body(
+            "kApten@1023",
+            "NewPass@2024",
+        ))
         .await;
 
     assert!(
@@ -60,10 +69,14 @@ async fn reset_password_returns_401_without_login() {
     let app = spawn_app::spawn().await;
 
     // Register but DON'T login
-    app.post_register(&fixtures::register_body("kapten", "kApten@1023")).await;
+    app.post_register(&fixtures::register_body("kapten", "kApten@1023"))
+        .await;
 
     let response = app
-        .post_reset_password(&fixtures::reset_password_body("kApten@1023", "NewPass@2024"))
+        .post_reset_password(&fixtures::reset_password_body(
+            "kApten@1023",
+            "NewPass@2024",
+        ))
         .await;
 
     assert_eq!(response.status().as_u16(), 401);
@@ -73,12 +86,17 @@ async fn reset_password_returns_401_without_login() {
 async fn reset_password_returns_401_for_wrong_old_password() {
     let app = spawn_app::spawn().await;
 
-    app.post_register(&fixtures::register_body("kapten", "kApten@1023")).await;
-    app.post_login(&fixtures::login_body("kapten", "kApten@1023")).await;
+    app.post_register(&fixtures::register_body("kapten", "kApten@1023"))
+        .await;
+    app.post_login(&fixtures::login_body("kapten", "kApten@1023"))
+        .await;
 
     // Old password is wrong
     let response = app
-        .post_reset_password(&fixtures::reset_password_body("wrongpassword", "NewPass@2024"))
+        .post_reset_password(&fixtures::reset_password_body(
+            "wrongpassword",
+            "NewPass@2024",
+        ))
         .await;
 
     assert_eq!(response.status().as_u16(), 422);
@@ -126,7 +144,9 @@ async fn register_profile_returns_422_when_data_is_missing() {
 async fn create_admin_returns_200_on_correct_data() {
     let app = spawn_app::spawn().await;
 
-    let response = app.post_admin_register(&fixtures::admin_register_body()).await;
+    let response = app
+        .post_admin_register(&fixtures::admin_register_body())
+        .await;
     // let json = response.json::<serde_json::Value>().await.unwrap();
     // println!("{:?}", json);
     assert!(
@@ -135,12 +155,11 @@ async fn create_admin_returns_200_on_correct_data() {
         response.status()
     );
 
-    let count: i64 = sqlx::query_scalar(
-        r#"SELECT COUNT(*) FROM admins WHERE admin_name='superadmin'"#,
-    )
-    .fetch_one(&app.state.db_pool)
-    .await
-    .expect("db query failed");
+    let count: i64 =
+        sqlx::query_scalar(r#"SELECT COUNT(*) FROM admins WHERE admin_name='superadmin'"#)
+            .fetch_one(&app.state.db_pool)
+            .await
+            .expect("db query failed");
 
     assert_eq!(count, 1);
 }
@@ -150,7 +169,8 @@ async fn admin_login_returns_200_with_cookie_on_correct_credentials() {
     let app = spawn_app::spawn().await;
 
     // Register first
-    app.post_admin_register(&fixtures::admin_register_body()).await;
+    app.post_admin_register(&fixtures::admin_register_body())
+        .await;
 
     // Login
     let response = app.post_admin_login(&fixtures::admin_login_body()).await;
@@ -168,14 +188,18 @@ async fn admin_login_returns_200_with_cookie_on_correct_credentials() {
         .iter()
         .any(|v| v.to_str().unwrap_or("").contains("auth_token"));
 
-    assert!(has_cookie, "Expected auth_token cookie to be set on admin login");
+    assert!(
+        has_cookie,
+        "Expected auth_token cookie to be set on admin login"
+    );
 }
 
 #[tokio::test]
 async fn admin_login_returns_401_for_wrong_password() {
     let app = spawn_app::spawn().await;
 
-    app.post_admin_register(&fixtures::admin_register_body()).await;
+    app.post_admin_register(&fixtures::admin_register_body())
+        .await;
 
     let wrong_login = serde_json::json!({
         "admin_name": "superadmin",
@@ -187,11 +211,11 @@ async fn admin_login_returns_401_for_wrong_password() {
 }
 
 #[tokio::test]
-async fn admin_login_returns_500_for_nonexistent_admin() {
+async fn admin_login_returns_401_for_nonexistent_admin() {
     let app = spawn_app::spawn().await;
 
     // No admin registered — timing-safe path should still return 401
     let response = app.post_admin_login(&fixtures::admin_login_body()).await;
 
-    assert_eq!(response.status().as_u16(), 500);
+    assert_eq!(response.status().as_u16(), 401);
 }

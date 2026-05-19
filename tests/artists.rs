@@ -9,10 +9,14 @@ use common::{fixtures, setups::setup_original_registration, spawn_app};
 async fn update_profile_returns_200_for_valid_data() {
     let app = spawn_app::spawn().await;
 
-    app.post_register(&fixtures::register_body("kapten", "kApten@1023")).await;
-    app.post_login(&fixtures::login_body("kapten", "kApten@1023")).await;
+    app.post_register(&fixtures::register_body("kapten", "kApten@1023"))
+        .await;
+    app.post_login(&fixtures::login_body("kapten", "kApten@1023"))
+        .await;
 
-    let response = app.post_update_profile(&fixtures::update_profile_body()).await;
+    let response = app
+        .post_update_profile(&fixtures::update_profile_body())
+        .await;
 
     assert!(response.status().is_success());
 
@@ -32,7 +36,9 @@ async fn update_profile_returns_200_for_valid_data() {
 async fn update_profile_returns_401_for_unauthorized_user() {
     let app = spawn_app::spawn().await;
 
-    let response = app.post_update_profile(&fixtures::update_profile_body()).await;
+    let response = app
+        .post_update_profile(&fixtures::update_profile_body())
+        .await;
 
     assert_eq!(response.status(), reqwest::StatusCode::UNAUTHORIZED);
 }
@@ -47,7 +53,8 @@ async fn follow_artist_returns_200_on_valid_request() {
     let (artists, app) = setup_original_registration().await;
 
     // Login as user_0, follow user_1
-    app.post_login(&fixtures::login_body("user_0", "kApten@1023")).await;
+    app.post_login(&fixtures::login_body("user_0", "kApten@1023"))
+        .await;
 
     let body = fixtures::artist_action_body(artists[1]);
     let response = app.post_follow(&body).await;
@@ -85,13 +92,17 @@ async fn follow_artist_returns_401_when_not_logged_in() {
 async fn unfollow_artist_returns_200_after_following() {
     let (artists, app) = setup_original_registration().await;
 
-    app.post_login(&fixtures::login_body("user_0", "kApten@1023")).await;
+    app.post_login(&fixtures::login_body("user_0", "kApten@1023"))
+        .await;
 
     // Follow first
-    app.post_follow(&fixtures::artist_action_body(artists[1])).await;
+    app.post_follow(&fixtures::artist_action_body(artists[1]))
+        .await;
 
     // Then unfollow
-    let response = app.post_unfollow(&fixtures::artist_action_body(artists[1])).await;
+    let response = app
+        .post_unfollow(&fixtures::artist_action_body(artists[1]))
+        .await;
 
     assert!(
         response.status().is_success(),
@@ -120,9 +131,12 @@ async fn unfollow_artist_returns_200_after_following() {
 async fn favorite_artist_returns_200_on_valid_request() {
     let (artists, app) = setup_original_registration().await;
 
-    app.post_login(&fixtures::login_body("user_0", "kApten@1023")).await;
+    app.post_login(&fixtures::login_body("user_0", "kApten@1023"))
+        .await;
 
-    let response = app.post_favorite(&fixtures::artist_action_body(artists[1])).await;
+    let response = app
+        .post_favorite(&fixtures::artist_action_body(artists[1]))
+        .await;
 
     assert!(
         response.status().is_success(),
@@ -146,7 +160,9 @@ async fn favorite_artist_returns_200_on_valid_request() {
 async fn favorite_artist_returns_401_when_not_logged_in() {
     let (artists, app) = setup_original_registration().await;
 
-    let response = app.post_favorite(&fixtures::artist_action_body(artists[1])).await;
+    let response = app
+        .post_favorite(&fixtures::artist_action_body(artists[1]))
+        .await;
 
     assert_eq!(response.status().as_u16(), 401);
 }
@@ -155,13 +171,17 @@ async fn favorite_artist_returns_401_when_not_logged_in() {
 async fn unfavorite_artist_returns_200_after_favoriting() {
     let (artists, app) = setup_original_registration().await;
 
-    app.post_login(&fixtures::login_body("user_0", "kApten@1023")).await;
+    app.post_login(&fixtures::login_body("user_0", "kApten@1023"))
+        .await;
 
     // Favorite first
-    app.post_favorite(&fixtures::artist_action_body(artists[1])).await;
+    app.post_favorite(&fixtures::artist_action_body(artists[1]))
+        .await;
 
     // Then unfavorite
-    let response = app.post_unfavorite(&fixtures::artist_action_body(artists[1])).await;
+    let response = app
+        .post_unfavorite(&fixtures::artist_action_body(artists[1]))
+        .await;
 
     assert!(
         response.status().is_success(),

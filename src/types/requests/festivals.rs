@@ -21,11 +21,11 @@ pub struct UpdateFestivalReq {
     pub description: Option<FestivalDescription>,
     pub rules: Option<FestivalRules>,
     pub start_date: Option<DateTime<Utc>>,
-    pub end_date: Option<DateTime<Utc>>
+    pub end_date: Option<DateTime<Utc>>,
 }
 
 #[derive(Deserialize)]
-pub struct UpdateFestivalPanlist{
+pub struct UpdateFestivalPanlist {
     pub insert: bool,
-    pub artist_id: Uuid
+    pub artist_id: Uuid,
 }

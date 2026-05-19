@@ -1,7 +1,10 @@
 use serde::Deserialize;
 use uuid::Uuid;
 
-use crate::{domain::LedgerThought, types::db::ledger::{LedgerEntryType, WatchlistStatus}};
+use crate::{
+    domain::LedgerThought,
+    types::db::ledger::{LedgerEntryType, WatchlistStatus},
+};
 
 #[derive(Deserialize)]
 pub struct LedgerEntryReq {
@@ -16,13 +19,13 @@ pub struct LedgerEntryReq {
 }
 
 #[derive(Deserialize)]
-pub struct UpdateLedgerEntryReq{
+pub struct UpdateLedgerEntryReq {
     pub pre_thought: Option<LedgerThought>,
     pub post_impression: Option<LedgerThought>,
     pub status: Option<WatchlistStatus>,
 }
 
 #[derive(Deserialize)]
-pub struct TagWorkToLedgerEntryReq{
+pub struct TagWorkToLedgerEntryReq {
     pub work_id: Uuid,
 }

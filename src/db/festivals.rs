@@ -32,7 +32,7 @@ pub async fn insert_new_festival(
 }
 
 pub async fn update_festival_details(
-  pool:&PgPool,
+    pool: &PgPool,
     id: Uuid,
     festival: UpdateFestivalReq,
 ) -> Result<Option<Uuid>, ApiError> {
@@ -73,15 +73,13 @@ pub async fn delete_panelist(
     festival_id: Uuid,
     profile_id: Uuid,
 ) -> Result<Option<Uuid>, ApiError> {
-    Ok(
-    sqlx::query_scalar!(
-      "DELETE FROM panelists WHERE festival_id = $1 AND profile_id = $2 RETURNING festival_id",
-      festival_id,
-      profile_id
+    Ok(sqlx::query_scalar!(
+        "DELETE FROM panelists WHERE festival_id = $1 AND profile_id = $2 RETURNING festival_id",
+        festival_id,
+        profile_id
     )
     .fetch_optional(pool)
-    .await?
-  )
+    .await?)
 }
 
 pub async fn update_panelist_work(

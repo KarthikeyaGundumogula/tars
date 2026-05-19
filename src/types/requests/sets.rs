@@ -1,19 +1,19 @@
 use serde::Deserialize;
 use uuid::Uuid;
 
-use crate::domain::{SetName, SetDescription, Statement};
+use crate::domain::{SetDescription, SetName, Statement};
 
 #[derive(Deserialize)]
 pub struct CreateSetReq {
     pub name: SetName,
     pub description: SetDescription,
     pub statement: Statement,
-    pub profile_picture:String,
+    pub profile_picture: String,
 }
 
 #[derive(Deserialize)]
 pub struct JoinSetRequest {
-    pub set_id: Uuid
+    pub set_id: Uuid,
 }
 
 #[derive(Deserialize)]

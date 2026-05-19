@@ -1,6 +1,6 @@
 use std::fmt;
 
-use serde::{Deserialize,Deserializer};
+use serde::{Deserialize, Deserializer};
 
 #[derive(Debug)]
 pub struct OriginalTitle(String);
@@ -63,4 +63,3 @@ mod tests {
         assert!(OriginalTitle::parse(title).is_err());
     }
 }
-

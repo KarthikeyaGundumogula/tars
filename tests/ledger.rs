@@ -6,7 +6,8 @@ use tars::types::db::ledger::{LedgerEntryType, WatchlistStatus};
 async fn create_ledger_entry_return_success_on_correct_data() {
     let (_, app, original_id) = setup_edit_upload().await;
 
-    app.post_login(&fixtures::login_body("user_0", "kApten@1023")).await;
+    app.post_login(&fixtures::login_body("user_0", "kApten@1023"))
+        .await;
 
     let body = fixtures::create_ledger_body(original_id);
     let response = app.post_ledger(&body).await;

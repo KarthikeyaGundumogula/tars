@@ -1,11 +1,11 @@
-pub mod auth;
-pub mod health_check;
-pub mod originals;
-pub mod works;
-pub mod sets;
-pub mod festivals;
-pub mod ledger;
 pub mod artists;
+pub mod auth;
+pub mod festivals;
+pub mod health_check;
+pub mod ledger;
+pub mod originals;
+pub mod sets;
+pub mod works;
 
 use crate::AppState;
 use axum::Router;

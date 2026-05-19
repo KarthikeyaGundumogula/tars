@@ -100,10 +100,7 @@ impl IntoResponse for ApiError {
                 .into_response(),
             Self::Unauthorized(e) => (
                 StatusCode::UNAUTHORIZED,
-                Json(ErrorResponse::new(
-                    StatusCode::UNAUTHORIZED.to_string(),
-                    e,
-                )),
+                Json(ErrorResponse::new(StatusCode::UNAUTHORIZED.to_string(), e)),
             )
                 .into_response(),
             Self::UrlError(_) => (

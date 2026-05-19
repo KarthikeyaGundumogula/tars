@@ -1,7 +1,10 @@
 #![allow(dead_code)]
 use uuid::Uuid;
 
-use crate::common::{fixtures, spawn_app::{self, TestApp}};
+use crate::common::{
+    fixtures,
+    spawn_app::{self, TestApp},
+};
 
 /// Creates 4 registered artists and returns their IDs + the running TestApp.
 /// All subsequent setup functions build on this as the base layer.
@@ -21,11 +24,10 @@ pub async fn setup_original_registration() -> (Vec<Uuid>, TestApp) {
             response.status()
         );
 
-        let artist =
-            sqlx::query_scalar!(r#"SELECT id FROM profiles WHERE user_name=$1"#, handle)
-                .fetch_one(&app.state.db_pool)
-                .await
-                .expect("db query failed");
+        let artist = sqlx::query_scalar!(r#"SELECT id FROM profiles WHERE user_name=$1"#, handle)
+            .fetch_one(&app.state.db_pool)
+            .await
+            .expect("db query failed");
         artists.push(artist);
     }
 
@@ -36,6 +38,7 @@ pub async fn setup_original_registration() -> (Vec<Uuid>, TestApp) {
 pub async fn setup_edit_upload() -> (Vec<Uuid>, TestApp, Uuid) {
     let (artists, app) = setup_original_registration().await;
 
+    login_as_admin(&app).await;
     let body = fixtures::create_original_body(&artists);
     let response = app.post_original(&body).await;
     assert!(
@@ -59,7 +62,8 @@ pub async fn setup_edit_upload() -> (Vec<Uuid>, TestApp, Uuid) {
 pub async fn setup_set_creation() -> (Vec<Uuid>, TestApp, Uuid) {
     let (artists, app) = setup_original_registration().await;
 
-    app.post_login(&fixtures::login_body("user_0", "kApten@1023")).await;
+    app.post_login(&fixtures::login_body("user_0", "kApten@1023"))
+        .await;
 
     let body = fixtures::create_set_body();
     let response = app.post_set(&body).await;
@@ -69,13 +73,10 @@ pub async fn setup_set_creation() -> (Vec<Uuid>, TestApp, Uuid) {
         response.status()
     );
 
-    let set_id = sqlx::query_scalar!(
-        r#"SELECT id FROM sets WHERE name=$1"#,
-        "My Awesome Set"
-    )
-    .fetch_one(&app.state.db_pool)
-    .await
-    .expect("db query failed");
+    let set_id = sqlx::query_scalar!(r#"SELECT id FROM sets WHERE name=$1"#, "My Awesome Set")
+        .fetch_one(&app.state.db_pool)
+        .await
+        .expect("db query failed");
 
     (artists, app, set_id)
 }
@@ -86,7 +87,7 @@ pub async fn setup_festival_creation() -> (Vec<Uuid>, TestApp, Uuid, Uuid) {
     let (artists, app, set_id) = setup_set_creation().await;
 
     let body = fixtures::create_festival_body(set_id, &[artists[1], artists[2]]);
-    let response = app.post_festival(&body).await;
+    let response = app.post_festival(set_id, &body).await;
     assert!(
         response.status().is_success(),
         "Failed to create festival: status {}",
@@ -110,7 +111,8 @@ pub async fn setup_work_uploaded() -> (Vec<Uuid>, TestApp, Uuid, Uuid) {
     let (artists, app, original_id) = setup_edit_upload().await;
 
     // Login as user_0 and upload a work
-    app.post_login(&fixtures::login_body("user_0", "kApten@1023")).await;
+    app.post_login(&fixtures::login_body("user_0", "kApten@1023"))
+        .await;
     let body = fixtures::create_edit_body(original_id);
     let res = app.post_work("EDIT", &body).await;
     assert!(
@@ -119,13 +121,11 @@ pub async fn setup_work_uploaded() -> (Vec<Uuid>, TestApp, Uuid, Uuid) {
         res.status()
     );
 
-    let work_id: Uuid = sqlx::query_scalar!(
-        r#"SELECT id FROM works WHERE title=$1"#,
-        "OG Intro Blast"
-    )
-    .fetch_one(&app.state.db_pool)
-    .await
-    .expect("db query failed");
+    let work_id: Uuid =
+        sqlx::query_scalar!(r#"SELECT id FROM works WHERE title=$1"#, "OG Intro Blast")
+            .fetch_one(&app.state.db_pool)
+            .await
+            .expect("db query failed");
 
     (artists, app, original_id, work_id)
 }
@@ -135,7 +135,9 @@ pub async fn setup_work_uploaded() -> (Vec<Uuid>, TestApp, Uuid, Uuid) {
 /// Call this AFTER setup_edit_upload / setup_set_creation so the original/set
 /// data already exists in the app's database before the admin acts on it.
 pub async fn login_as_admin(app: &TestApp) {
-    let res = app.post_admin_register(&fixtures::admin_register_body()).await;
+    let res = app
+        .post_admin_register(&fixtures::admin_register_body())
+        .await;
     assert!(
         res.status().is_success(),
         "Failed to register admin: status {}",

@@ -72,7 +72,8 @@ pub fn create_edit_body(original_id: Uuid) -> serde_json::Value {
         "src_id": "GG1_DsScm6U",
         "platform": "YOUTUBE",
         "format": "IMAX",
-        "originals": [original_id]
+        "originals": [original_id],
+        "independent":false
     })
 }
 
@@ -81,7 +82,8 @@ pub fn create_poster_body(original_id: Uuid) -> serde_json::Value {
         "title": "The Golden Poster",
         "src_id": "poster_uuid_123",
         "format": "STANDARD",
-        "originals": [original_id]
+        "originals": [original_id],
+        "independent":false
     })
 }
 
@@ -90,7 +92,8 @@ pub fn create_script_body(original_id: Uuid) -> serde_json::Value {
         "title": "Cinematic Script Draft",
         "src_ids": ["img1", "img2"],
         "originals": [original_id],
-        "thoughts": ["Brilliant intro", "Dynamic pacing"]
+        "thoughts": ["Brilliant intro", "Dynamic pacing"],
+        "independent":false
     })
 }
 

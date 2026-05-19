@@ -1,5 +1,5 @@
-use serde::Deserialize;
 use crate::domain::{Handle, Password};
+use serde::Deserialize;
 
 #[derive(Deserialize, Debug)]
 pub struct AdminAuthRequest {

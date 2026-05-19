@@ -1,12 +1,12 @@
 use crate::{
     AppState,
     db::festivals::{
-        delete_panelist, insert_new_festival, insert_new_festival_work, insert_new_panelist,
-        update_festival_details, update_panelist_work,
+        delete_panelist, insert_new_festival_work, insert_new_panelist, update_festival_details,
+        update_panelist_work,
     },
     errors::ApiError,
     shared::{
-        auth::extractor::{Artist, EntityMemberOrAdmin, OwnedResourceOrAdmin},
+        auth::extractor::{EntityMemberOrAdmin, OwnedResourceOrAdmin},
         json_extractor::AppJson,
         works::upload_work,
     },
@@ -16,7 +16,7 @@ use crate::{
             sets::FestivalMember,
             work::WorkTypeParam,
         },
-        requests::festivals::{CreateFestivalReq, UpdateFestivalPanlist, UpdateFestivalReq},
+        requests::festivals::{UpdateFestivalPanlist, UpdateFestivalReq},
         response::ApiResponse,
     },
 };
@@ -28,39 +28,6 @@ use axum::{
 };
 use std::sync::Arc;
 use tracing::instrument;
-
-#[instrument(name="create_new_set", skip(state, user, data), fields(user_id = %user.profile_id, festival_name = %data.name))]
-pub async fn create_new_set(
-    State(state): State<Arc<AppState>>,
-    Artist(user): Artist,
-    AppJson(data): AppJson<CreateFestivalReq>,
-) -> Result<ApiResponse, ApiError> {
-    let festival = Festival {
-        id: uuid::Uuid::new_v4(),
-        name: data.name.to_string(),
-        description: data.description.to_string(),
-        set_id: data.set_id,
-        organizer: user.profile_id,
-        start_date: data.start_date,
-        end_date: data.end_date,
-        rules: data.rules.map(|r| r.to_string()),
-        created_at: chrono::Utc::now(),
-    };
-    let mut txn = state.db_pool.begin().await?;
-    let set_id = insert_new_festival(&mut txn, festival).await?;
-    for panelist in data.panelists {
-        let panelist = Panelist {
-            festival_id: set_id,
-            profile_id: panelist,
-            work_id: None,
-            created_at: chrono::Utc::now(),
-        };
-        tracing::info!("Inserting panelist: {}", panelist.profile_id);
-        insert_new_panelist(&mut txn, panelist).await?;
-    }
-    txn.commit().await?;
-    Ok(ApiResponse::OK)
-}
 
 #[instrument(name = "update festival details",skip(app,data),fields(festival_id = %resource_id))]
 async fn update_festival_details_handler(
@@ -138,7 +105,6 @@ async fn submit_memeber_work_handler(
 
 pub fn router() -> Router<Arc<AppState>> {
     Router::new()
-        .route("/new", post(create_new_set))
         .route(
             "/{resource_id}/update",
             post(update_festival_details_handler),

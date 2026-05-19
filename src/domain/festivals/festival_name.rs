@@ -59,4 +59,3 @@ mod tests {
         assert!(FestivalName::parse(name).is_err());
     }
 }
-

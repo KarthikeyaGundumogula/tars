@@ -1,5 +1,5 @@
-use std::fmt;
 use serde::{Deserialize, Deserializer};
+use std::fmt;
 
 #[derive(Debug)]
 pub struct StageName(String);
@@ -93,4 +93,3 @@ mod tests {
         assert!(StageName::parse("kapten ".to_string()).is_err());
     }
 }
-

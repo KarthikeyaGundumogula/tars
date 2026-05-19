@@ -11,15 +11,24 @@ use uuid::Uuid;
 
 use crate::{
     AppState,
-    db::sets::{delete_set_member, insert_new_set, insert_set_member, update_set},
+    db::{
+        festivals::{insert_new_festival, insert_new_panelist},
+        sets::{delete_set_member, insert_new_set, insert_set_member, update_set},
+    },
     errors::ApiError,
     shared::{
-        auth::extractor::{Artist, EntityMemberOrAdmin, OwnedResourceOrAdmin},
+        auth::extractor::{Artist, EntityMemberOrAdmin, OwnedResourceOrAdmin, Resource},
         json_extractor::AppJson,
     },
     types::{
-        db::sets::{Set, SetMember, SetRole},
-        requests::sets::{CreateSetReq, JoinSetRequest, UpdateSetReq},
+        db::{
+            festivals::{Festival, Panelist},
+            sets::{Set, SetMember, SetRole},
+        },
+        requests::{
+            festivals::CreateFestivalReq,
+            sets::{CreateSetReq, JoinSetRequest, UpdateSetReq},
+        },
         response::ApiResponse,
     },
 };
@@ -52,6 +61,49 @@ pub async fn create_new_set_handler(
     .await?;
     txn.commit().await?;
     Ok(ApiResponse::SetCreated(set_id))
+}
+
+#[instrument(name="create_new_festival", skip(state, data), fields(user_id = %user.profile_id, festival_name = %data.name))]
+pub async fn create_new_festival_handler(
+    State(state): State<Arc<AppState>>,
+    axum::extract::Path(resource_id): axum::extract::Path<Uuid>,
+    Artist(user): Artist,
+    AppJson(data): AppJson<CreateFestivalReq>,
+) -> Result<ApiResponse, ApiError> {
+    let (owner_id, _) = Set::fetch_by_id(&state.db_pool, resource_id)
+        .await?
+        .ok_or(ApiError::NotFound)?;
+    if owner_id != user.profile_id {
+        return Err(ApiError::Unauthorized(
+            "Only the set owner can create a festival".to_string(),
+        ));
+    }
+
+    let festival = Festival {
+        id: uuid::Uuid::new_v4(),
+        name: data.name.to_string(),
+        description: data.description.to_string(),
+        set_id: resource_id,
+        organizer: user.profile_id,
+        start_date: data.start_date,
+        end_date: data.end_date,
+        rules: data.rules.map(|r| r.to_string()),
+        created_at: chrono::Utc::now(),
+    };
+    let mut txn = state.db_pool.begin().await?;
+    let set_id = insert_new_festival(&mut txn, festival).await?;
+    for panelist in data.panelists {
+        let panelist = Panelist {
+            festival_id: set_id,
+            profile_id: panelist,
+            work_id: None,
+            created_at: chrono::Utc::now(),
+        };
+        tracing::info!("Inserting panelist: {}", panelist.profile_id);
+        insert_new_panelist(&mut txn, panelist).await?;
+    }
+    txn.commit().await?;
+    Ok(ApiResponse::OK)
 }
 
 async fn update_set_details_handler(
@@ -92,6 +144,10 @@ async fn leave_set_handler(
 pub fn router() -> Router<Arc<AppState>> {
     Router::new()
         .route("/new", post(create_new_set_handler))
+        .route(
+            "/{resource_id}/new_festival",
+            post(create_new_festival_handler),
+        )
         .route("/{resource_id}/update", post(update_set_details_handler))
         .route("/join", post(join_set_handler))
         .route("/{entity_id}/leave", delete(leave_set_handler))

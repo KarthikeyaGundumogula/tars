@@ -47,7 +47,7 @@ pub async fn sign_up_artist_handler(
     let artist = Profile {
         user_name: data.handle.as_ref().to_string(),
         is_claimed: false,
-        stage_name:data.stage_name.to_string(),
+        stage_name: data.stage_name.to_string(),
         presence: 100,
         id: Uuid::new_v4(),
         tag_line: data.tag_line.as_ref().to_string(),
@@ -57,8 +57,8 @@ pub async fn sign_up_artist_handler(
         twitter_profile: data.twitter_profile,
         instagram_profile: data.instagram_profile,
         password_hash,
-        text_color:data.text_color,
-        background_color:data.background_color,
+        text_color: data.text_color,
+        background_color: data.background_color,
         created_at: Utc::now(),
     };
     let profile = insert_new_profile(&app.db_pool, artist).await?;
@@ -77,9 +77,10 @@ pub async fn login_profile(
 ) -> Result<ApiResponse, ApiError> {
     let password = data.password;
     let profile = get_profile_auth_details(&app.db_pool, &data.handle.to_string()).await?;
+    let fallback_hash = get_password_hash("invalid-login-placeholder")?;
     let password_hash = match &profile {
-        Some(profile) => &profile.password_hash,
-        None => "$argon2id$v=19$m=19456,t=2,p=1$dummysaltdummysalt$dummyhash",
+        Some(profile) => profile.password_hash.as_str(),
+        None => fallback_hash.as_str(),
     };
     let valid_password = verify_password(password.as_ref(), password_hash)?;
     let user = match (profile, valid_password) {
@@ -128,9 +129,10 @@ pub async fn admin_login_handler(
 ) -> Result<ApiResponse, ApiError> {
     let password = data.admin_password;
     let admin = get_admin_auth_details(&app.db_pool, &data.admin_name.to_string()).await?;
+    let fallback_hash = get_password_hash("invalid-login-placeholder")?;
     let password_hash = match &admin {
-        Some(admin) => &admin.admin_password_hash,
-        None => "$argon2id$v=19$m=19456,t=2,p=1$dummysaltdummysalt$dummyhash",
+        Some(admin) => admin.admin_password_hash.as_str(),
+        None => fallback_hash.as_str(),
     };
     let valid_password = verify_password(password.as_ref(), password_hash)?;
     let user = match (admin, valid_password) {
@@ -163,9 +165,10 @@ pub async fn reset_password(
     AppJson(data): AppJson<ResetPasswordReq>,
 ) -> Result<ApiResponse, ApiError> {
     let old_profile = get_profile_auth_details(&app.db_pool, &user.handle).await?;
+    let fallback_hash = get_password_hash("invalid-login-placeholder")?;
     let password_hash = match &old_profile {
-        Some(profile) => &profile.password_hash,
-        None => "$argon2id$v=19$m=19456,t=2,p=1$dummysaltdummysalt$dummyhash",
+        Some(profile) => profile.password_hash.as_str(),
+        None => fallback_hash.as_str(),
     };
     let valid_password = verify_password(data.old_password.as_ref(), password_hash)?;
     let user = match (old_profile, valid_password) {
@@ -186,5 +189,6 @@ pub fn router() -> Router<Arc<AppState>> {
         .route("/logout", post(logout_profile))
         .route("/reset-password", post(reset_password))
         .route("/admin/login", post(admin_login_handler))
+        .route("/admin/logout", post(logout_admin))
         .route("/admin/register", post(insert_new_admin_handler))
 }

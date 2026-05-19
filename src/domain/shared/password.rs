@@ -1,4 +1,4 @@
-use serde::{Deserialize,Deserializer};
+use serde::{Deserialize, Deserializer};
 
 #[derive(Debug)]
 pub struct Password(String);
@@ -78,4 +78,3 @@ mod tests {
         assert!(Password::parse("NOLOWERCASE123".to_string()).is_err());
     }
 }
-

@@ -2,7 +2,7 @@ use std::fmt;
 
 use serde::{Deserialize, Deserializer};
 
-#[derive( Debug)]
+#[derive(Debug)]
 pub struct Role(String);
 
 impl Role {
@@ -85,4 +85,3 @@ mod tests {
         assert!(Role::parse("Actor ".to_string()).is_err());
     }
 }
-

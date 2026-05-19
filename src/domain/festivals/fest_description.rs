@@ -52,7 +52,10 @@ mod tests {
 
     #[test]
     fn valid_description_is_accepted() {
-        assert!(FestivalDescription::parse("A celebration of international cinema!".to_string()).is_ok());
+        assert!(
+            FestivalDescription::parse("A celebration of international cinema!".to_string())
+                .is_ok()
+        );
     }
 
     #[test]
@@ -71,4 +74,3 @@ mod tests {
         assert!(FestivalDescription::parse("Festival #1".to_string()).is_err());
     }
 }
-

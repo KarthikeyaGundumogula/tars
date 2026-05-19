@@ -1,9 +1,5 @@
 mod common;
-use common::{
-    fixtures,
-    setups::{setup_set_creation},
-    spawn_app,
-};
+use common::{fixtures, setups::setup_set_creation, spawn_app};
 use uuid::Uuid;
 
 // ---------------------------------------------------------------------------
@@ -38,7 +34,8 @@ async fn update_set_returns_401_for_non_owner() {
     let (artists, app, set_id) = setup_set_creation().await;
 
     // Login as user_1 who is NOT the curator
-    app.post_login(&fixtures::login_body("user_1", "kApten@1023")).await;
+    app.post_login(&fixtures::login_body("user_1", "kApten@1023"))
+        .await;
 
     let response = app
         .post_update_set(set_id, &fixtures::update_set_body())
@@ -72,7 +69,8 @@ async fn join_set_returns_200_for_valid_artist() {
     let (_, app, set_id) = setup_set_creation().await;
 
     // user_1 joins the set created by user_0
-    app.post_login(&fixtures::login_body("user_1", "kApten@1023")).await;
+    app.post_login(&fixtures::login_body("user_1", "kApten@1023"))
+        .await;
 
     let response = app.post_join_set(&fixtures::join_set_body(set_id)).await;
 
@@ -97,7 +95,9 @@ async fn join_set_returns_200_for_valid_artist() {
 async fn join_set_returns_401_when_not_logged_in() {
     let app = spawn_app::spawn().await;
 
-    let response = app.post_join_set(&fixtures::join_set_body(Uuid::new_v4())).await;
+    let response = app
+        .post_join_set(&fixtures::join_set_body(Uuid::new_v4()))
+        .await;
 
     assert_eq!(response.status().as_u16(), 401);
 }
@@ -111,7 +111,8 @@ async fn leave_set_returns_200_for_member() {
     let (_, app, set_id) = setup_set_creation().await;
 
     // user_1 joins first
-    app.post_login(&fixtures::login_body("user_1", "kApten@1023")).await;
+    app.post_login(&fixtures::login_body("user_1", "kApten@1023"))
+        .await;
     app.post_join_set(&fixtures::join_set_body(set_id)).await;
 
     // Then leaves
@@ -139,7 +140,8 @@ async fn leave_set_returns_404_when_not_a_member() {
     let (_, app, set_id) = setup_set_creation().await;
 
     // user_1 never joined — trying to leave should 404
-    app.post_login(&fixtures::login_body("user_1", "kApten@1023")).await;
+    app.post_login(&fixtures::login_body("user_1", "kApten@1023"))
+        .await;
 
     let response = app.delete_leave_set(set_id).await;
 

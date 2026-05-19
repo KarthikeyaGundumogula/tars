@@ -4,10 +4,17 @@ use axum::{Router, extract::State, routing::post};
 use tracing::instrument;
 
 use crate::{
-    AppState, db::artists::{delete_favorite, delete_follower, insert_new_favorite, insert_new_follwing, update_profile_details}, errors::ApiError, shared::{auth::extractor::Artist, json_extractor::AppJson}, types::{
+    AppState,
+    db::artists::{
+        delete_favorite, delete_follower, insert_new_favorite, insert_new_follwing,
+        update_profile_details,
+    },
+    errors::ApiError,
+    shared::{auth::extractor::Artist, json_extractor::AppJson},
+    types::{
         requests::artist::{ArtistActionReq, UpdateProfileReq},
         response::ApiResponse,
-    }
+    },
 };
 
 #[instrument(name = "update profile details", skip(app, user, data),fields(profile_id = %user.profile_id.to_string()))]
@@ -62,9 +69,9 @@ async fn remove_from_favorite_profiles_handler(
     Ok(ApiResponse::FavoriteArtistRemoved(res))
 }
 
-async fn update_profile_presence_handler() -> Result<ApiResponse, ApiError> {
-    todo!()
-}
+// async fn update_profile_presence_handler() -> Result<ApiResponse, ApiError> {
+//     todo!()
+// }
 
 pub fn router() -> Router<Arc<AppState>> {
     Router::new()
@@ -73,8 +80,8 @@ pub fn router() -> Router<Arc<AppState>> {
         .route("/unfollow", post(unfollow_artist_handler))
         .route("/favorite", post(add_to_favorite_profiles_handler))
         .route("/unfavorite", post(remove_from_favorite_profiles_handler))
-        .route(
-            "/update_profile_presence",
-            post(update_profile_presence_handler),
-        )
+        // .route(
+        //     "/update_profile_presence",
+        //     post(update_profile_presence_handler),
+        // )
 }

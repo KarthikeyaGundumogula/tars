@@ -57,9 +57,13 @@ impl TestApp {
             .expect("Failed to execute request.")
     }
 
-    pub async fn post_festival(&self, body: &serde_json::Value) -> reqwest::Response {
+    pub async fn post_festival(
+        &self,
+        set_id: uuid::Uuid,
+        body: &serde_json::Value,
+    ) -> reqwest::Response {
         self.api_client
-            .post(&format!("{}/festivals/new", &self.address))
+            .post(&format!("{}/sets/{}/new_festival", &self.address, set_id))
             .json(body)
             .send()
             .await
