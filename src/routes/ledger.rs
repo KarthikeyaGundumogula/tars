@@ -11,18 +11,18 @@ use uuid::Uuid;
 
 use crate::{
     AppState,
-    db::ledger::{
+    db::mutations::ledger::{
         add_new_tagged_work, delete_ledger_entry, insert_new_ledger_entry, update_ledger_entry,
     },
     errors::ApiError,
-    shared::{
-        auth::extractor::{Artist, OwnedResourceOrAdmin},
+    services::{
+        auth_service::extractor::{Artist, OwnedResourceOrAdmin},
         json_extractor::AppJson,
     },
     types::{
         db::ledger::LedgerEntry,
         requests::ledger::{LedgerEntryReq, TagWorkToLedgerEntryReq, UpdateLedgerEntryReq},
-        response::ApiResponse,
+        response::LedgerResponse,
     },
 };
 
@@ -31,7 +31,7 @@ pub async fn new_ledger_entry_handler(
     State(state): State<Arc<AppState>>,
     Artist(user): Artist,
     AppJson(data): AppJson<LedgerEntryReq>,
-) -> Result<ApiResponse, ApiError> {
+) -> Result<LedgerResponse, ApiError> {
     let entry = LedgerEntry {
         id: Uuid::new_v4(),
         original_id: data.original_id,
@@ -47,7 +47,7 @@ pub async fn new_ledger_entry_handler(
         updated_at: Some(Utc::now()),
     };
     let entry = insert_new_ledger_entry(&state.db_pool, entry).await?;
-    Ok(ApiResponse::LedgerEntryLogged(entry))
+    Ok(LedgerResponse::LedgerEntryLogged(entry))
 }
 
 #[instrument(name = "update_ledger_entry", skip(app, data), err, fields(entry_id = %resource_id))]
@@ -55,9 +55,9 @@ async fn update_ledger_entry_handler(
     State(app): State<Arc<AppState>>,
     OwnedResourceOrAdmin { resource_id, .. }: OwnedResourceOrAdmin<LedgerEntry>,
     AppJson(data): AppJson<UpdateLedgerEntryReq>,
-) -> Result<ApiResponse, ApiError> {
+) -> Result<LedgerResponse, ApiError> {
     let res = update_ledger_entry(&app.db_pool, data, resource_id).await?;
-    Ok(ApiResponse::LedgerEntryUpdated(res))
+    Ok(LedgerResponse::LedgerEntryUpdated(res))
 }
 
 #[instrument(name = "tag_work", skip(app, data), err, fields(entry_id = %resource_id,work_id=%data.work_id))]
@@ -65,18 +65,18 @@ async fn tag_work_handler(
     State(app): State<Arc<AppState>>,
     OwnedResourceOrAdmin { resource_id, .. }: OwnedResourceOrAdmin<LedgerEntry>,
     AppJson(data): AppJson<TagWorkToLedgerEntryReq>,
-) -> Result<ApiResponse, ApiError> {
+) -> Result<LedgerResponse, ApiError> {
     let res = add_new_tagged_work(&app.db_pool, data, resource_id).await?;
-    Ok(ApiResponse::LedgerEntryUpdated(res))
+    Ok(LedgerResponse::LedgerEntryUpdated(res))
 }
 
 #[instrument(name = "delete_ledger_entry", skip(app), err, fields(entry_id = %resource_id))]
 async fn delete_ledger_entry_handler(
     State(app): State<Arc<AppState>>,
     OwnedResourceOrAdmin { resource_id, .. }: OwnedResourceOrAdmin<LedgerEntry>,
-) -> Result<ApiResponse, ApiError> {
+) -> Result<LedgerResponse, ApiError> {
     delete_ledger_entry(&app.db_pool, resource_id).await?;
-    Ok(ApiResponse::LedgerEntryDeleted(resource_id))
+    Ok(LedgerResponse::LedgerEntryDeleted(resource_id))
 }
 
 pub fn router() -> Router<Arc<AppState>> {

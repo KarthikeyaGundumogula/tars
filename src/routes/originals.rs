@@ -12,15 +12,15 @@ use uuid::Uuid;
 
 use crate::{
     AppState,
-    db::originals::{
+    db::mutations::originals::{
         add_new_role_if_not_exists, delete_original, delete_role, insert_new_original,
         insert_new_role, update_original,
     },
     errors::ApiError,
-    shared::{
-        auth::{extractor::AdminUser, password::get_password_hash},
+    services::{
+        auth_service::{extractor::AdminUser, password::get_password_hash},
         json_extractor::AppJson,
-        works::upload_work,
+        upload_service::upload_work,
     },
     types::{
         db::{
@@ -29,7 +29,7 @@ use crate::{
             work::WorkType,
         },
         requests::originals::{AddNewRoleReq, CreateOriginalReq, RemoveRoleReq, UpdateOrignalReq},
-        response::ApiResponse,
+        response::{ApiResponse, OriginalResponse},
     },
 };
 #[instrument(name = "create_new_original", skip(app, data), err, fields(title = %data.title))]
@@ -95,9 +95,9 @@ async fn update_original_details(
     AdminUser(_): AdminUser,
     Path(original_id): Path<Uuid>,
     AppJson(data): AppJson<UpdateOrignalReq>,
-) -> Result<ApiResponse, ApiError> {
+) -> Result<OriginalResponse, ApiError> {
     let res = update_original(&app.db_pool, data, original_id).await?;
-    Ok(ApiResponse::OriginalUpdated(res))
+    Ok(OriginalResponse::OriginalUpdated(res))
 }
 
 #[instrument(name = "add_new_role_to_original",skip(app,data),fields(original_id = %original_id,profile_id=%data.profile_id))]
@@ -106,7 +106,7 @@ async fn add_new_role_handler(
     Path(original_id): Path<Uuid>,
     AdminUser(_): AdminUser,
     AppJson(data): AppJson<AddNewRoleReq>,
-) -> Result<ApiResponse, ApiError> {
+) -> Result<OriginalResponse, ApiError> {
     let role = Role {
         profile_id: data.profile_id,
         category: data.category,
@@ -116,8 +116,8 @@ async fn add_new_role_handler(
     };
     let res = add_new_role_if_not_exists(&app.db_pool, role).await?;
     match res {
-        true => Ok(ApiResponse::RoleCreated(data.profile_id)),
-        false => Ok(ApiResponse::RoleExists(data.profile_id)),
+        true => Ok(OriginalResponse::RoleCreated(data.profile_id)),
+        false => Ok(OriginalResponse::RoleExists(data.profile_id)),
     }
 }
 
@@ -127,7 +127,7 @@ async fn delete_role_from_original_handler(
     AdminUser(_): AdminUser,
     Path(original_id): Path<Uuid>,
     AppJson(data): AppJson<RemoveRoleReq>,
-) -> Result<ApiResponse, ApiError> {
+) -> Result<OriginalResponse, ApiError> {
     let mut txn = app.db_pool.begin().await?;
     delete_role(
         &mut txn,
@@ -137,7 +137,7 @@ async fn delete_role_from_original_handler(
     )
     .await?;
     txn.commit().await?;
-    Ok(ApiResponse::RoleDeleted(data.profile_id))
+    Ok(OriginalResponse::RoleDeleted(data.profile_id))
 }
 
 #[instrument(name = "delete original", skip(app),fields(original_id = %original_id))]
@@ -145,9 +145,9 @@ async fn delete_original_handler(
     State(app): State<Arc<AppState>>,
     AdminUser(_): AdminUser,
     Path(original_id): Path<Uuid>,
-) -> Result<ApiResponse, ApiError> {
+) -> Result<OriginalResponse, ApiError> {
     delete_original(&app.db_pool, original_id).await?;
-    Ok(ApiResponse::OriginalDeleted(original_id))
+    Ok(OriginalResponse::OriginalDeleted(original_id))
 }
 
 #[instrument(name = "upload_release", skip(app, data), fields(resource_id = %resource_id))]
@@ -156,11 +156,11 @@ async fn new_release_handler(
     Path((resource_id, release_type)): Path<(Uuid, WorkType)>,
     AdminUser(_): AdminUser,
     data: Bytes,
-) -> Result<ApiResponse, ApiError> {
+) -> Result<OriginalResponse, ApiError> {
     let mut txn = app.db_pool.begin().await?;
     let res = upload_work(data, &mut txn, resource_id, release_type).await?;
     txn.commit().await?;
-    Ok(ApiResponse::OrignalReleaseCreated(res))
+    Ok(OriginalResponse::OrignalReleaseCreated(res))
 }
 
 pub fn router() -> Router<Arc<AppState>> {

@@ -7,7 +7,7 @@ use sqlx::PgPool;
 use std::sync::Arc;
 use uuid::Uuid;
 
-use crate::{AppState, errors::ApiError, shared::auth::password::validate_jwt};
+use crate::{AppState, errors::ApiError, services::auth_service::password::validate_jwt};
 
 #[derive(Debug, Clone)]
 pub struct AuthUser {

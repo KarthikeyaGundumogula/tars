@@ -31,6 +31,21 @@ pub async fn insert_new_festival(
   )
 }
 
+pub async fn get_festival_details(
+    txn: &mut Transaction<'_, sqlx::Postgres>,
+    id: Uuid,
+) -> Result<Option<Festival>, ApiError> {
+    Ok(sqlx::query_as!(
+        Festival,
+        r#"
+      SELECT * FROM festivals WHERE id = $1
+      "#,
+        id
+    )
+    .fetch_optional(&mut **txn)
+    .await?)
+}
+
 pub async fn update_festival_details(
     pool: &PgPool,
     id: Uuid,

@@ -1,14 +1,13 @@
 use crate::{
     AppState,
-    db::festivals::{
-        delete_panelist, insert_new_festival_work, insert_new_panelist, update_festival_details,
-        update_panelist_work,
+    db::mutations::festivals::{
+        delete_panelist, get_festival_details, insert_new_festival_work, insert_new_panelist, update_festival_details, update_panelist_work
     },
     errors::ApiError,
-    shared::{
-        auth::extractor::{EntityMemberOrAdmin, OwnedResourceOrAdmin},
+    services::{
+        auth_service::extractor::{EntityMemberOrAdmin, OwnedResourceOrAdmin},
         json_extractor::AppJson,
-        works::upload_work,
+        upload_service::upload_work,
     },
     types::{
         db::{
@@ -17,7 +16,7 @@ use crate::{
             work::WorkTypeParam,
         },
         requests::festivals::{UpdateFestivalPanlist, UpdateFestivalReq},
-        response::ApiResponse,
+        response::{FestivalResponse, WorkResponse},
     },
 };
 use axum::{
@@ -34,11 +33,11 @@ async fn update_festival_details_handler(
     State(app): State<Arc<AppState>>,
     OwnedResourceOrAdmin { resource_id, .. }: OwnedResourceOrAdmin<Festival>,
     AppJson(data): AppJson<UpdateFestivalReq>,
-) -> Result<ApiResponse, ApiError> {
+) -> Result<FestivalResponse, ApiError> {
     let res = update_festival_details(&app.db_pool, resource_id, data)
         .await?
         .ok_or(ApiError::NotFound)?;
-    Ok(ApiResponse::FestivalDetailsUpdated(res))
+    Ok(FestivalResponse::FestivalDetailsUpdated(res))
 }
 
 #[instrument(name = "update festival panelists",skip(app,data),fields(festival_id = %resource_id, artist_id = %data.artist_id, is_insert= %data.insert))]
@@ -46,7 +45,7 @@ async fn update_panelists_handler(
     State(app): State<Arc<AppState>>,
     OwnedResourceOrAdmin { resource_id, .. }: OwnedResourceOrAdmin<Festival>,
     AppJson(data): AppJson<UpdateFestivalPanlist>,
-) -> Result<ApiResponse, ApiError> {
+) -> Result<FestivalResponse, ApiError> {
     if data.insert {
         let panelist = Panelist {
             festival_id: resource_id,
@@ -57,12 +56,12 @@ async fn update_panelists_handler(
         let mut txn = app.db_pool.begin().await?;
         let res = insert_new_panelist(&mut txn, panelist).await?;
         txn.commit().await?;
-        Ok(ApiResponse::PanelistAdded(res))
+        Ok(FestivalResponse::PanelistAdded(res))
     } else {
         let res = delete_panelist(&app.db_pool, resource_id, data.artist_id)
             .await?
             .ok_or(ApiError::NotFound)?;
-        Ok(ApiResponse::PanelistDeleted(res))
+        Ok(FestivalResponse::PanelistDeleted(res))
     }
 }
 
@@ -74,15 +73,19 @@ async fn submit_panelist_work_handler(
     }: EntityMemberOrAdmin<Panelist>,
     Path(WorkTypeParam { work_type }): Path<WorkTypeParam>,
     data: Bytes,
-) -> Result<ApiResponse, ApiError> {
+) -> Result<WorkResponse, ApiError> {
     let mut txn = app.db_pool.begin().await?;
+    let festival_details = get_festival_details(&mut txn, entity.festival_id).await?.ok_or(ApiError::NotFound)?;
+    if !(festival_details.start_date <= chrono::Utc::now() && festival_details.end_date >= chrono::Utc::now()) {
+        return Err(ApiError::BadRequest("Festival is not active".to_string()));
+    }
     let work_id = upload_work(data, &mut txn, user_id, work_type).await?;
     let res = update_panelist_work(&mut txn, entity.festival_id, user_id, work_id)
         .await?
         .ok_or(ApiError::NotFound)?;
 
     txn.commit().await?;
-    Ok(ApiResponse::WorkCreated(res))
+    Ok(WorkResponse::WorkCreated(res))
 }
 
 #[instrument(name = "submit member work",skip(app,data),fields(set_id = %entity_id, profile_id = %entity.0.profile_id))]
@@ -93,14 +96,18 @@ async fn submit_memeber_work_handler(
     }: EntityMemberOrAdmin<FestivalMember>,
     Path(WorkTypeParam { work_type }): Path<WorkTypeParam>,
     data: Bytes,
-) -> Result<ApiResponse, ApiError> {
+) -> Result<WorkResponse, ApiError> {
     let mut txn = app.db_pool.begin().await?;
+    let festival_details = get_festival_details(&mut txn, entity_id).await?.ok_or(ApiError::NotFound)?;
+    if !(festival_details.start_date <= chrono::Utc::now() && festival_details.end_date >= chrono::Utc::now()) {
+        return Err(ApiError::BadRequest("Festival is not active".to_string()));
+    }
     let work_id = upload_work(data, &mut txn, entity.0.profile_id, work_type).await?;
     let res = insert_new_festival_work(&mut txn, entity_id, work_id)
         .await?
         .ok_or(ApiError::NotFound)?;
     txn.commit().await?;
-    Ok(ApiResponse::WorkCreated(res))
+    Ok(WorkResponse::WorkCreated(res))
 }
 
 pub fn router() -> Router<Arc<AppState>> {

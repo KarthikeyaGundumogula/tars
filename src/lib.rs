@@ -5,7 +5,7 @@ pub mod db;
 pub mod domain;
 pub mod errors;
 pub mod routes;
-pub mod shared;
+pub mod services;
 pub mod startup;
 pub mod types;
 

@@ -11,13 +11,13 @@ use uuid::Uuid;
 
 use crate::{
     AppState,
-    db::{
+    db::mutations::{
         festivals::{insert_new_festival, insert_new_panelist},
         sets::{delete_set_member, insert_new_set, insert_set_member, update_set},
     },
     errors::ApiError,
-    shared::{
-        auth::extractor::{Artist, EntityMemberOrAdmin, OwnedResourceOrAdmin, Resource},
+    services::{
+        auth_service::extractor::{Artist, EntityMemberOrAdmin, OwnedResourceOrAdmin, Resource},
         json_extractor::AppJson,
     },
     types::{
@@ -29,7 +29,7 @@ use crate::{
             festivals::CreateFestivalReq,
             sets::{CreateSetReq, JoinSetRequest, UpdateSetReq},
         },
-        response::ApiResponse,
+        response::{ApiResponse, SetResponse},
     },
 };
 
@@ -38,7 +38,7 @@ pub async fn create_new_set_handler(
     State(app): State<Arc<AppState>>,
     Artist(user): Artist,
     AppJson(data): AppJson<CreateSetReq>,
-) -> Result<ApiResponse, ApiError> {
+) -> Result<SetResponse, ApiError> {
     let set = Set {
         id: Uuid::new_v4(),
         name: data.name.to_string(),
@@ -60,7 +60,7 @@ pub async fn create_new_set_handler(
     )
     .await?;
     txn.commit().await?;
-    Ok(ApiResponse::SetCreated(set_id))
+    Ok(SetResponse::SetCreated(set_id))
 }
 
 #[instrument(name="create_new_festival", skip(state, data), fields(user_id = %user.profile_id, festival_name = %data.name))]
@@ -110,15 +110,15 @@ async fn update_set_details_handler(
     State(app): State<Arc<AppState>>,
     OwnedResourceOrAdmin { resource_id, .. }: OwnedResourceOrAdmin<Set>,
     AppJson(data): AppJson<UpdateSetReq>,
-) -> Result<ApiResponse, ApiError> {
+) -> Result<SetResponse, ApiError> {
     let res = update_set(&app.db_pool, data, resource_id).await?;
-    Ok(ApiResponse::UpdatedSet(res))
+    Ok(SetResponse::UpdatedSet(res))
 }
 async fn join_set_handler(
     State(app): State<Arc<AppState>>,
     Artist(user): Artist,
     AppJson(data): AppJson<JoinSetRequest>,
-) -> Result<ApiResponse, ApiError> {
+) -> Result<SetResponse, ApiError> {
     let mut txn = app.db_pool.begin().await?;
     let role = insert_set_member(
         &mut txn,
@@ -129,16 +129,16 @@ async fn join_set_handler(
     )
     .await?;
     txn.commit().await?;
-    Ok(ApiResponse::JoinedSet(role))
+    Ok(SetResponse::JoinedSet(role))
 }
 async fn leave_set_handler(
     State(app): State<Arc<AppState>>,
     EntityMemberOrAdmin {
         entity_id, user_id, ..
     }: EntityMemberOrAdmin<SetMember>,
-) -> Result<ApiResponse, ApiError> {
+) -> Result<SetResponse, ApiError> {
     delete_set_member(&app.db_pool, user_id, entity_id).await?;
-    Ok(ApiResponse::SetMemberDeleted(entity_id, user_id))
+    Ok(SetResponse::SetMemberDeleted(entity_id, user_id))
 }
 
 pub fn router() -> Router<Arc<AppState>> {

@@ -2,7 +2,7 @@ use chrono::{DateTime, Utc};
 use serde::{Deserialize, Serialize};
 use uuid::Uuid;
 
-use crate::shared::auth::extractor::Resource;
+use crate::services::auth_service::extractor::Resource;
 
 /// for thumbnails
 /// youtube - free thumbnail api

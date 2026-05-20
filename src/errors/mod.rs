@@ -44,6 +44,8 @@ pub enum ApiError {
     Unauthorized(String),
     #[error("Cookie Jar rejection")]
     CookieJarRejection(#[from] Infallible),
+    #[error("Bad Request: {0}")]
+    BadRequest(String),
 }
 
 impl IntoResponse for ApiError {
@@ -115,6 +117,14 @@ impl IntoResponse for ApiError {
                 StatusCode::INTERNAL_SERVER_ERROR,
                 Json(ErrorResponse::new(
                     StatusCode::INTERNAL_SERVER_ERROR.to_string(),
+                    message,
+                )),
+            )
+                .into_response(),
+            Self::BadRequest(_) => (
+                StatusCode::BAD_REQUEST,
+                Json(ErrorResponse::new(
+                    StatusCode::BAD_REQUEST.to_string(),
                     message,
                 )),
             )

@@ -12,13 +12,13 @@ use uuid::Uuid;
 
 use crate::{
     AppState,
-    db::{
+    db::mutations::{
         admins::{get_admin_auth_details, insert_new_admin},
         artists::{get_profile_auth_details, insert_new_profile, update_profile_password},
     },
     errors::ApiError,
-    shared::{
-        auth::{
+    services::{
+        auth_service::{
             extractor::Artist,
             password::{create_jwt, get_password_hash, verify_password},
         },
@@ -33,7 +33,7 @@ use crate::{
             admin::AdminAuthRequest,
             auth::{ProfileLogin, ProfileSignupReq, ResetPasswordReq},
         },
-        response::ApiResponse,
+        response::{AdminResponse, ApiResponse, ProfileResponse},
     },
 };
 
@@ -74,7 +74,7 @@ pub async fn login_profile(
     State(app): State<Arc<AppState>>,
     jar: CookieJar,
     AppJson(data): AppJson<ProfileLogin>,
-) -> Result<ApiResponse, ApiError> {
+) -> Result<ProfileResponse, ApiError> {
     let password = data.password;
     let profile = get_profile_auth_details(&app.db_pool, &data.handle.to_string()).await?;
     let fallback_hash = get_password_hash("invalid-login-placeholder")?;
@@ -93,24 +93,24 @@ pub async fn login_profile(
         .same_site(SameSite::Lax)
         .path("/")
         .build();
-    Ok(ApiResponse::ProfileAuthenticated(jar.add(cookie)))
+    Ok(ProfileResponse::ProfileAuthenticated(jar.add(cookie)))
 }
 
 #[instrument(name = "logout_artist", skip(jar), err)]
-pub async fn logout_profile(jar: CookieJar) -> Result<ApiResponse, ApiError> {
+pub async fn logout_profile(jar: CookieJar) -> Result<ProfileResponse, ApiError> {
     let cookie = Cookie::build(("auth_token", ""))
         .http_only(true)
         .same_site(SameSite::Lax)
         .path("/")
         .max_age(time::Duration::seconds(0))
         .build();
-    Ok(ApiResponse::ProfileAuthenticated(jar.remove(cookie)))
+    Ok(ProfileResponse::ProfileAuthenticated(jar.remove(cookie)))
 }
 
 pub async fn insert_new_admin_handler(
     State(app): State<Arc<AppState>>,
     AppJson(data): AppJson<AdminAuthRequest>,
-) -> Result<ApiResponse, ApiError> {
+) -> Result<AdminResponse, ApiError> {
     let password = data.admin_password;
     let password_hash = get_password_hash(password.as_ref())?;
     let admin = Admin {
@@ -120,15 +120,15 @@ pub async fn insert_new_admin_handler(
         created_at: Utc::now(),
     };
     let res = insert_new_admin(&app.db_pool, admin).await?;
-    Ok(ApiResponse::AdminCreated(res))
+    Ok(AdminResponse::AdminCreated(res))
 }
 pub async fn admin_login_handler(
     State(app): State<Arc<AppState>>,
     jar: CookieJar,
     AppJson(data): AppJson<AdminAuthRequest>,
-) -> Result<ApiResponse, ApiError> {
+) -> Result<AdminResponse, ApiError> {
     let password = data.admin_password;
-    let admin = get_admin_auth_details(&app.db_pool, &data.admin_name.to_string()).await?;
+    let admin = get_admin_auth_details(&app.db_pool, data.admin_name.as_ref()).await?;
     let fallback_hash = get_password_hash("invalid-login-placeholder")?;
     let password_hash = match &admin {
         Some(admin) => admin.admin_password_hash.as_str(),
@@ -145,17 +145,17 @@ pub async fn admin_login_handler(
         .same_site(SameSite::Lax)
         .path("/")
         .build();
-    Ok(ApiResponse::AdminAuthenticated(jar.add(cookie)))
+    Ok(AdminResponse::AdminAuthenticated(jar.add(cookie)))
 }
 
-pub async fn logout_admin(jar: CookieJar) -> Result<ApiResponse, ApiError> {
+pub async fn logout_admin(jar: CookieJar) -> Result<AdminResponse, ApiError> {
     let cookie = Cookie::build(("auth_token", ""))
         .http_only(true)
         .same_site(SameSite::Lax)
         .path("/")
         .max_age(time::Duration::seconds(0))
         .build();
-    Ok(ApiResponse::AdminAuthenticated(jar.remove(cookie)))
+    Ok(AdminResponse::AdminAuthenticated(jar.remove(cookie)))
 }
 
 #[instrument(name = "reset_password", skip(app, user, data), err, fields(user_id = %user.profile_id))]
@@ -163,7 +163,7 @@ pub async fn reset_password(
     State(app): State<Arc<AppState>>,
     Artist(user): Artist,
     AppJson(data): AppJson<ResetPasswordReq>,
-) -> Result<ApiResponse, ApiError> {
+) -> Result<ProfileResponse, ApiError> {
     let old_profile = get_profile_auth_details(&app.db_pool, &user.handle).await?;
     let fallback_hash = get_password_hash("invalid-login-placeholder")?;
     let password_hash = match &old_profile {
@@ -179,7 +179,7 @@ pub async fn reset_password(
     let user_id = update_profile_password(&app.db_pool, user.id, password_hash)
         .await?
         .ok_or(ApiError::DbError(sqlx::Error::RowNotFound))?;
-    Ok(ApiResponse::PasswordUpdated(user_id))
+    Ok(ProfileResponse::PasswordUpdated(user_id))
 }
 
 pub fn router() -> Router<Arc<AppState>> {

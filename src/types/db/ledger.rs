@@ -3,7 +3,7 @@ use chrono::{DateTime, Utc};
 use serde::Deserialize;
 use uuid::Uuid;
 
-use crate::{errors::ApiError, shared::auth::extractor::Resource};
+use crate::{errors::ApiError, services::auth_service::extractor::Resource};
 
 #[derive(Deserialize, sqlx::Type, Debug)]
 #[sqlx(type_name = "watchlist_status")]

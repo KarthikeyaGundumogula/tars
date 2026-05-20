@@ -4,7 +4,7 @@ use uuid::Uuid;
 
 use crate::{
     errors::ApiError,
-    shared::auth::extractor::{Entity, Resource},
+    services::auth_service::extractor::{Entity, Resource},
 };
 
 #[derive(sqlx::FromRow, Deserialize, Debug)]

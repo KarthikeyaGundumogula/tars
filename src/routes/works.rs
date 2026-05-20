@@ -11,17 +11,17 @@ use tracing::instrument;
 
 use crate::{
     AppState,
-    db::works::{delete_work, delete_work_like, insert_work_like, update_work_title},
+    db::mutations::works::{delete_work, delete_work_like, insert_work_like, update_work_title},
     errors::ApiError,
-    shared::{
-        auth::extractor::{Artist, OwnedResourceOrAdmin},
+    services::{
+        auth_service::extractor::{Artist, OwnedResourceOrAdmin},
         json_extractor::AppJson,
-        works::upload_work,
+        upload_service::upload_work,
     },
     types::{
         db::work::{Work, WorkType},
         requests::works::{LikeWork, UpdateWorkReq},
-        response::ApiResponse,
+        response::WorkResponse,
     },
 };
 
@@ -31,21 +31,21 @@ pub async fn create_new_work_handler(
     State(app): State<Arc<AppState>>,
     Artist(user): Artist,
     body: Bytes,
-) -> Result<ApiResponse, ApiError> {
+) -> Result<WorkResponse, ApiError> {
     let mut txn = app.db_pool.begin().await?;
     let res = upload_work(body, &mut txn, user.profile_id, work_type).await?;
     txn.commit().await?;
-    Ok(ApiResponse::WorkCreated(res))
+    Ok(WorkResponse::WorkCreated(res))
 }
 
 async fn update_work_handler(
     State(app): State<Arc<AppState>>,
     OwnedResourceOrAdmin { resource_id, .. }: OwnedResourceOrAdmin<Work>,
     AppJson(data): AppJson<UpdateWorkReq>,
-) -> Result<ApiResponse, ApiError> {
+) -> Result<WorkResponse, ApiError> {
     let res = update_work_title(&app.db_pool, resource_id, data.title.to_string()).await?;
     match res {
-        true => Ok(ApiResponse::WorkUpdated(resource_id)),
+        true => Ok(WorkResponse::WorkUpdated(resource_id)),
         false => Err(ApiError::NotFound),
     }
 }
@@ -54,27 +54,27 @@ async fn like_work_handler(
     State(app): State<Arc<AppState>>,
     Artist(user): Artist,
     AppJson(data): AppJson<LikeWork>,
-) -> Result<ApiResponse, ApiError> {
+) -> Result<WorkResponse, ApiError> {
     let res = insert_work_like(&app.db_pool, data.work_id, user.profile_id).await?;
 
-    Ok(ApiResponse::AddedWorkLike(res))
+    Ok(WorkResponse::AddedWorkLike(res))
 }
 
 async fn dislike_work_handler(
     State(app): State<Arc<AppState>>,
     Artist(user): Artist,
     AppJson(data): AppJson<LikeWork>,
-) -> Result<ApiResponse, ApiError> {
+) -> Result<WorkResponse, ApiError> {
     let res = delete_work_like(&app.db_pool, data.work_id, user.profile_id).await?;
-    Ok(ApiResponse::RemovedWorkLike(res))
+    Ok(WorkResponse::RemovedWorkLike(res))
 }
 
 async fn delete_work_handler(
     State(app): State<Arc<AppState>>,
     OwnedResourceOrAdmin { resource_id, .. }: OwnedResourceOrAdmin<Work>,
-) -> Result<ApiResponse, ApiError> {
+) -> Result<WorkResponse, ApiError> {
     delete_work(&app.db_pool, resource_id).await?;
-    Ok(ApiResponse::WorkDeleted(resource_id))
+    Ok(WorkResponse::WorkDeleted(resource_id))
 }
 
 pub fn router() -> Router<Arc<AppState>> {

@@ -4,12 +4,12 @@ use sqlx::Transaction;
 use uuid::Uuid;
 
 use crate::{
-    db::works::{
+    db::mutations::works::{
         insert_new_edit, insert_new_poster, insert_new_script, insert_new_work,
         insert_new_work_credit,
     },
     errors::ApiError,
-    shared::json_extractor::AppJson,
+    services::json_extractor::AppJson,
     types::{
         db::work::{Edit, Poster, Script, Work, WorkType},
         requests::works::{UploadEditReq, UploadPosterReq, UploadScriptReq},

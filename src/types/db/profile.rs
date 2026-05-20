@@ -2,7 +2,7 @@ use chrono::{DateTime, Utc};
 use serde::{Deserialize, Serialize};
 use uuid::Uuid;
 
-use crate::{errors::ApiError, shared::auth::extractor::Resource};
+use crate::{errors::ApiError, services::auth_service::extractor::Resource};
 
 #[derive(Clone, Serialize, sqlx::Type)]
 #[sqlx(type_name = "profile_type")]
