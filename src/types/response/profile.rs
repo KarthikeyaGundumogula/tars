@@ -5,6 +5,7 @@ use uuid::Uuid;
 /// Profile-related API responses
 #[derive(Debug)]
 pub enum ProfileResponse {
+    ProfileCreated(Uuid),
     ProfileAuthenticated(CookieJar),
     PasswordUpdated(Uuid),
     ProfileUpdated(Uuid),
@@ -17,6 +18,9 @@ pub enum ProfileResponse {
 impl IntoResponse for ProfileResponse {
     fn into_response(self) -> axum::response::Response {
         match self {
+            Self::ProfileCreated(id) => {
+                (StatusCode::OK, Json(serde_json::json!({"id": id}))).into_response()
+            }
             Self::ProfileAuthenticated(jar) => (
                 StatusCode::OK,
                 jar,

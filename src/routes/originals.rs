@@ -29,7 +29,7 @@ use crate::{
             work::WorkType,
         },
         requests::originals::{AddNewRoleReq, CreateOriginalReq, RemoveRoleReq, UpdateOrignalReq},
-        response::{ApiResponse, OriginalResponse},
+        response::OriginalResponse,
     },
 };
 #[instrument(name = "create_new_original", skip(app, data), err, fields(title = %data.title))]
@@ -37,7 +37,7 @@ pub async fn create_new_original_handler(
     State(app): State<Arc<AppState>>,
     AdminUser(_): AdminUser,
     AppJson(data): AppJson<CreateOriginalReq>,
-) -> Result<ApiResponse, ApiError> {
+) -> Result<OriginalResponse, ApiError> {
     let password_hash = get_password_hash(data.password.as_ref())?;
     let mut txn = app.db_pool.begin().await?;
     let original = Original {
@@ -82,7 +82,7 @@ pub async fn create_new_original_handler(
     }
     txn.commit().await?;
     tracing::info!("Original created successfully: {}", original_id);
-    Ok(ApiResponse::OK)
+    Ok(OriginalResponse::OriginalCreated(original_id))
 }
 
 #[instrument(

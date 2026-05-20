@@ -29,7 +29,7 @@ use crate::{
             festivals::CreateFestivalReq,
             sets::{CreateSetReq, JoinSetRequest, UpdateSetReq},
         },
-        response::{ApiResponse, SetResponse},
+        response::{FestivalResponse, SetResponse},
     },
 };
 
@@ -69,7 +69,7 @@ pub async fn create_new_festival_handler(
     axum::extract::Path(resource_id): axum::extract::Path<Uuid>,
     Artist(user): Artist,
     AppJson(data): AppJson<CreateFestivalReq>,
-) -> Result<ApiResponse, ApiError> {
+) -> Result<FestivalResponse, ApiError> {
     let (owner_id, _) = Set::fetch_by_id(&state.db_pool, resource_id)
         .await?
         .ok_or(ApiError::NotFound)?;
@@ -103,7 +103,7 @@ pub async fn create_new_festival_handler(
         insert_new_panelist(&mut txn, panelist).await?;
     }
     txn.commit().await?;
-    Ok(ApiResponse::OK)
+    Ok(FestivalResponse::FestivalCreated(set_id))
 }
 
 async fn update_set_details_handler(

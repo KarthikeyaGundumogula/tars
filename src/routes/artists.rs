@@ -69,10 +69,6 @@ async fn remove_from_favorite_profiles_handler(
     Ok(ProfileResponse::FavoriteArtistRemoved(res))
 }
 
-// async fn update_profile_presence_handler() -> Result<ApiResponse, ApiError> {
-//     todo!()
-// }
-
 pub fn router() -> Router<Arc<AppState>> {
     Router::new()
         .route("/update", post(update_stage_details_handler))

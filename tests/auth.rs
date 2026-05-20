@@ -29,6 +29,7 @@ async fn login_artist_return_200_on_correct_data() {
     let register_res = app
         .post_register(&fixtures::register_body("kapten", "kApten@1023"))
         .await;
+    println!("{:?}",register_res);
     assert_eq!(register_res.status(), reqwest::StatusCode::OK);
 
     // Act: Login

@@ -33,7 +33,7 @@ use crate::{
             admin::AdminAuthRequest,
             auth::{ProfileLogin, ProfileSignupReq, ResetPasswordReq},
         },
-        response::{AdminResponse, ApiResponse, ProfileResponse},
+        response::{AdminResponse, ProfileResponse},
     },
 };
 
@@ -41,7 +41,7 @@ use crate::{
 pub async fn sign_up_artist_handler(
     State(app): State<Arc<AppState>>,
     AppJson(data): AppJson<ProfileSignupReq>,
-) -> Result<ApiResponse, ApiError> {
+) -> Result<ProfileResponse, ApiError> {
     let password = data.password;
     let password_hash = get_password_hash(password.as_ref())?;
     let artist = Profile {
@@ -63,10 +63,15 @@ pub async fn sign_up_artist_handler(
     };
     let profile = insert_new_profile(&app.db_pool, artist).await?;
     match profile {
-        Some(_) => tracing::info!("Artist created"),
-        None => tracing::error!("Failed to create artist"),
-    };
-    Ok(ApiResponse::OK)
+        Some(profile) => {
+            tracing::info!("Artist created: {:?}", profile.id);
+            Ok(ProfileResponse::ProfileCreated(profile.id))
+        }
+        None => {
+            tracing::error!("Failed to create artist");
+            Err(ApiError::DbError(sqlx::Error::RowNotFound))
+        }
+    }
 }
 
 #[instrument(name = "log_in_artist", skip(app, jar, data), err,fields(user_name = %data.handle))]
