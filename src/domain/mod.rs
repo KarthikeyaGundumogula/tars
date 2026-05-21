@@ -9,7 +9,7 @@ pub mod works;
 pub use festivals::*;
 pub use ledger_thought::*;
 pub use originals::{Genre, OriginalDescription, OriginalTitle, Role};
-pub use profiles::{Handle, StageName, TagLine};
+pub use profiles::{Handle, HexColor, StageName, TagLine};
 pub use sets::*;
 pub use shared::Password;
 pub use works::{ScriptThought, WorkTitle};

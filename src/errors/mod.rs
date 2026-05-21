@@ -26,7 +26,7 @@ impl ErrorResponse {
 
 #[derive(Error, Debug)]
 pub enum ApiError {
-    #[error("Server responded with nothing")]
+    #[error("Server responded with nothing ")]
     NotFound,
     #[error("Unable to process the incoming request")]
     Serialization(#[from] JsonRejection),

@@ -19,10 +19,10 @@ impl IntoResponse for ProfileResponse {
     fn into_response(self) -> axum::response::Response {
         match self {
             Self::ProfileCreated(id) => {
-                (StatusCode::OK, Json(serde_json::json!({"id": id}))).into_response()
+                (StatusCode::CREATED, Json(serde_json::json!({"id": id}))).into_response()
             }
             Self::ProfileAuthenticated(jar) => (
-                StatusCode::OK,
+                StatusCode::ACCEPTED,
                 jar,
                 Json(serde_json::json!({"message":"logged_in"})),
             )

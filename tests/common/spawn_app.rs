@@ -296,6 +296,21 @@ impl TestApp {
     }
 
     // -----------------------------------------------------------------------
+    // Stages
+    // -----------------------------------------------------------------------
+
+    pub async fn get_profile_stage(&self, user_name: &str) -> reqwest::Response {
+        self.api_client
+            .get(&format!(
+                "{}/stages/get_profile_stage/{}",
+                &self.address, user_name
+            ))
+            .send()
+            .await
+            .expect("Failed to execute request.")
+    }
+
+    // -----------------------------------------------------------------------
     // Festivals
     // -----------------------------------------------------------------------
 

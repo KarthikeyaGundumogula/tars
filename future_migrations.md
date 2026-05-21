@@ -5,9 +5,9 @@
 5. **Add a column on Profiles table to store the users password hash** ✅
 6. **Add a column on Originals table to store the password_hash** ✅
 7. **Create a watchlist table** ✅
-8. **Add a column to the Originals table that contains the releases from the table** -- let's say if we consider every release as a work from teh original where artis_id andOriginal_ID is is the same then we can get the releases right and this releases will be considered as the works of the origianls right? -- this concludes we dont need another table or column about releases for the original right ah ✅ 
+8. **Add a column to the Originals table that contains the releases from the table** -- let's say if we consider every release as a work from teh original where artis_id andOriginal_ID is is the same then we can get the releases right and this releases will be considered as the works of the origianls right? -- this concludes we dont need another table or column about releases for the original right ah ✅
    -- Completed migration 2 --
-9.  **Add metrics presence to the profiles table** - ✅
+9. **Add metrics presence to the profiles table** - ✅
 10. **Add NOT NULL constraint to the is_claimed column in profiles table** - ✅
 11. **Add unique username constraint to the profiles table** - ✅
 12. **Add a column on the profiles table to store user's status (STAR,MAKER,ARTIST)**` - ✅
@@ -53,6 +53,8 @@
 47. **Add NOT NULL contraint to the credits column in works table**
 48. **Add NOT NULL constraint to the stage_name,text_color,background_color columns in profiles table**
 49. **Rename roles table to cast_and_crew_roles**
-50. **Add Unique constraint on the admin_name table okay****
+50. **Add Unique constraint on the admin_name table okay**
     --- completed migration 9 ---
 51. **Rename original_credits table to work_credits table**
+52. **Add a thumbnail column on the works table**
+53. **Add indexes** - {Profile - user_name},{works-artist_id,works - created_at + id},{Edits,Scripts,Posters - work_id}

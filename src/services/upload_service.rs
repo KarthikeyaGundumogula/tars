@@ -11,7 +11,7 @@ use crate::{
     errors::ApiError,
     services::json_extractor::AppJson,
     types::{
-        db::work::{Edit, Poster, Script, Work, WorkType},
+        db::work::{Edit, Poster, Script, Work, WorkCategory},
         requests::works::{UploadEditReq, UploadPosterReq, UploadScriptReq},
     },
 };
@@ -20,10 +20,10 @@ pub async fn upload_work(
     data: Bytes,
     txn: &mut Transaction<'_, sqlx::Postgres>,
     user: Uuid,
-    work_type: WorkType,
+    work_type: WorkCategory,
 ) -> Result<Uuid, ApiError> {
     match work_type {
-        WorkType::EDIT => {
+        WorkCategory::EDIT => {
             let AppJson(data) = AppJson::<UploadEditReq>::from_bytes(&data)?;
             match &data.title {
                 Some(title) => tracing::info!(work_title = %title, "Uploading edit"),
@@ -35,7 +35,7 @@ pub async fn upload_work(
                 title: data.title.map(|t| t.to_string()),
                 credits: Some(0),
                 created_at: Utc::now(),
-                category: WorkType::EDIT,
+                category: WorkCategory::EDIT,
             };
             let edit = Edit {
                 work_id: new_work.id,
@@ -52,7 +52,7 @@ pub async fn upload_work(
             }
             Ok(new_work_id)
         }
-        WorkType::POSTER => {
+        WorkCategory::POSTER => {
             let AppJson(data) = AppJson::<UploadPosterReq>::from_bytes(&data)?;
             match &data.title {
                 Some(title) => tracing::info!(work_title = %title, "Uploading poster"),
@@ -65,7 +65,7 @@ pub async fn upload_work(
                 title: data.title.map(|t| t.to_string()),
                 credits: Some(0),
                 created_at: Utc::now(),
-                category: WorkType::POSTER,
+                category: WorkCategory::POSTER,
             };
             let poster = Poster {
                 work_id: new_work.id,
@@ -81,7 +81,7 @@ pub async fn upload_work(
             }
             Ok(new_work_id)
         }
-        WorkType::SCRIPT => {
+        WorkCategory::SCRIPT => {
             let AppJson(data) = AppJson::<UploadScriptReq>::from_bytes(&data)?;
             match &data.title {
                 Some(title) => tracing::info!(work_title = %title, "Uploading script"),
@@ -93,7 +93,7 @@ pub async fn upload_work(
                 title: data.title.map(|t| t.to_string()),
                 credits: Some(0),
                 created_at: Utc::now(),
-                category: WorkType::SCRIPT,
+                category: WorkCategory::SCRIPT,
             };
             let script = Script {
                 work_id: new_work.id,

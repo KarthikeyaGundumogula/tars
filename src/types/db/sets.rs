@@ -20,7 +20,7 @@ pub struct Set {
     pub name: String,
     pub statement: String,
     pub description: String,
-    pub profile_picture: Option<String>, // remove this
+    pub profile_picture: String, // remove this
     pub presence: i64,
     pub curator: Uuid,
     pub created_at: DateTime<Utc>,
@@ -66,13 +66,10 @@ impl Entity for FestivalMember {
     where
         Self: Send,
     {
-        let set_id = sqlx::query_scalar!("SELECT set_id from festivals WHERE id = $1", entity_id)
-            .fetch_one(db)
-            .await?;
         let set_member = sqlx::query_as!(
             SetMember,
-            r#"SELECT set_id, profile_id, set_role as "set_role: SetRole", created_at FROM set_members WHERE set_id = $1 AND profile_id = $2"#,
-            set_id,
+            r#"SELECT sm.set_id, sm.profile_id, sm.set_role as "set_role: SetRole", sm.created_at FROM set_members AS sm INNER JOIN festivals ON sm.set_id = festivals.set_id WHERE festivals.id = $1 AND sm.profile_id = $2"#,
+            entity_id,
             member_id
         )
         .fetch_optional(db)

@@ -26,7 +26,7 @@ use crate::{
         db::{
             original::Original,
             profile::{Role, RoleType},
-            work::WorkType,
+            work::WorkCategory,
         },
         requests::originals::{AddNewRoleReq, CreateOriginalReq, RemoveRoleReq, UpdateOrignalReq},
         response::OriginalResponse,
@@ -153,7 +153,7 @@ async fn delete_original_handler(
 #[instrument(name = "upload_release", skip(app, data), fields(resource_id = %resource_id))]
 async fn new_release_handler(
     State(app): State<Arc<AppState>>,
-    Path((resource_id, release_type)): Path<(Uuid, WorkType)>,
+    Path((resource_id, release_type)): Path<(Uuid, WorkCategory)>,
     AdminUser(_): AdminUser,
     data: Bytes,
 ) -> Result<OriginalResponse, ApiError> {

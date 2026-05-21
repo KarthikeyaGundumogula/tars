@@ -4,7 +4,7 @@ use uuid::Uuid;
 use crate::{
     errors::ApiError,
     types::db::work::{
-        Edit, EditFormat, Poster, PosterFormat, Script, SupportedPlatforms, Work, WorkType,
+        Edit, EditFormat, Poster, PosterFormat, Script, SupportedPlatforms, Work, WorkCategory,
     },
 };
 
@@ -20,7 +20,7 @@ pub async fn insert_new_work(
     data.id,
     data.title,
     data.artist_id,
-    data.category as WorkType
+    data.category as WorkCategory
    ).fetch_one(&mut **txn).await?
   )
 }

@@ -2,13 +2,13 @@ mod common;
 use common::{fixtures, spawn_app};
 
 #[tokio::test]
-async fn register_profile_return_200_on_correct_data() {
+async fn register_profile_return_201_on_correct_data() {
     let app = spawn_app::spawn().await;
 
     let body = fixtures::register_body("kapten", "kApten@1023");
     let response = app.post_register(&body).await;
 
-    assert_eq!(response.status(), reqwest::StatusCode::OK);
+    assert_eq!(response.status(), reqwest::StatusCode::CREATED);
 
     let saved = sqlx::query_scalar!(
         r#"SELECT youtube_profile FROM profiles WHERE user_name=$1"#,
@@ -22,7 +22,7 @@ async fn register_profile_return_200_on_correct_data() {
 }
 
 #[tokio::test]
-async fn login_artist_return_200_on_correct_data() {
+async fn login_artist_return_201_on_correct_data() {
     let app = spawn_app::spawn().await;
 
     // Arrange: Register first
@@ -30,14 +30,14 @@ async fn login_artist_return_200_on_correct_data() {
         .post_register(&fixtures::register_body("kapten", "kApten@1023"))
         .await;
     println!("{:?}",register_res);
-    assert_eq!(register_res.status(), reqwest::StatusCode::OK);
+    assert_eq!(register_res.status(), reqwest::StatusCode::CREATED);
 
     // Act: Login
     let response = app
         .post_login(&fixtures::login_body("kapten", "kApten@1023"))
         .await;
 
-    assert_eq!(response.status(), reqwest::StatusCode::OK);
+    assert_eq!(response.status(), reqwest::StatusCode::ACCEPTED);
 }
 
 #[tokio::test]

@@ -19,7 +19,7 @@ use crate::{
         upload_service::upload_work,
     },
     types::{
-        db::work::{Work, WorkType},
+        db::work::{Work, WorkCategory},
         requests::works::{LikeWork, UpdateWorkReq},
         response::WorkResponse,
     },
@@ -27,7 +27,7 @@ use crate::{
 
 #[instrument(name = "create_new_work", skip(app, body), err)]
 pub async fn create_new_work_handler(
-    Path(work_type): Path<WorkType>,
+    Path(work_type): Path<WorkCategory>,
     State(app): State<Arc<AppState>>,
     Artist(user): Artist,
     body: Bytes,

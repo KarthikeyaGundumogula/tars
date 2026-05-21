@@ -57,8 +57,8 @@ pub async fn sign_up_artist_handler(
         twitter_profile: data.twitter_profile,
         instagram_profile: data.instagram_profile,
         password_hash,
-        text_color: data.text_color,
-        background_color: data.background_color,
+        text_color: data.text_color.to_string(),
+        background_color: data.background_color.to_string(),
         created_at: Utc::now(),
     };
     let profile = insert_new_profile(&app.db_pool, artist).await?;
@@ -102,7 +102,7 @@ pub async fn login_profile(
 }
 
 #[instrument(name = "logout_artist", skip(jar), err)]
-pub async fn logout_profile(jar: CookieJar) -> Result<ProfileResponse, ApiError> {
+pub async fn logout_profile_handler(jar: CookieJar) -> Result<ProfileResponse, ApiError> {
     let cookie = Cookie::build(("auth_token", ""))
         .http_only(true)
         .same_site(SameSite::Lax)
@@ -112,6 +112,7 @@ pub async fn logout_profile(jar: CookieJar) -> Result<ProfileResponse, ApiError>
     Ok(ProfileResponse::ProfileAuthenticated(jar.remove(cookie)))
 }
 
+#[instrument(name = "insert_new_admin",skip(app,data),fields(admin_name = %data.admin_name))]
 pub async fn insert_new_admin_handler(
     State(app): State<Arc<AppState>>,
     AppJson(data): AppJson<AdminAuthRequest>,
@@ -127,6 +128,8 @@ pub async fn insert_new_admin_handler(
     let res = insert_new_admin(&app.db_pool, admin).await?;
     Ok(AdminResponse::AdminCreated(res))
 }
+
+#[instrument(name = "admin_login",skip(app,data,jar),fields(admin_name = %data.admin_name))]
 pub async fn admin_login_handler(
     State(app): State<Arc<AppState>>,
     jar: CookieJar,
@@ -153,7 +156,8 @@ pub async fn admin_login_handler(
     Ok(AdminResponse::AdminAuthenticated(jar.add(cookie)))
 }
 
-pub async fn logout_admin(jar: CookieJar) -> Result<AdminResponse, ApiError> {
+#[instrument(name = "logout_admin",skip(jar))]
+pub async fn logout_admin_handler(jar: CookieJar) -> Result<AdminResponse, ApiError> {
     let cookie = Cookie::build(("auth_token", ""))
         .http_only(true)
         .same_site(SameSite::Lax)
@@ -191,9 +195,9 @@ pub fn router() -> Router<Arc<AppState>> {
     Router::new()
         .route("/register", post(sign_up_artist_handler))
         .route("/login", post(login_profile))
-        .route("/logout", post(logout_profile))
+        .route("/logout", post(logout_profile_handler))
         .route("/reset-password", post(reset_password))
         .route("/admin/login", post(admin_login_handler))
-        .route("/admin/logout", post(logout_admin))
+        .route("/admin/logout", post(logout_admin_handler))
         .route("/admin/register", post(insert_new_admin_handler))
 }

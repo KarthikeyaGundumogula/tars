@@ -35,15 +35,25 @@ pub enum PosterFormat {
 
 #[derive(sqlx::Type, Deserialize, Serialize, Debug)]
 #[sqlx(type_name = "work_category")]
-pub enum WorkType {
+pub enum WorkCategory {
     EDIT,
     POSTER,
     SCRIPT,
 }
 
+impl AsRef<str> for WorkCategory {
+    fn as_ref(&self) -> &str {
+        match self {
+            WorkCategory::EDIT => "edit",
+            WorkCategory::POSTER => "poster",
+            WorkCategory::SCRIPT => "script",
+        }
+    }
+}
+
 #[derive(Deserialize, Debug)]
 pub struct WorkTypeParam {
-    pub work_type: WorkType,
+    pub work_type: WorkCategory,
 }
 
 #[derive(sqlx::FromRow, Serialize, Debug)]
@@ -53,7 +63,7 @@ pub struct Work {
     pub title: Option<String>,
     pub credits: Option<i64>,
     pub created_at: DateTime<Utc>,
-    pub category: WorkType,
+    pub category: WorkCategory,
 }
 
 #[derive(sqlx::FromRow, Serialize, Debug)]
@@ -88,7 +98,7 @@ impl Resource for Work {
     {
         let work = sqlx::query_as!(
             Work,
-            r#"SELECT id, artist_id, title, credits, created_at, category as "category:WorkType" FROM works WHERE id = $1"#,
+            r#"SELECT id, artist_id, title, credits, created_at, category as "category:WorkCategory" FROM works WHERE id = $1"#,
             resource_id
         )
         .fetch_optional(db)
