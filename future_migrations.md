@@ -56,5 +56,7 @@
 50. **Add Unique constraint on the admin_name table okay**
     --- completed migration 9 ---
 51. **Rename original_credits table to work_credits table**
-52. **Add a thumbnail column on the works table**
-53. **Add indexes** - {Profile - user_name},{works-artist_id,works - created_at + id},{Edits,Scripts,Posters - work_id}
+52. **Drop the profile picture row from the sets table and add the text_color**
+53. **Add a thumbnail column on the works table**
+54. **Drop the Description column in the sets**
+55. **Add indexes** - {Profile - user_name},{works-artist_id,works - created_at + id},{Edits,Scripts,Posters - work_id}

@@ -16,9 +16,12 @@ impl Handle {
         if handle.contains(' ') {
             return Err("Artist handle cannot contain spaces".to_string());
         }
-        if handle != handle.to_lowercase() {
+        // Only enforce lowercase for Latin script (allow Unicode scripts like Telugu to have any case)
+        let has_latin_chars = handle.chars().any(|c| c.is_ascii());
+        if has_latin_chars && handle != handle.to_lowercase() {
             return Err("Artist handle must be lowercase".to_string());
         }
+        // Allow Unicode letters, numbers, and underscores (supports Telugu and other languages)
         if !handle.chars().all(|c| c.is_alphanumeric() || c == '_') {
             return Err(
                 "Artist handle can only contain alphanumeric characters and underscores"
@@ -113,5 +116,12 @@ mod tests {
     fn starting_or_ending_with_underscore_is_rejected() {
         assert!(Handle::parse("_invalid".to_string()).is_err());
         assert!(Handle::parse("invalid_".to_string()).is_err());
+    }
+
+    #[test]
+    fn telugu_characters_are_supported() {
+        // Telugu characters should be supported
+        let handle = "తెలుగు_artist".to_string();
+        assert!(Handle::parse(handle).is_ok());
     }
 }

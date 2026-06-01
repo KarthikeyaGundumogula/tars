@@ -12,9 +12,12 @@ impl StageName {
         if stage_name.len() > 15 {
             return Err("Artist stage name cannot be longer than 15 characters".to_string());
         }
-        if stage_name != stage_name.to_lowercase() {
+        // Only enforce lowercase for Latin script (allow Unicode scripts like Telugu to have any case)
+        let has_latin_chars = stage_name.chars().any(|c| c.is_ascii());
+        if has_latin_chars && stage_name != stage_name.to_lowercase() {
             return Err("Artist stage name must be lowercase".to_string());
         }
+        // Allow Unicode letters and spaces (supports Telugu and other languages)
         if !stage_name.chars().all(|c| c.is_alphabetic() || c == ' ') {
             return Err(
                 "Artist stage name can only contain alphabetic characters and spaces".to_string(),
@@ -91,5 +94,12 @@ mod tests {
     fn leading_trailing_space_is_rejected() {
         assert!(StageName::parse(" kapten".to_string()).is_err());
         assert!(StageName::parse("kapten ".to_string()).is_err());
+    }
+
+    #[test]
+    fn telugu_characters_are_supported() {
+        // Telugu characters should be supported
+        let stage_name = "తెలుగు కళాకారుడు".to_string();
+        assert!(StageName::parse(stage_name).is_ok());
     }
 }

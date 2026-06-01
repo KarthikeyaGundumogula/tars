@@ -1,5 +1,27 @@
 use axum::{Json, http::StatusCode, response::IntoResponse};
+use serde::Serialize;
 use uuid::Uuid;
+
+#[derive(Serialize)]
+pub struct EditWorkModal{
+    pub id: Uuid,
+    pub title:Option<String>,
+    pub src: String,
+    pub artist:String,
+    pub originals:Vec<WorkCredit>
+}
+
+#[derive(Serialize)]
+pub struct PosterWorkModal{
+    src:String,
+}
+
+#[derive(Serialize)]
+pub struct WorkCredit{
+    pub id:Uuid,
+    pub name:String,
+    pub cover_poster:String
+}
 
 /// Work-related API responses
 #[derive(Debug)]

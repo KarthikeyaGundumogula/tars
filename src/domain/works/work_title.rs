@@ -13,6 +13,8 @@ impl WorkTitle {
         if work_title.trim() != work_title {
             return Err("Work title cannot have leading or trailing spaces".to_string());
         }
+        // Allow Unicode letters and spaces (supports Telugu and other languages)
+        // No case restrictions since work titles can be in any language
         if work_title.chars().any(|c| !c.is_alphabetic() && c != ' ') {
             return Err("Work title can only contain alphabetic characters and spaces".to_string());
         }
@@ -97,5 +99,12 @@ mod tests {
     fn leading_or_trailing_whitespace_is_rejected() {
         assert!(WorkTitle::parse(" Title".to_string()).is_err());
         assert!(WorkTitle::parse("Title ".to_string()).is_err());
+    }
+
+    #[test]
+    fn telugu_characters_are_supported() {
+        // Telugu characters should be supported
+        let title = "తెలుగు పని".to_string();
+        assert!(WorkTitle::parse(title).is_ok());
     }
 }
