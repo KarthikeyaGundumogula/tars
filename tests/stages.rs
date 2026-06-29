@@ -2,15 +2,15 @@ mod common;
 use common::{fixtures, setups::setup_work_uploaded, spawn_app};
 
 // ---------------------------------------------------------------------------
-// GET /stages/get_profile_stage/{user_name}
+// GET /profiles/get_profile_details/{user_name}
 // ---------------------------------------------------------------------------
 
 #[tokio::test]
-async fn get_profile_stage_returns_200_for_artist_with_works() {
+async fn get_profile_details_returns_200_for_artist_with_works() {
     let (_artists, app, _original_id, _work_id) = setup_work_uploaded().await;
 
     // user_0 has a registered profile + an uploaded work, so the INNER JOIN succeeds
-    let response = app.get_profile_stage("user_0").await;
+    let response = app.get_profile_details("user_0").await;
 
     assert!(
         response.status().is_success(),
@@ -18,7 +18,7 @@ async fn get_profile_stage_returns_200_for_artist_with_works() {
         response.status()
     );
 
-    // Verify the JSON body contains the expected stage data
+    // Verify the JSON body contains the expected profile data
     let body: serde_json::Value = response.json().await.expect("Failed to parse JSON body");
     let stage = &body["artist_stage"];
 
@@ -35,10 +35,10 @@ async fn get_profile_stage_returns_200_for_artist_with_works() {
 }
 
 #[tokio::test]
-async fn get_profile_stage_returns_404_for_nonexistent_user() {
+async fn get_profile_details_returns_404_for_nonexistent_user() {
     let app = spawn_app::spawn().await;
 
-    let response = app.get_profile_stage("nonexistent_user_xyz").await;
+    let response = app.get_profile_details("nonexistent_user_xyz").await;
 
     assert_eq!(
         response.status().as_u16(),
@@ -48,15 +48,15 @@ async fn get_profile_stage_returns_404_for_nonexistent_user() {
 }
 
 #[tokio::test]
-async fn get_profile_stage_returns_404_for_artist_without_works() {
+async fn get_profile_details_returns_404_for_artist_without_works() {
     let app = spawn_app::spawn().await;
 
     // Register an artist but do NOT upload any works.
-    // The INNER JOIN in get_profile_stage_by_username will yield 0 rows → NotFound
+    // The INNER JOIN in get_profile_details_by_username will yield 0 rows → NotFound
     app.post_register(&fixtures::register_body("lonely_artist", "kApten@1023"))
         .await;
 
-    let response = app.get_profile_stage("lonely_artist").await;
+    let response = app.get_profile_details("lonely_artist").await;
 
     assert_eq!(
         response.status().as_u16(),
@@ -66,10 +66,10 @@ async fn get_profile_stage_returns_404_for_artist_without_works() {
 }
 
 #[tokio::test]
-async fn get_profile_stage_returns_correct_social_profiles() {
+async fn get_profile_details_returns_correct_social_profiles() {
     let (_artists, app, _original_id, _work_id) = setup_work_uploaded().await;
 
-    let response = app.get_profile_stage("user_0").await;
+    let response = app.get_profile_details("user_0").await;
     assert!(response.status().is_success());
 
     let body: serde_json::Value = response.json().await.expect("Failed to parse JSON body");
@@ -82,7 +82,7 @@ async fn get_profile_stage_returns_correct_social_profiles() {
 }
 
 #[tokio::test]
-async fn get_profile_stage_does_not_require_authentication() {
+async fn get_profile_details_does_not_require_authentication() {
     let (_artists, app, _original_id, _work_id) = setup_work_uploaded().await;
 
     // Build a brand new client with no cookies (no auth)
@@ -93,7 +93,7 @@ async fn get_profile_stage_does_not_require_authentication() {
 
     let response = anon_client
         .get(&format!(
-            "{}/stages/get_profile_stage/user_0",
+            "{}/profiles/get_profile_details/user_0",
             &app.address
         ))
         .send()
@@ -102,7 +102,7 @@ async fn get_profile_stage_does_not_require_authentication() {
 
     assert!(
         response.status().is_success(),
-        "Stage endpoint should be publicly accessible, got {}",
+        "Profile endpoint should be publicly accessible, got {}",
         response.status()
     );
 }

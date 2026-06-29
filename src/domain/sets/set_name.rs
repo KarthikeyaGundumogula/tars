@@ -6,13 +6,19 @@ impl SetName {
         if name.is_empty() {
             return Err("Name cannot be empty".to_string());
         }
-        if name.len() > 100 {
+        if name.chars().count() > 100 {
             return Err("Name cannot be longer than 100 characters".to_string());
         }
         // Allow Unicode letters, spaces, and basic punctuation (supports Telugu and other languages)
         // No case restrictions since set names can be in any language
         if !name.chars().all(|c| {
-            c.is_alphabetic() || c.is_whitespace() || c == '.' || c == ',' || c == '!' || c == '?'
+            c.is_alphabetic()
+                || c.is_whitespace()
+                || c == '.'
+                || c == ','
+                || c == '!'
+                || c == '?'
+                || c == '్'
         }) {
             return Err("Name cannot contain special characters".to_string());
         }
@@ -83,7 +89,7 @@ mod tests {
 
     #[test]
     fn telugu_characters_are_supported() {
-        // Telugu characters should be supported
+        // Telugu characters should be supported (including virama for consonant clusters)
         let name = "తెలుగు సెట్".to_string();
         assert!(SetName::parse(name).is_ok());
     }

@@ -7,7 +7,5 @@
 7. add episodes uploads
 8. add edit existing record for originals, works and festivals
 9.  add delete existing record for originals, works and festivals
-10. add profile update
+10. add profile update - ✅
 11. add layout engine spec sheet
-12. add collections as a new work type
-13. 

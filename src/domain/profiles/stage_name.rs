@@ -9,7 +9,7 @@ impl StageName {
         if stage_name.is_empty() {
             return Err("Artist stage name cannot be empty".to_string());
         }
-        if stage_name.len() > 15 {
+        if stage_name.chars().count() > 15 {
             return Err("Artist stage name cannot be longer than 15 characters".to_string());
         }
         // Only enforce lowercase for Latin script (allow Unicode scripts like Telugu to have any case)
@@ -99,7 +99,7 @@ mod tests {
     #[test]
     fn telugu_characters_are_supported() {
         // Telugu characters should be supported
-        let stage_name = "తెలుగు కళాకారుడు".to_string();
+        let stage_name = "తెలుగు కళ".to_string();
         assert!(StageName::parse(stage_name).is_ok());
     }
 }

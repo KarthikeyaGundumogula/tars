@@ -77,9 +77,25 @@ async fn delete_work_handler(
     Ok(WorkResponse::WorkDeleted(resource_id))
 }
 
+async fn create_new_recommendation_handler() {
+    todo!()
+}
+
+async fn update_recommedation_handler() {
+    todo!()
+}
+
 pub fn router() -> Router<Arc<AppState>> {
     Router::new()
         .route("/new/{work_type}", post(create_new_work_handler))
+        .route(
+            "/recommendations/new",
+            post(create_new_recommendation_handler),
+        )
+        .route(
+            "/recommendations/{id}/update",
+            post(update_recommedation_handler),
+        )
         .route("/{resource_id}/update", post(update_work_handler))
         .route("/like", post(like_work_handler))
         .route("/dislike", delete(dislike_work_handler))

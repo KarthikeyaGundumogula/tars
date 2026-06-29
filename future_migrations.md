@@ -46,17 +46,19 @@
 41. **Add created_at and updated_at columns to the ledger table** - ✅
 42. **Remove the NOT NULL contraint on the work_id of the panelists table** - ✅
     --- completed migration 8 ---
-43. **Remove the Not Null constraint on the original_id column in the originals_credits table and add a Reference column which points to profiles table and add a check to ensure that atleast one of them is present**
-44. **ADD not null contraint to the created_at,updated_at,status columns int the ledger table**
-45. **Add Not NULL contraint to the presence in the originals table**
-46. **Add NOT NULL contraint to the profile picture column in sets table**
-47. **Add NOT NULL contraint to the credits column in works table**
-48. **Add NOT NULL constraint to the stage_name,text_color,background_color columns in profiles table**
-49. **Rename roles table to cast_and_crew_roles**
-50. **Add Unique constraint on the admin_name table okay**
+43. **Remove the Not Null constraint on the original_id column in the originals_credits table and add a Reference column which points to profiles table and add a check to ensure that atleast one of them is present** - ✅
+44. **ADD not null contraint to the created_at,updated_at,status columns int the ledger table** - ✅
+45. **Add Not NULL contraint to the presence in the originals table** - ✅
+46. **Add NOT NULL contraint to the profile picture column in sets table** - ✅
+47. **Add NOT NULL contraint to the credits column in works table** - ✅
+48. **Add NOT NULL constraint to the stage_name,text_color,background_color columns in profiles table** - ✅
+49. **Rename roles table to cast_and_crew_roles** - ✅
+50. **Add Unique constraint on the admin_name table okay** - ✅
     --- completed migration 9 ---
 51. **Rename original_credits table to work_credits table**
 52. **Drop the profile picture row from the sets table and add the text_color**
-53. **Add a thumbnail column on the works table**
-54. **Drop the Description column in the sets**
-55. **Add indexes** - {Profile - user_name},{works-artist_id,works - created_at + id},{Edits,Scripts,Posters - work_id}
+53. **Add film certification on the originals table**
+54. **Create Recommendations table (Original_id,Artist_id,notes,created_at,updated_at,surge_score)**
+55. **Update the artists table to add a column for current peak in recommednations & ledger**
+56. **Add Resonance Density and Surge spread**
+57. **Add indexes** - {Profile - user_name},{works-artist_id,works - created_at + id},{Edits,Scripts,Posters - work_id}

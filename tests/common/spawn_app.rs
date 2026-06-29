@@ -296,13 +296,13 @@ impl TestApp {
     }
 
     // -----------------------------------------------------------------------
-    // Stages
+    // Profiles
     // -----------------------------------------------------------------------
 
-    pub async fn get_profile_stage(&self, user_name: &str) -> reqwest::Response {
+    pub async fn get_profile_details(&self, user_name: &str) -> reqwest::Response {
         self.api_client
             .get(&format!(
-                "{}/stages/get_profile_stage/{}",
+                "{}/profiles/get_profile_details/{}",
                 &self.address, user_name
             ))
             .send()

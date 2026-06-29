@@ -1,10 +1,13 @@
-use crate::{errors::ApiError, types::{
-    db::work::WorkCategory,
-    response::artist::{ArtistStage, WorkPreview},
-}};
+use crate::{
+    errors::ApiError,
+    types::{
+        db::work::WorkCategory,
+        response::artist::{ArtistStage, WorkPreview},
+    },
+};
 use sqlx::PgPool;
 
-pub async fn get_profile_stage_by_username(
+pub async fn get_profile_details_by_username(
     pool: &PgPool,
     user_name: &str,
 ) -> Result<ArtistStage, ApiError> {

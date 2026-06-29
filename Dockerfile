@@ -35,4 +35,3 @@ COPY configuration configuration
 ENV APP_ENV=production
 
 ENTRYPOINT ["./tars"]
-
