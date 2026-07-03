@@ -19,8 +19,7 @@ pub fn register_body(handle: &str, password: &str) -> serde_json::Value {
         "profile_picture": "aofdjosfjosf",
         "youtube_profile": "aojojfosjf",
         "stage_name": "kapten",
-        "background_color": "#FF0000",
-        "text_color": "#000000"
+        "color_theme": "#FF0000"
     })
 }
 

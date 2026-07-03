@@ -25,8 +25,7 @@ async fn get_profile_details_returns_200_for_artist_with_works() {
     assert_eq!(stage["user_name"], "user_0");
     assert_eq!(stage["stage_name"], "kapten");
     assert_eq!(stage["tag_line"], "I dont give a dmn about your opinion");
-    assert_eq!(stage["background_color"], "#FF0000");
-    assert_eq!(stage["text_color"], "#000000");
+    assert_eq!(stage["color_theme"], "#FF0000");
 
     // Works array should contain the uploaded work
     let works = stage["works"].as_array().expect("works should be an array");

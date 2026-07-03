@@ -17,14 +17,7 @@ use crate::{
         artists::{get_profile_auth_details, insert_new_profile, update_profile_password},
     },
     errors::ApiError,
-    services::{
-        auth_service::{
-            extractor::Artist,
-            password::{create_jwt, get_password_hash, verify_password},
-        },
-        json_extractor::AppJson,
-    },
-    types::{
+    models::{
         db::{
             admin::Admin,
             profile::{Profile, ProfileType},
@@ -34,6 +27,13 @@ use crate::{
             auth::{ProfileLogin, ProfileSignupReq, ResetPasswordReq},
         },
         response::{AdminResponse, ProfileResponse},
+    },
+    services::{
+        auth_service::{
+            extractor::Artist,
+            password::{create_jwt, get_password_hash, verify_password},
+        },
+        json_extractor::AppJson,
     },
 };
 
@@ -48,7 +48,7 @@ pub async fn sign_up_artist_handler(
         user_name: data.handle.as_ref().to_string(),
         is_claimed: false,
         stage_name: data.stage_name.to_string(),
-        presence: 100,
+        spirit: 100,
         id: Uuid::new_v4(),
         tag_line: data.tag_line.as_ref().to_string(),
         profile_picture: data.profile_picture,
@@ -57,8 +57,10 @@ pub async fn sign_up_artist_handler(
         twitter_profile: data.twitter_profile,
         instagram_profile: data.instagram_profile,
         password_hash,
-        text_color: data.text_color.to_string(),
-        background_color: data.background_color.to_string(),
+        color_theme: data.color_theme.to_string(),
+        role_name: None,
+        current_peak_recommendations: 0,
+        current_peak_library: 0,
         created_at: Utc::now(),
     };
     let profile = insert_new_profile(&app.db_pool, artist).await?;
@@ -156,7 +158,7 @@ pub async fn admin_login_handler(
     Ok(AdminResponse::AdminAuthenticated(jar.add(cookie)))
 }
 
-#[instrument(name = "logout_admin",skip(jar))]
+#[instrument(name = "logout_admin", skip(jar))]
 pub async fn logout_admin_handler(jar: CookieJar) -> Result<AdminResponse, ApiError> {
     let cookie = Cookie::build(("auth_token", ""))
         .http_only(true)

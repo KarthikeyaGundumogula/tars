@@ -3,7 +3,7 @@ use uuid::Uuid;
 
 use crate::{
     errors::ApiError,
-    types::{
+    models::{
         db::profile::{Profile, ProfileType},
         requests::artist::UpdateProfileReq,
     },
@@ -25,12 +25,14 @@ pub async fn insert_new_profile(pool: &PgPool, data: Profile) -> Result<Option<P
           profile_picture,
           password_hash,
           profile_type,
-          presence,
+          spirit,
           stage_name,
-          background_color,
-          text_color
+          color_theme,
+          role_name,
+          current_peak_recommendations,
+          current_peak_library
         )
-      VALUES ($1, $2, $3, false, $4, $5, $6, NOW (), $7, $8, $9, $10, $11, $12, $13)
+      VALUES ($1, $2, $3, false, $4, $5, $6, NOW (), $7, $8, $9, $10, $11, $12, $13, $14, $15)
       RETURNING id,
         user_name,
         tag_line,
@@ -42,10 +44,12 @@ pub async fn insert_new_profile(pool: &PgPool, data: Profile) -> Result<Option<P
         profile_picture,
         password_hash,
         profile_type as "profile_type: ProfileType",
-        presence,
+        spirit,
         stage_name,
-        background_color,
-        text_color
+        color_theme,
+        role_name,
+        current_peak_recommendations,
+        current_peak_library
         "#,
         data.id,
         data.user_name,
@@ -56,10 +60,12 @@ pub async fn insert_new_profile(pool: &PgPool, data: Profile) -> Result<Option<P
         data.profile_picture,
         data.password_hash,
         data.profile_type as ProfileType,
-        data.presence,
+        &data.spirit,
         data.stage_name,
-        data.background_color,
-        data.text_color
+        data.color_theme,
+        data.role_name,
+        data.current_peak_recommendations,
+        data.current_peak_library
     )
     .fetch_optional(pool)
     .await?)
@@ -93,9 +99,8 @@ pub async fn update_profile_details(
             twitter_profile = COALESCE($4, twitter_profile),
             instagram_profile = COALESCE($5, instagram_profile),
             profile_picture = COALESCE($6, profile_picture),
-            background_color = COALESCE($7, background_color),
-            text_color = COALESCE($8, text_color)
-            WHERE id = $9
+            color_theme = COALESCE($7, color_theme)
+            WHERE id = $8
             RETURNING id
         "#,
         data.stage_name.as_ref().map(|s| s.as_str()),
@@ -104,8 +109,7 @@ pub async fn update_profile_details(
         data.twitter_profile,
         data.instagram_profile,
         data.profile_picture,
-        data.background_color,
-        data.text_color,
+        data.color_theme,
         id
     )
     .fetch_optional(pool)
@@ -153,15 +157,15 @@ pub async fn delete_favorite(
 pub async fn update_profile_presence(
     pool: &PgPool,
     profile_id: Uuid,
-    presence: i64,
+    spirit: i64,
 ) -> Result<bool, ApiError> {
     Ok(sqlx::query!(
         r#"
         UPDATE profiles
-        SET presence = $1
+        SET spirit = $1
         WHERE id = $2
         "#,
-        presence,
+        &spirit,
         profile_id
     )
     .execute(pool)
@@ -188,10 +192,12 @@ pub async fn get_profile_auth_details(
             profile_picture,
             password_hash,
             profile_type as "profile_type: ProfileType",
-            presence,
+            spirit,
             stage_name,
-            background_color,
-            text_color
+            color_theme,
+            role_name,
+            current_peak_recommendations,
+            current_peak_library
             FROM profiles
             WHERE user_name = $1
         "#,
