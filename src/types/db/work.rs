@@ -61,7 +61,7 @@ pub struct Work {
     pub id: Uuid,
     pub artist_id: Uuid,
     pub title: Option<String>,
-    pub credits: Option<i64>,
+    pub stars: Option<i64>,
     pub created_at: DateTime<Utc>,
     pub category: WorkCategory,
 }
@@ -98,7 +98,7 @@ impl Resource for Work {
     {
         let work = sqlx::query_as!(
             Work,
-            r#"SELECT id, artist_id, title, credits, created_at, category as "category:WorkCategory" FROM works WHERE id = $1"#,
+            r#"SELECT id, artist_id, title, stars, created_at, category as "category:WorkCategory" FROM works WHERE id = $1"#,
             resource_id
         )
         .fetch_optional(db)

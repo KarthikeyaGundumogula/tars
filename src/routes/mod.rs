@@ -2,7 +2,7 @@ pub mod artists;
 pub mod auth;
 pub mod festivals;
 pub mod health_check;
-pub mod ledger;
+pub mod library;
 pub mod originals;
 pub mod profiles;
 pub mod sets;
@@ -23,7 +23,7 @@ pub fn build_router() -> Router<Arc<AppState>> {
         .nest("/works", works::router())
         .nest("/sets", sets::router())
         .nest("/festivals", festivals::router())
-        .nest("/ledger", ledger::router())
+        .nest("/library", library::router())
         .nest("/artists", artists::router())
         .nest("/profiles", profiles::router())
 }

@@ -386,8 +386,8 @@ tars/
 │   ├── 20260428194054_orignals_metadata_columns.sql        # Additional metadata
 │   ├── 20260501201820_type_reanaming.sql                   # Type renames & work views/likes
 │   ├── 20260512090110_sets_festivals_orignal_update.sql    # Sets & Festivals system
-│   ├── 20260514112110_sets_ledger_festivals_panelists.sql  # Ledger & Panelists enhancements
-│   └── 20260519124901_original_credts_ledger_...sql        # NOT NULL enforcements
+│   ├── 20260514112110_sets_library_festivals_panelists.sql  # Library & Panelists enhancements
+│   └── 20260519124901_original_credts_library_...sql        # NOT NULL enforcements
 ├── scripts/
 │   └── init_db.sh          # Database initialization script
 ├── src/
@@ -401,7 +401,7 @@ tars/
 │   │   └── mutations/      # Mutation modules (admins, artists, etc.)
 │   ├── domain/             # Domain logic layer (DDD)
 │   │   ├── festivals/      # Festival domain models (name, description, rules)
-│   │   ├── ledger_thought.rs  # Ledger thought validation
+│   │   ├── library_thought.rs  # Library thought validation
 │   │   ├── originals/      # Original domain models (title, description, genre, role)
 │   │   ├── profiles/       # Profile domain models (handle, stage_name, hex_color, tagline)
 │   │   ├── sets/           # Set domain models (name, description, statement)
@@ -415,7 +415,7 @@ tars/
 │   │   ├── auth.rs         # Authentication endpoints (register, login, logout)
 │   │   ├── festivals.rs    # Festival management endpoints
 │   │   ├── health_check.rs # GET /health_check
-│   │   ├── ledger.rs       # Ledger/watchlist endpoints
+│   │   ├── library.rs       # Library/watchlist endpoints
 │   │   ├── originals.rs    # Original management endpoints
 │   │   ├── sets.rs         # Set management endpoints
 │   │   └── works.rs        # Work submission endpoints
@@ -768,7 +768,7 @@ Roles within a set - curators manage the set, members contribute.
 
 ---
 
-#### `ledger`
+#### `library`
 
 **Purpose**: Personal watchlist and engagement tracking per user/original
 
@@ -782,13 +782,13 @@ Roles within a set - curators manage the set, members contribute.
 | `pre_thought`     | TEXT             |                         | Initial impression before watching  |
 | `post_impression` | TEXT             |                         | Thoughts after watching             |
 | `status`          | watchlist_status | NOT NULL                | WATCHED/WATCHING/WANT_TO_WATCH      |
-| `entry_type`      | TEXT             | NOT NULL                | Type of ledger entry                |
+| `entry_type`      | TEXT             | NOT NULL                | Type of library entry               |
 | `created_at`      | TIMESTAMPTZ      | NOT NULL, DEFAULT NOW() | Creation timestamp                  |
 | `updated_at`      | TIMESTAMPTZ      | NOT NULL, DEFAULT NOW() | Last update timestamp               |
 
 **Design highlights:**
 
-- **Composite PK** ensures one ledger entry per user per original
+- **Composite PK** ensures one library entry per user per original
 - **Episode support** enables series-level tracking
 - **Tagged works array** enables personalized curation
 - **Pre/post thoughts** support engagement tracking
@@ -1011,7 +1011,7 @@ Roles within a set - curators manage the set, members contribute.
 
 - **FK to originals** enables series-level tracking
 - **Episode/season numbers** support structured series organization
-- **Enables ledger tracking** at episode level for series
+- **Enables library tracking** at episode level for series
 - **Supports binge-watching** and series-specific features
 
 ---
@@ -1250,9 +1250,9 @@ Create a new festival (time-bound event)
 
 ---
 
-#### `POST /ledger/entry`
+#### `POST /library/entry`
 
-Create or update a ledger entry (watchlist tracking)
+Create or update a library entry (watchlist tracking)
 
 **Expected Functionality:**
 
@@ -1355,7 +1355,7 @@ Fetch anchor originals (movies/series) with presence statistics
 
 **Technical Requirements:**
 
-- **Presence aggregation** from works and ledger entries
+- **Presence aggregation** from works and library entries
 - **Member counting** via cast_and_crew_roles
 - **Release counting** via works aggregation
 - **Category filtering** (MOVIE vs SERIES)
@@ -1875,7 +1875,7 @@ cargo test -- --test-threads=1
 - [ ] Implement global works feed with cursor-based pagination
 - [ ] Complete Sets API (CRUD operations, member management)
 - [ ] Complete Festivals API (panelist management, work submissions)
-- [ ] Complete Ledger API (full watchlist management)
+- [ ] Complete Library API (full watchlist management)
 
 ### Enhancements
 

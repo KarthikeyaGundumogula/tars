@@ -15,7 +15,7 @@ pub async fn insert_new_work(
     Ok(
    sqlx::query_scalar!(
     r#"
-    INSERT INTO works(id,title,artist_id,created_at,credits,category) VALUES ($1,$2,$3,NOW(),0,$4) RETURNING id;
+    INSERT INTO works(id,title,artist_id,created_at,stars,category) VALUES ($1,$2,$3,NOW(),0,$4) RETURNING id;
     "#,
     data.id,
     data.title,
@@ -166,7 +166,7 @@ pub async fn insert_new_work_credit(
 ) -> Result<Uuid, ApiError> {
     Ok(sqlx::query_scalar!(
         "
-            INSERT INTO originals_credits (
+            INSERT INTO work_credits (
             original_id,
             work_id)
             VALUES ($1, $2)

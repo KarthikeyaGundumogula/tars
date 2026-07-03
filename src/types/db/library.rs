@@ -13,8 +13,8 @@ pub enum WatchlistStatus {
     WANT_TO_WATCH,
 }
 #[derive(Deserialize, sqlx::Type, Debug)]
-#[sqlx(type_name = "ledger_entry_type")]
-pub enum LedgerEntryType {
+#[sqlx(type_name = "library_entry_type")]
+pub enum LibraryEntryType {
     MOVIE,
     SERIES,
     EPISODE,
@@ -22,7 +22,7 @@ pub enum LedgerEntryType {
 }
 
 #[derive(sqlx::FromRow)]
-pub struct LedgerEntry {
+pub struct LibraryEntry {
     pub id: Uuid,
     pub original_id: Option<Uuid>,
     pub episode_id: Option<Uuid>,
@@ -32,12 +32,12 @@ pub struct LedgerEntry {
     pub pre_thought: Option<String>,
     pub post_impression: Option<String>,
     pub status: Option<WatchlistStatus>, // it should not be null
-    pub entry_type: LedgerEntryType,
+    pub entry_type: LibraryEntryType,
     pub created_at: Option<DateTime<Utc>>, // it should not be null
     pub updated_at: Option<DateTime<Utc>>, // it should not be null
 }
 
-impl Resource for LedgerEntry {
+impl Resource for LibraryEntry {
     async fn fetch_by_id(
         db: &sqlx::PgPool,
         resource_id: Uuid,
@@ -45,13 +45,13 @@ impl Resource for LedgerEntry {
     where
         Self: Send,
     {
-        let ledger_entry = sqlx::query_as!(
-            LedgerEntry,
-            r#"SELECT id, original_id, episode_id, profile_id, pub_visibility, tagged_works, pre_thought, post_impression, status as "status:WatchlistStatus", entry_type as "entry_type:LedgerEntryType", created_at, updated_at FROM ledger WHERE id = $1"#,
+        let library_entry = sqlx::query_as!(
+            LibraryEntry,
+            r#"SELECT id, original_id, episode_id, profile_id, pub_visibility, tagged_works, pre_thought, post_impression, status as "status:WatchlistStatus", entry_type as "entry_type:LibraryEntryType", created_at, updated_at FROM library WHERE id = $1"#,
             resource_id
         )
         .fetch_optional(db)
         .await?.ok_or(crate::errors::ApiError::NotFound)?;
-        Ok(Some((ledger_entry.profile_id, ledger_entry)))
+        Ok(Some((library_entry.profile_id, library_entry)))
     }
 }

@@ -106,7 +106,7 @@ pub fn create_set_body() -> serde_json::Value {
         "name": "My Awesome Set",
         "statement": "This is a statement about the set",
         "description": "This is a longer description of the set",
-        "profile_picture": "no_profile_picture"
+        "color_theme": "#FFFFFF"
     })
 }
 
@@ -127,10 +127,10 @@ pub fn create_festival_body(set_id: Uuid, panelists: &[Uuid]) -> serde_json::Val
 }
 
 // ---------------------------------------------------------------------------
-// Ledger fixtures
+// Library fixtures
 // ---------------------------------------------------------------------------
 
-pub fn create_ledger_body(original_id: Uuid) -> serde_json::Value {
+pub fn create_library_body(original_id: Uuid) -> serde_json::Value {
     serde_json::json!({
         "original_id": original_id,
         "episode_id": null,

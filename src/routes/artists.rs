@@ -5,10 +5,7 @@ use tracing::instrument;
 
 use crate::{
     AppState,
-    db::mutations::artists::{
-        delete_favorite, delete_follower, insert_new_favorite, insert_new_follwing,
-        update_profile_details,
-    },
+    db::mutations::artists::{delete_favorite, insert_new_favorite, update_profile_details},
     errors::ApiError,
     services::{auth_service::extractor::Artist, json_extractor::AppJson},
     types::{
@@ -28,27 +25,6 @@ pub async fn update_stage_details_handler(
         .ok_or(ApiError::NotFound)?;
     Ok(ProfileResponse::ProfileUpdated(res))
 }
-
-#[instrument(name = "follow artist", skip(app, user, data),fields(user_id = %user.profile_id.to_string(), artist_id = %data.artist_id))]
-async fn follow_artist_handler(
-    State(app): State<Arc<AppState>>,
-    Artist(user): Artist,
-    AppJson(data): AppJson<ArtistActionReq>,
-) -> Result<ProfileResponse, ApiError> {
-    let res = insert_new_follwing(&app.db_pool, user.profile_id, data.artist_id).await?;
-    Ok(ProfileResponse::FollowedArtist(res))
-}
-
-#[instrument(name = "unfollow artist", skip(app, user, data),fields(user_id = %user.profile_id.to_string(), artist_id = %data.artist_id))]
-async fn unfollow_artist_handler(
-    State(app): State<Arc<AppState>>,
-    Artist(user): Artist,
-    AppJson(data): AppJson<ArtistActionReq>,
-) -> Result<ProfileResponse, ApiError> {
-    let res = delete_follower(&app.db_pool, user.profile_id, data.artist_id).await?;
-    Ok(ProfileResponse::UnfollowedArtist(res))
-}
-
 #[instrument(name = "add to favorite profiles", skip(app, user, data),fields(user_id = %user.profile_id.to_string(), artist_id = %data.artist_id))]
 async fn add_to_favorite_profiles_handler(
     State(app): State<Arc<AppState>>,
@@ -72,8 +48,6 @@ async fn remove_from_favorite_profiles_handler(
 pub fn router() -> Router<Arc<AppState>> {
     Router::new()
         .route("/update", post(update_stage_details_handler))
-        .route("/follow", post(follow_artist_handler))
-        .route("/unfollow", post(unfollow_artist_handler))
         .route("/favorite", post(add_to_favorite_profiles_handler))
         .route("/unfavorite", post(remove_from_favorite_profiles_handler))
     // .route(

@@ -15,7 +15,7 @@ pub async fn insert_new_set(
 ) -> Result<Uuid, ApiError> {
     let set_id = sqlx::query_scalar!(
         "
-        INSERT INTO sets (id, name, statement, description, profile_picture, presence, curator, created_at)
+        INSERT INTO sets (id, name, statement, description, color_theme, presence, curator, created_at)
         VALUES ($1, $2, $3, $4, $5, $6, $7, $8)
         RETURNING id;
         ",
@@ -23,7 +23,7 @@ pub async fn insert_new_set(
         set.name,
         set.statement,
         set.description,
-        set.profile_picture,
+        set.color_theme,
         set.presence,
         set.curator,
         set.created_at
@@ -38,7 +38,7 @@ pub async fn update_set(pool: &PgPool, set: UpdateSetReq, id: Uuid) -> Result<Uu
  sqlx::query_scalar!(
         "
         UPDATE sets
-        SET name = COALESCE($1, name), statement = COALESCE($2, statement), description = COALESCE($3, description), profile_picture = COALESCE($4, profile_picture)
+        SET name = COALESCE($1, name), statement = COALESCE($2, statement), description = COALESCE($3, description), color_theme = COALESCE($4, color_theme)
         WHERE id = $5 RETURNING id;
         ",
         set.name.as_ref().map(|n| n.as_str()),

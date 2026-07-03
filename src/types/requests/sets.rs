@@ -8,7 +8,7 @@ pub struct CreateSetReq {
     pub name: SetName,
     pub description: SetDescription,
     pub statement: Statement,
-    pub profile_picture: String,
+    pub color_theme: String,
 }
 
 #[derive(Deserialize)]

@@ -20,7 +20,7 @@ pub struct Set {
     pub name: String,
     pub statement: String,
     pub description: String,
-    pub profile_picture: String, // remove this
+    pub color_theme: String,
     pub presence: i64,
     pub curator: Uuid,
     pub created_at: DateTime<Utc>,
@@ -44,7 +44,7 @@ impl Resource for Set {
     {
         let set = sqlx::query_as!(
             Set,
-            r#"SELECT id, name, statement, description, profile_picture, presence, curator, created_at FROM sets WHERE id = $1"#,
+            r#"SELECT id, name, statement, description, color_theme, presence, curator, created_at FROM sets WHERE id = $1"#,
             resource_id
         )
         .fetch_optional(db)

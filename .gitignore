@@ -4,3 +4,4 @@ rules.md
 .env
 .sqlx
 .vscode
+.guide.md

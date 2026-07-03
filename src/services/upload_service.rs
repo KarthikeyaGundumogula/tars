@@ -33,7 +33,7 @@ pub async fn upload_work(
                 id: Uuid::new_v4(),
                 artist_id: user,
                 title: data.title.map(|t| t.to_string()),
-                credits: Some(0),
+                stars: Some(0),
                 created_at: Utc::now(),
                 category: WorkCategory::EDIT,
             };
@@ -63,7 +63,7 @@ pub async fn upload_work(
                 id: Uuid::new_v4(),
                 artist_id: user,
                 title: data.title.map(|t| t.to_string()),
-                credits: Some(0),
+                stars: Some(0),
                 created_at: Utc::now(),
                 category: WorkCategory::POSTER,
             };
@@ -91,7 +91,7 @@ pub async fn upload_work(
                 id: Uuid::new_v4(),
                 artist_id: user,
                 title: data.title.map(|t| t.to_string()),
-                credits: Some(0),
+                stars: Some(0),
                 created_at: Utc::now(),
                 category: WorkCategory::SCRIPT,
             };

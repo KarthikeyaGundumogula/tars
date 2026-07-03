@@ -4,15 +4,15 @@ use uuid::Uuid;
 use crate::{
     errors::ApiError,
     types::{
-        db::ledger::{LedgerEntry, LedgerEntryType, WatchlistStatus},
-        requests::ledger::{TagWorkToLedgerEntryReq, UpdateLedgerEntryReq},
+        db::library::{LibraryEntry, LibraryEntryType, WatchlistStatus},
+        requests::library::{TagWorkToLibraryEntryReq, UpdateLibraryEntryReq},
     },
 };
 
-pub async fn insert_new_ledger_entry(pool: &PgPool, data: LedgerEntry) -> Result<Uuid, ApiError> {
+pub async fn insert_new_library_entry(pool: &PgPool, data: LibraryEntry) -> Result<Uuid, ApiError> {
     Ok(sqlx::query_scalar!(
         r#"
-      INSERT INTO ledger (
+      INSERT INTO library (
           original_id,
           profile_id,
           pub_visibility,
@@ -44,7 +44,7 @@ pub async fn insert_new_ledger_entry(pool: &PgPool, data: LedgerEntry) -> Result
         data.pre_thought,
         data.post_impression,
         data.status as Option<WatchlistStatus>,
-        data.entry_type as LedgerEntryType,
+        data.entry_type as LibraryEntryType,
         data.episode_id,
         data.id
     )
@@ -52,14 +52,14 @@ pub async fn insert_new_ledger_entry(pool: &PgPool, data: LedgerEntry) -> Result
     .await?)
 }
 
-pub async fn update_ledger_entry(
+pub async fn update_library_entry(
     pool: &PgPool,
-    data: UpdateLedgerEntryReq,
+    data: UpdateLibraryEntryReq,
     id: Uuid,
 ) -> Result<Uuid, ApiError> {
     Ok(sqlx::query_scalar!(
         r#"
-      UPDATE ledger
+      UPDATE library
       SET
           pre_thought = COALESCE($1, pre_thought),
           post_impression = COALESCE($2, post_impression),
@@ -79,12 +79,12 @@ pub async fn update_ledger_entry(
 
 pub async fn add_new_tagged_work(
     pool: &PgPool,
-    data: TagWorkToLedgerEntryReq,
+    data: TagWorkToLibraryEntryReq,
     entry_id: Uuid,
 ) -> Result<Uuid, ApiError> {
     Ok(sqlx::query_scalar!(
         "
-      Update ledger
+      Update library
       SET tagged_works = array_append(tagged_works, $1)
       WHERE id = $2
       RETURNING id;
@@ -96,10 +96,10 @@ pub async fn add_new_tagged_work(
     .await?)
 }
 
-pub async fn delete_ledger_entry(pool: &PgPool, entry_id: Uuid) -> Result<(), ApiError> {
+pub async fn delete_library_entry(pool: &PgPool, entry_id: Uuid) -> Result<(), ApiError> {
     sqlx::query!(
         "
-      DELETE FROM ledger
+      DELETE FROM library
       WHERE id = $1
       ",
         entry_id

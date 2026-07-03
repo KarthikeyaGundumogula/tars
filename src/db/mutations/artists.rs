@@ -112,44 +112,6 @@ pub async fn update_profile_details(
     .await?)
 }
 
-pub async fn insert_new_follwing(
-    pool: &PgPool,
-    follower: Uuid,
-    following: Uuid,
-) -> Result<bool, ApiError> {
-    Ok(sqlx::query!(
-        r#"
-        INSERT INTO followings (follower_id, following_id,created_at)
-        VALUES ($1, $2,NOW())
-        "#,
-        follower,
-        following
-    )
-    .execute(pool)
-    .await?
-    .rows_affected()
-        == 1)
-}
-
-pub async fn delete_follower(
-    pool: &PgPool,
-    follower: Uuid,
-    following: Uuid,
-) -> Result<bool, ApiError> {
-    Ok(sqlx::query!(
-        r#"
-        DELETE FROM followings
-        WHERE follower_id = $1 AND following_id = $2
-        "#,
-        follower,
-        following
-    )
-    .execute(pool)
-    .await?
-    .rows_affected()
-        == 1)
-}
-
 pub async fn insert_new_favorite(
     pool: &PgPool,
     profile_id: Uuid,

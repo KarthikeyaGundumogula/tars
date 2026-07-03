@@ -44,7 +44,7 @@ pub async fn create_new_set_handler(
         name: data.name.to_string(),
         statement: data.statement.to_string(),
         description: data.description.to_string(),
-        profile_picture: data.profile_picture,
+        color_theme: data.color_theme,
         curator: user.profile_id,
         presence: 0,
         created_at: Utc::now(),

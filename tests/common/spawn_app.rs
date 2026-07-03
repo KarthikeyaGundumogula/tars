@@ -70,9 +70,9 @@ impl TestApp {
             .expect("Failed to execute request.")
     }
 
-    pub async fn post_ledger(&self, body: &serde_json::Value) -> reqwest::Response {
+    pub async fn post_library(&self, body: &serde_json::Value) -> reqwest::Response {
         self.api_client
-            .post(&format!("{}/ledger/new", &self.address))
+            .post(&format!("{}/library/new", &self.address))
             .json(body)
             .send()
             .await

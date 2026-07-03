@@ -1,30 +1,30 @@
 use axum::{Json, http::StatusCode, response::IntoResponse};
 use uuid::Uuid;
 
-/// Ledger-related API responses
+/// Library-related API responses
 #[derive(Debug)]
-pub enum LedgerResponse {
-    LedgerEntryLogged(Uuid),
-    LedgerEntryUpdated(Uuid),
-    WorkTaggedToLedgerEntry(Uuid, Uuid),
-    LedgerEntryDeleted(Uuid),
+pub enum LibraryResponse {
+    LibraryEntryLogged(Uuid),
+    LibraryEntryUpdated(Uuid),
+    WorkTaggedToLibraryEntry(Uuid, Uuid),
+    LibraryEntryDeleted(Uuid),
 }
 
-impl IntoResponse for LedgerResponse {
+impl IntoResponse for LibraryResponse {
     fn into_response(self) -> axum::response::Response {
         match self {
-            Self::LedgerEntryLogged(id) => {
+            Self::LibraryEntryLogged(id) => {
                 (StatusCode::OK, Json(serde_json::json!({"id": id}))).into_response()
             }
-            Self::LedgerEntryUpdated(id) => {
+            Self::LibraryEntryUpdated(id) => {
                 (StatusCode::OK, Json(serde_json::json!({"id": id}))).into_response()
             }
-            Self::WorkTaggedToLedgerEntry(work_id, ledger_entry_id) => (
+            Self::WorkTaggedToLibraryEntry(work_id, library_entry_id) => (
                 StatusCode::OK,
-                Json(serde_json::json!({"work_id": work_id, "ledger_entry_id": ledger_entry_id})),
+                Json(serde_json::json!({"work_id": work_id, "library_entry_id": library_entry_id})),
             )
                 .into_response(),
-            Self::LedgerEntryDeleted(id) => {
+            Self::LibraryEntryDeleted(id) => {
                 (StatusCode::OK, Json(serde_json::json!({"id": id}))).into_response()
             }
         }
