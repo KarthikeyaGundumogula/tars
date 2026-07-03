@@ -3,7 +3,7 @@ use uuid::Uuid;
 
 use crate::{
     errors::ApiError,
-    types::{
+    models::{
         db::library::{LibraryEntry, LibraryEntryType, WatchlistStatus},
         requests::library::{TagWorkToLibraryEntryReq, UpdateLibraryEntryReq},
     },

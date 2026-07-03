@@ -20,7 +20,7 @@ use crate::{
         auth_service::extractor::{Artist, EntityMemberOrAdmin, OwnedResourceOrAdmin, Resource},
         json_extractor::AppJson,
     },
-    types::{
+    models::{
         db::{
             festivals::{Festival, Panelist},
             sets::{Set, SetMember, SetRole},

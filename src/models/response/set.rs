@@ -1,6 +1,6 @@
 use axum::{Json, http::StatusCode, response::IntoResponse};
 use uuid::Uuid;
-use crate::types::db::sets::SetRole;
+use crate::models::db::sets::SetRole;
 
 /// Set-related API responses
 #[derive(Debug)]

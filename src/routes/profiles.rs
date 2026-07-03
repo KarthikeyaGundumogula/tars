@@ -8,7 +8,7 @@ use axum::{
 
 use crate::{
     AppState, db::queries::profile_queries::get_profile_details_by_username, errors::ApiError,
-    types::response::ArtistResponse,
+    models::response::ArtistResponse,
 };
 
 pub fn router() -> Router<Arc<AppState>> {

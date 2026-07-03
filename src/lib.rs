@@ -4,10 +4,10 @@ pub mod configuration;
 pub mod db;
 pub mod domain;
 pub mod errors;
+pub mod models;
 pub mod routes;
 pub mod services;
 pub mod startup;
-pub mod types;
 
 #[derive(Clone)]
 pub struct AppState {

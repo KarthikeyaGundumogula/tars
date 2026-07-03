@@ -3,7 +3,7 @@ use uuid::Uuid;
 
 use crate::{
     domain::LibraryThought,
-    types::db::library::{LibraryEntryType, WatchlistStatus},
+    models::db::library::{LibraryEntryType, WatchlistStatus},
 };
 
 #[derive(Deserialize)]

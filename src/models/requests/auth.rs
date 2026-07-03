@@ -13,8 +13,7 @@ pub struct ProfileSignupReq {
     pub twitter_profile: Option<String>,
     pub instagram_profile: Option<String>,
     pub stage_name: StageName,
-    pub text_color: HexColor,
-    pub background_color: HexColor,
+    pub color_theme: HexColor,
 }
 
 #[derive(Deserialize)]

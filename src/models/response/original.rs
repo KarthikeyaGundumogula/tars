@@ -3,7 +3,7 @@ use chrono::{DateTime, Utc};
 use serde::Serialize;
 use uuid::Uuid;
 
-use crate::types::response::artist::WorkPreview;
+use crate::models::response::artist::WorkPreview;
 
 #[derive(Serialize)]
 pub struct OriginalStage {

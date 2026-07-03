@@ -1,6 +1,6 @@
 mod common;
 use common::{fixtures, setups::setup_edit_upload, spawn_app};
-use tars::types::db::library::{LibraryEntryType, WatchlistStatus};
+use tars::models::db::library::{LibraryEntryType, WatchlistStatus};
 
 #[tokio::test]
 async fn create_library_entry_return_success_on_correct_data() {

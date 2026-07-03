@@ -4,7 +4,7 @@ use argon2::{
 };
 use jsonwebtoken::{DecodingKey, EncodingKey, Header, Validation, decode, encode};
 
-use crate::{errors::ApiError, types::requests::auth::Claims};
+use crate::{errors::ApiError, models::requests::auth::Claims};
 
 pub fn get_password_hash(password: &str) -> Result<String, ApiError> {
     let salt = SaltString::generate(&mut OsRng);

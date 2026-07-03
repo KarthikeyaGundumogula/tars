@@ -9,7 +9,7 @@ use crate::{
         json_extractor::AppJson,
         upload_service::upload_work,
     },
-    types::{
+    models::{
         db::{
             festivals::{Festival, Panelist},
             sets::FestivalMember,

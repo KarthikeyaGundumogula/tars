@@ -1,7 +1,7 @@
 use sqlx::PgPool;
 use uuid::Uuid;
 
-use crate::types::db::admin::Admin;
+use crate::models::db::admin::Admin;
 
 pub async fn insert_new_admin(pool: &PgPool, admin: Admin) -> Result<Uuid, sqlx::Error> {
     Ok(

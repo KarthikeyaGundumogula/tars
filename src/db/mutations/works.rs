@@ -3,7 +3,7 @@ use uuid::Uuid;
 
 use crate::{
     errors::ApiError,
-    types::db::work::{
+    models::db::work::{
         Edit, EditFormat, Poster, PosterFormat, Script, SupportedPlatforms, Work, WorkCategory,
     },
 };

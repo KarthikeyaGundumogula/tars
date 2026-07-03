@@ -3,7 +3,7 @@ use uuid::Uuid;
 
 use crate::{
     errors::ApiError,
-    types::{
+    models::{
         db::{
             original::Original,
             profile::{Role, RoleType},

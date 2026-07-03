@@ -7,6 +7,7 @@ pub mod originals;
 pub mod profiles;
 pub mod sets;
 pub mod works;
+pub mod admin;
 
 use crate::AppState;
 use axum::Router;

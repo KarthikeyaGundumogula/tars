@@ -19,7 +19,7 @@ use crate::{
         auth_service::extractor::{Artist, OwnedResourceOrAdmin},
         json_extractor::AppJson,
     },
-    types::{
+    models::{
         db::library::LibraryEntry,
         requests::library::{LibraryEntryReq, TagWorkToLibraryEntryReq, UpdateLibraryEntryReq},
         response::LibraryResponse,

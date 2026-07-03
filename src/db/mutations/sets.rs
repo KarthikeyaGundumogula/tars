@@ -3,7 +3,7 @@ use uuid::Uuid;
 
 use crate::{
     errors::ApiError,
-    types::{
+    models::{
         db::sets::{Set, SetRole},
         requests::sets::UpdateSetReq,
     },

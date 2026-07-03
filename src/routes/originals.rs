@@ -22,7 +22,7 @@ use crate::{
         json_extractor::AppJson,
         upload_service::upload_work,
     },
-    types::{
+    models::{
         db::{
             original::Original,
             profile::{Role, RoleType},
@@ -56,7 +56,7 @@ pub async fn create_new_original_handler(
             .collect(),
         created_at: Utc::now(),
         parent: None,
-        category: crate::types::db::original::OriginalCategory::MOVIE,
+        category: crate::models::db::original::OriginalCategory::MOVIE,
         duration: None,
     };
     let original_id = insert_new_original(&mut txn, original).await?;

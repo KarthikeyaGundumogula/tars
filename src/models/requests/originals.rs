@@ -4,7 +4,7 @@ use uuid::Uuid;
 
 use crate::{
     domain::{Genre, OriginalDescription, OriginalTitle, Password, Role},
-    types::db::profile::RoleType,
+    models::db::profile::RoleType,
 };
 
 #[derive(Debug, Deserialize)]

@@ -18,7 +18,7 @@ use crate::{
         json_extractor::AppJson,
         upload_service::upload_work,
     },
-    types::{
+    models::{
         db::work::{Work, WorkCategory},
         requests::works::{LikeWork, UpdateWorkReq},
         response::WorkResponse,

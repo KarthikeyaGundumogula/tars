@@ -3,7 +3,7 @@ use uuid::Uuid;
 
 use crate::{
     domain::{ScriptThought, WorkTitle},
-    types::db::work::{EditFormat, PosterFormat, SupportedPlatforms},
+    models::db::work::{EditFormat, PosterFormat, SupportedPlatforms},
 };
 
 #[derive(Deserialize)]

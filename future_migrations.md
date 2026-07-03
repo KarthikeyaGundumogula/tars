@@ -61,8 +61,13 @@
 54. **Add Resonance Density, Surge spread and film certification to the originals table** - ✅
 55. **Drop the profile picture row from the sets table and add the text_color** - ✅
 56. **Update the artists table to add a column for current peak in recommednations & library** - ✅
-57. **Rename original_credits table to work_credits table**
-58. **rename the credits on works table to stars and add saves column to the works table**
-59. **Remove the followings keep only favorites**
-60. **Add indexes** - {Profile - user_name},{posts-artist_id,posts - created_at + id},{Edits,Scripts,Posters - post_id}
-61. **Create a new table Roles **
+57. **Rename original_credits table to work_credits table** - ✅
+58. **rename the credits on works table to stars and add saves column to the works table** - ✅
+59. **Remove the followings keep only favorites** - ✅
+<!-- completed migration 10 -->
+60.  **Create a new table Roles(name, Description),permissions(name, Desscription) and role_permissions** - ✅
+61. **Add a new colum on the profiles for role** - ✅
+62. **Drop tables beta-whitelist** - ✅
+63. **Update the profiles table to support color theme(consits of two colors)  and drop individual columns(text_color,background_color)** - ✅
+64. **Rename the presence to spirit on profiles** - ✅
+65. **Add indexes** - {Profile - user_name},{posts-artist_id,posts - created_at + id},{Edits,Scripts,Posters - post_id}

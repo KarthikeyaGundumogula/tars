@@ -9,11 +9,11 @@ use crate::{
         insert_new_work_credit,
     },
     errors::ApiError,
-    services::json_extractor::AppJson,
-    types::{
+    models::{
         db::work::{Edit, Poster, Script, Work, WorkCategory},
         requests::works::{UploadEditReq, UploadPosterReq, UploadScriptReq},
     },
+    services::json_extractor::AppJson,
 };
 
 pub async fn upload_work(

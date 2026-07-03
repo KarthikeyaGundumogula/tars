@@ -8,7 +8,7 @@ use crate::{
     db::mutations::artists::{delete_favorite, insert_new_favorite, update_profile_details},
     errors::ApiError,
     services::{auth_service::extractor::Artist, json_extractor::AppJson},
-    types::{
+    models::{
         requests::artist::{ArtistActionReq, UpdateProfileReq},
         response::ProfileResponse,
     },
