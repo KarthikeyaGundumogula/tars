@@ -16,10 +16,6 @@ use crate::{
         sets::{delete_set_member, insert_new_set, insert_set_member, update_set},
     },
     errors::ApiError,
-    services::{
-        auth_service::extractor::{Artist, EntityMemberOrAdmin, OwnedResourceOrAdmin, Resource},
-        json_extractor::AppJson,
-    },
     models::{
         db::{
             festivals::{Festival, Panelist},
@@ -31,12 +27,18 @@ use crate::{
         },
         response::{FestivalResponse, SetResponse},
     },
+    services::{
+        auth_service::extractor::{
+            Artist, EntityMemberOrAdmin, OrganizerOrAdmin, OwnedResourceOrAdmin, Resource,
+        },
+        json_extractor::AppJson,
+    },
 };
 
 #[instrument(name = "create_new_set", skip(app, user, data), fields(curator= %user.handle, set_name = %data.name))]
 pub async fn create_new_set_handler(
     State(app): State<Arc<AppState>>,
-    Artist(user): Artist,
+    OrganizerOrAdmin(user): OrganizerOrAdmin,
     AppJson(data): AppJson<CreateSetReq>,
 ) -> Result<SetResponse, ApiError> {
     let set = Set {
@@ -67,7 +69,7 @@ pub async fn create_new_set_handler(
 pub async fn create_new_festival_handler(
     State(state): State<Arc<AppState>>,
     axum::extract::Path(resource_id): axum::extract::Path<Uuid>,
-    Artist(user): Artist,
+    OrganizerOrAdmin(user): OrganizerOrAdmin,
     AppJson(data): AppJson<CreateFestivalReq>,
 ) -> Result<FestivalResponse, ApiError> {
     let (owner_id, _) = Set::fetch_by_id(&state.db_pool, resource_id)

@@ -16,6 +16,7 @@ pub struct LibraryEntryReq {
     pub status: WatchlistStatus,
     pub entry_type: LibraryEntryType,
     pub episode_id: Option<Uuid>,
+    pub surge_score:Option<i64>
 }
 
 #[derive(Deserialize)]
@@ -23,6 +24,7 @@ pub struct UpdateLibraryEntryReq {
     pub pre_thought: Option<LibraryThought>,
     pub post_impression: Option<LibraryThought>,
     pub status: Option<WatchlistStatus>,
+    pub surge_score: Option<i64>,
 }
 
 #[derive(Deserialize)]

@@ -69,6 +69,23 @@ impl FromRequestParts<Arc<AppState>> for Artist {
     }
 }
 
+pub struct OrganizerOrAdmin(pub AuthUser);
+
+impl FromRequestParts<Arc<AppState>> for OrganizerOrAdmin {
+    type Rejection = ApiError;
+
+    async fn from_request_parts(
+        parts: &mut Parts,
+        state: &Arc<AppState>,
+    ) -> Result<Self, Self::Rejection> {
+        let auth_user = AuthUser::from_request_parts(parts, state).await?;
+        if auth_user.role != "organizer" && auth_user.role != "admin" {
+            return Err(ApiError::Unauthorized("Not an organizer or admin".into()));
+        }
+        Ok(OrganizerOrAdmin(auth_user))
+    }
+}
+
 pub struct OwnedResourceOrAdmin<T: Resource> {
     pub user_id: Uuid,
     pub resource_id: Uuid,

@@ -48,7 +48,7 @@ pub async fn insert_new_original(
     .await?)
 }
 
-pub async fn insert_new_role(
+pub async fn insert_cast_and_crew_role(
     txn: &mut sqlx::Transaction<'_, sqlx::Postgres>,
     data: Role,
 ) -> Result<String, ApiError> {

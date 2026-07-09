@@ -11,18 +11,9 @@ use tracing::instrument;
 use uuid::Uuid;
 
 use crate::{
-    AppState,
-    db::mutations::originals::{
-        add_new_role_if_not_exists, delete_original, delete_role, insert_new_original,
-        insert_new_role, update_original,
-    },
-    errors::ApiError,
-    services::{
-        auth_service::{extractor::AdminUser, password::get_password_hash},
-        json_extractor::AppJson,
-        upload_service::upload_work,
-    },
-    models::{
+    AppState, db::mutations::originals::{
+        add_new_role_if_not_exists, delete_original, delete_role, insert_cast_and_crew_role, insert_new_original, update_original,
+    }, errors::ApiError, models::{
         db::{
             original::Original,
             profile::{Role, RoleType},
@@ -30,6 +21,10 @@ use crate::{
         },
         requests::originals::{AddNewRoleReq, CreateOriginalReq, RemoveRoleReq, UpdateOrignalReq},
         response::OriginalResponse,
+    }, services::{
+        auth_service::{extractor::AdminUser, password::get_password_hash},
+        json_extractor::AppJson,
+        upload_service::upload_work,
     },
 };
 #[instrument(name = "create_new_original", skip(app, data), err, fields(title = %data.title))]
@@ -68,7 +63,7 @@ pub async fn create_new_original_handler(
             role_name: star.role.to_string(),
             created_at: Utc::now(),
         };
-        insert_new_role(&mut txn, role).await?;
+        insert_cast_and_crew_role(&mut txn, role).await?;
     }
     for maker in data.makers.iter() {
         let role = Role {
@@ -78,7 +73,7 @@ pub async fn create_new_original_handler(
             role_name: maker.role.to_string(),
             created_at: Utc::now(),
         };
-        insert_new_role(&mut txn, role).await?;
+        insert_cast_and_crew_role(&mut txn, role).await?;
     }
     txn.commit().await?;
     tracing::info!("Original created successfully: {}", original_id);

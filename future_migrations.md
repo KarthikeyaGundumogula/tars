@@ -70,4 +70,10 @@
 62. **Drop tables beta-whitelist** - ✅
 63. **Update the profiles table to support color theme(consits of two colors)  and drop individual columns(text_color,background_color)** - ✅
 64. **Rename the presence to spirit on profiles** - ✅
-65. **Add indexes** - {Profile - user_name},{posts-artist_id,posts - created_at + id},{Edits,Scripts,Posters - post_id}
+    <!-- Completed migration 11 -->
+65. **Create a new table for pins(artist, work_id)**
+66. **Create a new table for quoted pins (artist,work_id,quoted line)**
+67. **Create a new table for lines on the wall (artist,line)**
+68. **Add Not null to the role_name in the profiles table and defualt it to the name "user"**
+69. **For implmenting the spread we need to use the welford algorith we need new table for film surge scores with storing avg and number of values**
+70. **Add indexes** - {Profile - user_name},{posts-artist_id,posts - created_at + id},{Edits,Scripts,Posters - post_id}

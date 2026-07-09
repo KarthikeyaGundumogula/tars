@@ -42,6 +42,7 @@ pub async fn new_library_entry_handler(
         pre_thought: data.pre_thought.map(|t| t.to_string()),
         post_impression: data.post_impression.map(|t| t.to_string()),
         status: Some(data.status),
+        surge_score:data.surge_score.unwrap_or(0),
         entry_type: data.entry_type,
         created_at: Some(Utc::now()),
         updated_at: Some(Utc::now()),

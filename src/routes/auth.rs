@@ -94,7 +94,12 @@ pub async fn login_profile(
         (Some(profile), true) => profile,
         _ => return Err(ApiError::Unauthorized("Invalid credentials".to_string())),
     };
-    let token = create_jwt(&user.user_name, "artist", &app.jwt_secret, user.id)?;
+    let token = create_jwt(
+        &user.user_name,
+        &user.role_name.unwrap_or("artist".to_string()),
+        &app.jwt_secret,
+        user.id,
+    )?;
     let cookie = Cookie::build(("auth_token", token))
         .http_only(true)
         .same_site(SameSite::Lax)
@@ -138,6 +143,7 @@ pub async fn admin_login_handler(
     AppJson(data): AppJson<AdminAuthRequest>,
 ) -> Result<AdminResponse, ApiError> {
     let password = data.admin_password;
+    // we have to get the role of the user here, this role should go to the jwt claim
     let admin = get_admin_auth_details(&app.db_pool, data.admin_name.as_ref()).await?;
     let fallback_hash = get_password_hash("invalid-login-placeholder")?;
     let password_hash = match &admin {
@@ -146,7 +152,10 @@ pub async fn admin_login_handler(
     };
     let valid_password = verify_password(password.as_ref(), password_hash)?;
     let user = match (admin, valid_password) {
-        (Some(admin), true) => admin,
+        (Some(admin), true) => {
+            tracing::info!("Admin login successful for admin: {}", admin.admin_name);
+            admin
+        }
         _ => return Err(ApiError::Unauthorized("Invalid credentials".to_string())),
     };
     let token = create_jwt(&user.admin_name, "admin", &app.jwt_secret, user.admin_id)?;

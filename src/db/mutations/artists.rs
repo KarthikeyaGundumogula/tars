@@ -116,6 +116,26 @@ pub async fn update_profile_details(
     .await?)
 }
 
+pub async fn update_profile_role(
+    pool: &PgPool,
+    new_role: String,
+    profile_id: Uuid,
+) -> Result<bool, ApiError> {
+    Ok(sqlx::query!(
+        r#"
+            UPDATE profiles
+            SET role_name = $1
+            WHERE id = $2
+            "#,
+        new_role,
+        profile_id
+    )
+    .execute(pool)
+    .await?
+    .rows_affected()
+        == 1)
+}
+
 pub async fn insert_new_favorite(
     pool: &PgPool,
     profile_id: Uuid,
