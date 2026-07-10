@@ -16,7 +16,7 @@ pub struct LibraryEntryReq {
     pub status: WatchlistStatus,
     pub entry_type: LibraryEntryType,
     pub episode_id: Option<Uuid>,
-    pub surge_score:Option<i64>
+    pub surge_score:Option<i64>,
 }
 
 #[derive(Deserialize)]
@@ -25,6 +25,19 @@ pub struct UpdateLibraryEntryReq {
     pub post_impression: Option<LibraryThought>,
     pub status: Option<WatchlistStatus>,
     pub surge_score: Option<i64>,
+}
+
+#[derive(Deserialize)]
+pub struct NewRecommendationReq {
+    pub lines: String,
+    pub original_id: Uuid,
+    pub score: i64,
+}
+
+#[derive(Deserialize)]
+pub struct UpdateRecommendationReq {
+    pub lines: Option<String>,
+    pub score: Option<i64>
 }
 
 #[derive(Deserialize)]

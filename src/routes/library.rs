@@ -1,7 +1,7 @@
 use std::sync::Arc;
 
 use axum::{
-    Router,
+    Json, Router,
     extract::State,
     routing::{delete, post},
 };
@@ -10,19 +10,18 @@ use tracing::instrument;
 use uuid::Uuid;
 
 use crate::{
-    AppState,
-    db::mutations::library::{
-        add_new_tagged_work, delete_library_entry, insert_new_library_entry, update_library_entry,
-    },
-    errors::ApiError,
-    services::{
+    AppState, db::mutations::library::{
+        add_new_tagged_work, delete_library_entry, insert_new_library_entry, insert_new_recommendation, update_library_entry, update_recommendation,
+    }, errors::ApiError, models::{
+        db::library::{LibraryEntry, Recommendation},
+        requests::library::{
+            LibraryEntryReq, NewRecommendationReq, TagWorkToLibraryEntryReq, UpdateLibraryEntryReq,
+            UpdateRecommendationReq,
+        },
+        response::LibraryResponse,
+    }, services::{
         auth_service::extractor::{Artist, OwnedResourceOrAdmin},
         json_extractor::AppJson,
-    },
-    models::{
-        db::library::LibraryEntry,
-        requests::library::{LibraryEntryReq, TagWorkToLibraryEntryReq, UpdateLibraryEntryReq},
-        response::LibraryResponse,
     },
 };
 
@@ -41,11 +40,11 @@ pub async fn new_library_entry_handler(
         tagged_works: data.tagged_works,
         pre_thought: data.pre_thought.map(|t| t.to_string()),
         post_impression: data.post_impression.map(|t| t.to_string()),
-        status: Some(data.status),
-        surge_score:data.surge_score.unwrap_or(0),
+        status: data.status,
+        surge_score: data.surge_score.unwrap_or(0),
         entry_type: data.entry_type,
-        created_at: Some(Utc::now()),
-        updated_at: Some(Utc::now()),
+        created_at: Utc::now(),
+        updated_at: Utc::now(),
     };
     let entry = insert_new_library_entry(&state.db_pool, entry).await?;
     Ok(LibraryResponse::LibraryEntryLogged(entry))
@@ -80,10 +79,49 @@ async fn delete_library_entry_handler(
     Ok(LibraryResponse::LibraryEntryDeleted(resource_id))
 }
 
+#[instrument(name = "new recommendation",skip(app,data),fields(artist_id=%user.profile_id))]
+async fn create_new_recommendation_handler(
+    State(app): State<Arc<AppState>>,
+    Artist(user): Artist,
+    Json(data): Json<NewRecommendationReq>,
+) -> Result<LibraryResponse, ApiError> {
+    let recommendation = Recommendation {
+        id: Uuid::new_v4(),
+        original_id: data.original_id,
+        artist_id: user.profile_id,
+        notes: Some(data.lines),
+        created_at: Utc::now(),
+        updated_at: Utc::now(),
+        surge_score: data.score,
+        boost_number: 0,
+        saves: 0,
+    };
+    let res = insert_new_recommendation(&app.db_pool, recommendation).await?;
+    Ok(LibraryResponse::NewRecommendationCreated(res))
+}
+
+#[instrument(name = "update Recommendation", skip(app, data),fields(recommendation=%resource_id))]
+async fn update_recommedation_handler(
+    State(app): State<Arc<AppState>>,
+    OwnedResourceOrAdmin { resource_id,user_id, .. }: OwnedResourceOrAdmin<Recommendation>,
+    Json(data): Json<UpdateRecommendationReq>,
+) -> Result<LibraryResponse, ApiError> {
+    let res = update_recommendation(&app.db_pool, data, resource_id, user_id).await?;
+    Ok(LibraryResponse::RecommendationUpdated(res))
+}
+
 pub fn router() -> Router<Arc<AppState>> {
     Router::new()
         .route("/new", post(new_library_entry_handler))
         .route("/{resource_id}/update", post(update_library_entry_handler))
+        .route(
+            "/recommendations/new",
+            post(create_new_recommendation_handler),
+        )
+        .route(
+            "/recommendations/{resource_id}/update",
+            post(update_recommedation_handler),
+        )
         .route("/{resource_id}/tag_work", post(tag_work_handler))
         .route(
             "/{resource_id}/delete",

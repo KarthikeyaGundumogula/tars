@@ -71,9 +71,13 @@
 63. **Update the profiles table to support color theme(consits of two colors)  and drop individual columns(text_color,background_color)** - ✅
 64. **Rename the presence to spirit on profiles** - ✅
     <!-- Completed migration 11 -->
-65. **Create a new table for pins(artist, work_id)**
-66. **Create a new table for quoted pins (artist,work_id,quoted line)**
-67. **Create a new table for lines on the wall (artist,line)**
-68. **Add Not null to the role_name in the profiles table and defualt it to the name "user"**
-69. **For implmenting the spread we need to use the welford algorith we need new table for film surge scores with storing avg and number of values**
-70. **Add indexes** - {Profile - user_name},{posts-artist_id,posts - created_at + id},{Edits,Scripts,Posters - post_id}
+65. **Create a new junction table for pins(artist, work_id)** - ✅
+66. **Create a new junction table for quoted pins (artist,work_id,quoted line)** - ✅
+67. **Create a new table for wall posts (artist,work_id,line)** - ✅
+68. **Add Not null to the role_name in the profiles table** - ✅
+69. **For implmenting the spread we need to use the welford algorith we need new columns in the originals table for film surge scores with storing avg and number of values and the m2** - ✅
+70. **Rename the work_likes to the work_stars** - ✅
+    <!-- --- completed migration 11 -->
+71. **Create a junction table for work saves (artist, work_id)** 
+72. **Add not null constraint to the created at on wall_posts table**
+73. **Add indexes** - {Profile - user_name},{posts-artist_id,posts - created_at + id},{Edits,Scripts,Posters - post_id}

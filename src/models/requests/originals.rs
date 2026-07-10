@@ -3,8 +3,7 @@ use serde::Deserialize;
 use uuid::Uuid;
 
 use crate::{
-    domain::{Genre, OriginalDescription, OriginalTitle, Password, Role},
-    models::db::profile::RoleType,
+    domain::{Genre, OriginalDescription, OriginalTitle, Password, Role}, models::db::{original::OriginalCategory, profile::RoleType},
 };
 
 #[derive(Debug, Deserialize)]
@@ -20,6 +19,9 @@ pub struct CreateOriginalReq {
     pub cover_img: String,
     pub password: Password,
     pub associated_with: Uuid,
+    pub category: OriginalCategory,
+    pub duration:Option<String>,
+    pub certification: Option<String>,
     pub release_date: Option<DateTime<Utc>>,
     pub genres: Vec<Genre>,
     pub stars: Vec<Crew>,
@@ -32,6 +34,7 @@ pub struct UpdateOrignalReq {
     pub description: Option<OriginalDescription>,
     pub cover_image: Option<String>,
     pub release_date: Option<DateTime<Utc>>,
+    pub duration:Option<String>,
 }
 
 #[derive(Debug, Deserialize)]

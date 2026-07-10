@@ -53,6 +53,12 @@ pub async fn create_new_original_handler(
         parent: None,
         category: crate::models::db::original::OriginalCategory::MOVIE,
         duration: None,
+        mean_surge: 0,
+        surge_spread: 0,
+        film_certification: "NA".to_string(),
+        number_of_surges: None,
+        surge_m2: None,
+        updated_at: Utc::now(),
     };
     let original_id = insert_new_original(&mut txn, original).await?;
     for star in data.stars.iter() {

@@ -59,8 +59,8 @@ pub async fn sign_up_artist_handler(
         password_hash,
         color_theme: data.color_theme.to_string(),
         role_name: None,
-        current_peak_recommendations: 0,
-        current_peak_library: 0,
+        current_peak_recommendations: 1000,
+        current_peak_library: 1000,
         created_at: Utc::now(),
     };
     let profile = insert_new_profile(&app.db_pool, artist).await?;

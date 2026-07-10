@@ -35,6 +35,12 @@ pub struct UploadScriptReq {
 }
 
 #[derive(Deserialize)]
+pub struct NewWallPostReq {
+    pub text_line:Option<String>,
+    pub work_id:Option<Uuid>
+}
+
+#[derive(Deserialize)]
 pub struct UpdateWorkReq {
     pub title: WorkTitle,
 }

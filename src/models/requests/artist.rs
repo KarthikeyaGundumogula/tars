@@ -15,6 +15,6 @@ pub struct UpdateProfileReq {
 }
 
 #[derive(Deserialize)]
-pub struct ArtistActionReq {
+pub struct FavoriteActionReq {
     pub artist_id: Uuid,
 }

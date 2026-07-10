@@ -88,6 +88,15 @@ pub struct Script {
     pub thoughts: Vec<String>,
 }
 
+#[derive(sqlx::FromRow, Serialize, Debug)]
+pub struct WallPost {
+    pub id:Uuid,
+    pub artist_id:Uuid,
+    pub work_id: Option<Uuid>,
+    pub text_line: Option<String>,
+    pub created_at:Option<DateTime<Utc>>
+}
+
 impl Resource for Work {
     async fn fetch_by_id(
         db: &sqlx::PgPool,

@@ -31,11 +31,24 @@ pub struct LibraryEntry {
     pub tagged_works: Option<Vec<Uuid>>,
     pub pre_thought: Option<String>,
     pub post_impression: Option<String>,
-    pub status: Option<WatchlistStatus>, // it should not be null
+    pub status: WatchlistStatus,
     pub entry_type: LibraryEntryType,
-    pub created_at: Option<DateTime<Utc>>, // it should not be null
-    pub updated_at: Option<DateTime<Utc>>, // it should not be null
-    pub surge_score:i64,
+    pub created_at: DateTime<Utc>,
+    pub updated_at: DateTime<Utc>,
+    pub surge_score: i64,
+}
+
+#[derive(Deserialize,sqlx::FromRow)]
+pub struct Recommendation{
+    pub id:Uuid,
+    pub original_id:Uuid,
+    pub artist_id:Uuid,
+    pub notes:Option<String>,
+    pub created_at:DateTime<Utc>,
+    pub updated_at:DateTime<Utc>,
+    pub surge_score: i64,
+    pub boost_number:i64,
+    pub saves:i64
 }
 
 impl Resource for LibraryEntry {
@@ -48,11 +61,45 @@ impl Resource for LibraryEntry {
     {
         let library_entry = sqlx::query_as!(
             LibraryEntry,
-            r#"SELECT id, original_id, episode_id, profile_id, pub_visibility, tagged_works, pre_thought, post_impression, status as "status:WatchlistStatus", entry_type as "entry_type:LibraryEntryType", created_at, updated_at,surge_score FROM library WHERE id = $1"#,
+            r#"
+            SELECT id,
+            original_id,
+            episode_id,
+            profile_id,
+            pub_visibility,
+            tagged_works,
+            pre_thought,
+            post_impression,
+            status as "status:WatchlistStatus",
+            entry_type as "entry_type:LibraryEntryType",
+            created_at,
+            updated_at,
+            surge_score
+            FROM library
+            WHERE id = $1 "#,
             resource_id
         )
         .fetch_optional(db)
         .await?.ok_or(crate::errors::ApiError::NotFound)?;
         Ok(Some((library_entry.profile_id, library_entry)))
+    }
+}
+
+impl Resource for Recommendation {
+    async fn fetch_by_id(
+        db: &sqlx::PgPool,
+        resource_id: Uuid,
+    ) -> Result<Option<(Uuid, Self)>, ApiError>
+    where
+        Self: Send
+    {
+        let recommendation = sqlx::query_as!(
+            Recommendation,
+            r#"SELECT id, original_id, artist_id, notes, created_at, updated_at, surge_score, boost_number, saves FROM recommendations WHERE id = $1"#,
+            resource_id
+        )
+        .fetch_optional(db)
+        .await?.ok_or(crate::errors::ApiError::NotFound)?;
+        Ok(Some((recommendation.artist_id, recommendation)))
     }
 }

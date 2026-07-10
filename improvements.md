@@ -3,3 +3,4 @@
 3. **Add profile tagging**
 4. **Add ability to update the works (Edit platform, number of pages in the script etc.)** - ✅
 5. **Right now the permissions are not used sicne we only have two gate keeping actions infuture this may be use full so in that case use the in memory approach to cache at the startup of the application the availbele roles and permissions to optimize for performance**
+6. **Allow logging of individual episodes**

@@ -5,7 +5,9 @@ use uuid::Uuid;
 #[derive(Debug)]
 pub enum LibraryResponse {
     LibraryEntryLogged(Uuid),
+    NewRecommendationCreated(Uuid),
     LibraryEntryUpdated(Uuid),
+    RecommendationUpdated(Uuid),
     WorkTaggedToLibraryEntry(Uuid, Uuid),
     LibraryEntryDeleted(Uuid),
 }
@@ -25,6 +27,12 @@ impl IntoResponse for LibraryResponse {
             )
                 .into_response(),
             Self::LibraryEntryDeleted(id) => {
+                (StatusCode::OK, Json(serde_json::json!({"id": id}))).into_response()
+            }
+            Self::NewRecommendationCreated(id) => {
+                (StatusCode::OK, Json(serde_json::json!({"id": id}))).into_response()
+            }
+            Self::RecommendationUpdated(id) => {
                 (StatusCode::OK, Json(serde_json::json!({"id": id}))).into_response()
             }
         }

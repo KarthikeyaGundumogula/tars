@@ -4,7 +4,8 @@ use uuid::Uuid;
 use crate::{
     errors::ApiError,
     models::db::work::{
-        Edit, EditFormat, Poster, PosterFormat, Script, SupportedPlatforms, Work, WorkCategory,
+        Edit, EditFormat, Poster, PosterFormat, Script, SupportedPlatforms, WallPost, Work,
+        WorkCategory,
     },
 };
 
@@ -50,7 +51,7 @@ pub async fn insert_work_like(
 ) -> Result<bool, ApiError> {
     Ok(sqlx::query!(
         r#"
-            INSERT INTO work_likes (work_id,profile_id,created_at) VALUES ($1,$2,NOW()) ON CONFLICT(work_id,profile_id) DO NOTHING;
+            INSERT INTO work_stars (work_id,profile_id,created_at) VALUES ($1,$2,NOW()) ON CONFLICT(work_id,profile_id) DO NOTHING;
             "#,
         work_id,
         profile_id
@@ -68,7 +69,7 @@ pub async fn delete_work_like(
 ) -> Result<bool, ApiError> {
     Ok(sqlx::query!(
         r#"
-            DELETE FROM work_likes WHERE work_id = $1 AND profile_id = $2;
+            DELETE FROM work_stars WHERE work_id = $1 AND profile_id = $2;
             "#,
         work_id,
         profile_id
@@ -77,6 +78,51 @@ pub async fn delete_work_like(
     .await?
     .rows_affected()
         == 1)
+}
+
+pub async fn insert_wall_post(pool: &PgPool, data: WallPost) -> Result<WallPost, ApiError> {
+    let mut tx = pool.begin().await?;
+    let wall_post = sqlx::query_as!(
+        WallPost,
+        r#"
+        INSERT INTO wall_posts (id,work_id, artist_id,text_line, created_at) VALUES ($1, $2, $3, $4,$5) RETURNING *;
+        "#,
+        data.id,
+        data.work_id,
+        data.artist_id,
+        data.text_line,
+        data.created_at
+    )
+    .fetch_one(&mut *tx)
+    .await?;
+    if let Some(work_id) = data.work_id {
+        match data.text_line {
+            Some(_) => {
+                sqlx::query!(
+                    "
+            INSERT INTO work_quotes (work_id, wall_post_id)
+            VALUES ($1, $2)",
+                    work_id,
+                    data.id
+                )
+                .execute(&mut *tx)
+                .await?;
+            }
+            None => {
+                sqlx::query!(
+                    "
+            INSERT INTO work_pins (work_id, wall_post_id)
+            VALUES ($1, $2)",
+                    work_id,
+                    data.id
+                )
+                .execute(&mut *tx)
+                .await?;
+            }
+        }
+    }
+    tx.commit().await?;
+    Ok(wall_post)
 }
 
 pub async fn delete_work(pool: &PgPool, work_id: Uuid) -> Result<bool, ApiError> {

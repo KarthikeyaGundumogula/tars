@@ -29,6 +29,7 @@ pub enum WorkResponse {
     WorkCreated(Uuid),
     WorkUpdated(Uuid),
     WorkDeleted(Uuid),
+    NewWallPostCreated(Uuid),
     AddedWorkLike(bool),
     RemovedWorkLike(bool),
 }
@@ -43,6 +44,9 @@ impl IntoResponse for WorkResponse {
                 (StatusCode::OK, Json(serde_json::json!({"id": id}))).into_response()
             }
             Self::WorkDeleted(id) => {
+                (StatusCode::OK, Json(serde_json::json!({"id": id}))).into_response()
+            }
+            Self::NewWallPostCreated(id) => {
                 (StatusCode::OK, Json(serde_json::json!({"id": id}))).into_response()
             }
             Self::AddedWorkLike(status) => (
