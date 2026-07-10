@@ -8,7 +8,12 @@ async fn register_profile_return_201_on_correct_data() {
     let body = fixtures::register_body("kapten", "kApten@1023");
     let response = app.post_register(&body).await;
 
-    assert_eq!(response.status(), reqwest::StatusCode::CREATED);
+    let status = response.status();
+    if !status.is_success() {
+        let text = response.text().await.unwrap();
+        panic!("API Error 500 on register: {}", text);
+    }
+    assert_eq!(status, reqwest::StatusCode::CREATED);
 
     let saved = sqlx::query_scalar!(
         r#"SELECT youtube_profile FROM profiles WHERE user_name=$1"#,
@@ -95,12 +100,12 @@ async fn reset_password_returns_401_for_wrong_old_password() {
     // Old password is wrong
     let response = app
         .post_reset_password(&fixtures::reset_password_body(
-            "wrongpassword",
+            "WrongPass123",
             "NewPass@2024",
         ))
         .await;
 
-    assert_eq!(response.status().as_u16(), 422);
+    assert_eq!(response.status().as_u16(), 401);
 }
 
 #[tokio::test]

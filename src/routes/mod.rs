@@ -1,3 +1,4 @@
+pub mod admin;
 pub mod artists;
 pub mod auth;
 pub mod festivals;
@@ -7,7 +8,6 @@ pub mod originals;
 pub mod profiles;
 pub mod sets;
 pub mod works;
-pub mod admin;
 
 use crate::AppState;
 use axum::Router;
@@ -27,4 +27,5 @@ pub fn build_router() -> Router<Arc<AppState>> {
         .nest("/library", library::router())
         .nest("/artists", artists::router())
         .nest("/profiles", profiles::router())
+        .nest("/admin", admin::router())
 }

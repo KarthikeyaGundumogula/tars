@@ -41,11 +41,11 @@ pub async fn setup_edit_upload() -> (Vec<Uuid>, TestApp, Uuid) {
     login_as_admin(&app).await;
     let body = fixtures::create_original_body(&artists);
     let response = app.post_original(&body).await;
-    assert!(
-        response.status().is_success(),
-        "Failed to create original: status {}",
-        response.status()
-    );
+    let status = response.status();
+    if !status.is_success() {
+        let text = response.text().await.unwrap();
+        panic!("Failed to create original: status {} body: {}", status, text);
+    }
 
     let original_id = sqlx::query_scalar!(
         r#"SELECT id FROM originals WHERE title=$1"#,
@@ -61,6 +61,17 @@ pub async fn setup_edit_upload() -> (Vec<Uuid>, TestApp, Uuid) {
 /// Registers 4 artists, logs in as user_0, creates a Set, and returns all IDs + the TestApp.
 pub async fn setup_set_creation() -> (Vec<Uuid>, TestApp, Uuid) {
     let (artists, app) = setup_original_registration().await;
+
+    // Make user_0 an organizer so they can create sets
+    login_as_admin(&app).await;
+    app.post_create_role(&serde_json::json!({
+        "name": "organizer",
+        "description": "Can organize sets"
+    })).await;
+    app.post_update_profile_role(&serde_json::json!({
+        "profile_id": artists[0],
+        "new_role": "organizer"
+    })).await;
 
     app.post_login(&fixtures::login_body("user_0", "kApten@1023"))
         .await;
@@ -149,4 +160,48 @@ pub async fn login_as_admin(app: &TestApp) {
         "Failed to login admin: status {}",
         res.status()
     );
+}
+
+/// Registers a user with organizer role and returns their ID + the running TestApp.
+/// This is used for testing organizer-specific functionality like set/festival creation.
+pub async fn setup_organizer_user() -> (Uuid, TestApp) {
+    let app = spawn_app::spawn().await;
+
+    // Register as organizer
+    let handle = "organizer_user";
+    let body = fixtures::register_body(handle, "kApten@1023");
+    let response = app.post_register(&body).await;
+    assert!(
+        response.status().is_success(),
+        "Failed to register organizer: status {}",
+        response.status()
+    );
+
+    let profile_id = sqlx::query_scalar!(r#"SELECT id FROM profiles WHERE user_name=$1"#, handle)
+        .fetch_one(&app.state.db_pool)
+        .await
+        .expect("db query failed");
+
+    // Update the user's role to organizer via admin
+    login_as_admin(&app).await;
+    app.post_create_role(&serde_json::json!({
+        "name": "organizer",
+        "description": "Can organize sets and festivals"
+    })).await;
+    let role_body = serde_json::json!({
+        "profile_id": profile_id,
+        "new_role": "organizer"
+    });
+    let response = app.post_update_profile_role(&role_body).await;
+    assert!(
+        response.status().is_success(),
+        "Failed to update user role to organizer: status {}",
+        response.status()
+    );
+
+    // Login as the organizer user
+    app.post_login(&fixtures::login_body(handle, "kApten@1023"))
+        .await;
+
+    (profile_id, app)
 }

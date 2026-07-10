@@ -345,6 +345,135 @@ impl TestApp {
             .await
             .expect("Failed to execute request.")
     }
+
+    // -----------------------------------------------------------------------
+    // Recommendations
+    // -----------------------------------------------------------------------
+
+    pub async fn post_recommendation(&self, body: &serde_json::Value) -> reqwest::Response {
+        self.api_client
+            .post(&format!("{}/library/recommendations/new", &self.address))
+            .json(body)
+            .send()
+            .await
+            .expect("Failed to execute request.")
+    }
+
+    pub async fn post_update_recommendation(
+        &self,
+        recommendation_id: uuid::Uuid,
+        body: &serde_json::Value,
+    ) -> reqwest::Response {
+        self.api_client
+            .post(&format!(
+                "{}/library/recommendations/{}/update",
+                &self.address, recommendation_id
+            ))
+            .json(body)
+            .send()
+            .await
+            .expect("Failed to execute request.")
+    }
+
+    // -----------------------------------------------------------------------
+    // Wall Posts
+    // -----------------------------------------------------------------------
+
+    pub async fn post_wall_post(&self, body: &serde_json::Value) -> reqwest::Response {
+        self.api_client
+            .post(&format!("{}/works/new/wall_post", &self.address))
+            .json(body)
+            .send()
+            .await
+            .expect("Failed to execute request.")
+    }
+
+    // -----------------------------------------------------------------------
+    // Library Operations
+    // -----------------------------------------------------------------------
+
+    pub async fn post_update_library_entry(
+        &self,
+        entry_id: uuid::Uuid,
+        body: &serde_json::Value,
+    ) -> reqwest::Response {
+        self.api_client
+            .post(&format!("{}/library/{}/update", &self.address, entry_id))
+            .json(body)
+            .send()
+            .await
+            .expect("Failed to execute request.")
+    }
+
+    pub async fn post_tag_work_to_library(
+        &self,
+        entry_id: uuid::Uuid,
+        body: &serde_json::Value,
+    ) -> reqwest::Response {
+        self.api_client
+            .post(&format!("{}/library/{}/tag_work", &self.address, entry_id))
+            .json(body)
+            .send()
+            .await
+            .expect("Failed to execute request.")
+    }
+
+    pub async fn delete_library_entry(&self, entry_id: uuid::Uuid) -> reqwest::Response {
+        self.api_client
+            .delete(&format!("{}/library/{}/delete", &self.address, entry_id))
+            .send()
+            .await
+            .expect("Failed to execute request.")
+    }
+
+    // -----------------------------------------------------------------------
+    // Admin Role Management
+    // -----------------------------------------------------------------------
+
+    pub async fn post_create_role(&self, body: &serde_json::Value) -> reqwest::Response {
+        self.api_client
+            .post(&format!("{}/admin/new_role", &self.address))
+            .json(body)
+            .send()
+            .await
+            .expect("Failed to execute request.")
+    }
+
+    pub async fn post_create_permission(&self, body: &serde_json::Value) -> reqwest::Response {
+        self.api_client
+            .post(&format!("{}/admin/new_permission", &self.address))
+            .json(body)
+            .send()
+            .await
+            .expect("Failed to execute request.")
+    }
+
+    pub async fn post_assign_permission(&self, body: &serde_json::Value) -> reqwest::Response {
+        self.api_client
+            .post(&format!("{}/admin/assign_permission", &self.address))
+            .json(body)
+            .send()
+            .await
+            .expect("Failed to execute request.")
+    }
+
+    pub async fn post_revoke_permission(&self, body: &serde_json::Value) -> reqwest::Response {
+        self.api_client
+            .post(&format!("{}/admin/revoke_permission", &self.address))
+            .json(body)
+            .send()
+            .await
+            .expect("Failed to execute request.")
+    }
+
+    pub async fn post_update_profile_role(&self, body: &serde_json::Value) -> reqwest::Response {
+        self.api_client
+            .post(&format!("{}/admin/update_user_role", &self.address))
+            .json(body)
+            .send()
+            .await
+            .expect("Failed to execute request.")
+    }
 }
 
 pub async fn spawn() -> TestApp {

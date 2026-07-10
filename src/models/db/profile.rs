@@ -34,7 +34,7 @@ pub struct Profile {
     pub password_hash: String,
     pub profile_type: ProfileType,
     pub color_theme: String,
-    pub role_name: Option<String>,
+    pub role_name: String,
     pub current_peak_recommendations: i64,
     pub current_peak_library: i64,
     pub created_at: DateTime<Utc>,

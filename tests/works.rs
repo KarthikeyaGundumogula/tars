@@ -88,7 +88,7 @@ async fn like_work_returns_200_for_logged_in_artist() {
         response.status()
     );
 
-    let count: i64 = sqlx::query_scalar(r#"SELECT COUNT(*) FROM work_likes WHERE work_id=$1"#)
+    let count: i64 = sqlx::query_scalar(r#"SELECT COUNT(*) FROM work_stars WHERE work_id=$1"#)
         .bind(work_id)
         .fetch_one(&app.state.db_pool)
         .await
@@ -130,7 +130,7 @@ async fn dislike_work_returns_200_after_liking() {
         response.status()
     );
 
-    let count: i64 = sqlx::query_scalar(r#"SELECT COUNT(*) FROM work_likes WHERE work_id=$1"#)
+    let count: i64 = sqlx::query_scalar(r#"SELECT COUNT(*) FROM work_stars WHERE work_id=$1"#)
         .bind(work_id)
         .fetch_one(&app.state.db_pool)
         .await
@@ -200,4 +200,76 @@ async fn delete_work_returns_401_when_not_logged_in() {
     let response = app.delete_work(Uuid::new_v4()).await;
 
     assert_eq!(response.status().as_u16(), 401);
+}
+
+// ---------------------------------------------------------------------------
+// Wall Post Integration Tests
+// ---------------------------------------------------------------------------
+
+#[tokio::test]
+async fn create_wall_post_for_work_returns_200() {
+    let (_, app, _, work_id) = setup_work_uploaded().await;
+
+    app.post_login(&fixtures::login_body("user_0", "kApten@1023"))
+        .await;
+
+    let body = fixtures::create_wall_post_body(work_id);
+    let response = app.post_wall_post(&body).await;
+
+    assert!(
+        response.status().is_success(),
+        "Expected 2xx, got {}",
+        response.status()
+    );
+}
+
+#[tokio::test]
+async fn create_wall_post_for_work_creates_quote() {
+    let (_, app, _, work_id) = setup_work_uploaded().await;
+
+    app.post_login(&fixtures::login_body("user_0", "kApten@1023"))
+        .await;
+
+    let body = fixtures::create_wall_post_body(work_id);
+    app.post_wall_post(&body).await;
+
+    let wall_post_id: Uuid =
+        sqlx::query_scalar!(r#"SELECT id FROM wall_posts WHERE work_id=$1"#, work_id)
+            .fetch_one(&app.state.db_pool)
+            .await
+            .expect("db query failed");
+
+    let count: i64 =
+        sqlx::query_scalar(r#"SELECT COUNT(*) FROM work_quotes WHERE wall_post_id=$1"#)
+            .bind(wall_post_id)
+            .fetch_one(&app.state.db_pool)
+            .await
+            .expect("db query failed");
+
+    assert_eq!(count, 1);
+}
+
+#[tokio::test]
+async fn create_wall_post_without_text_creates_pin() {
+    let (_, app, _, work_id) = setup_work_uploaded().await;
+
+    app.post_login(&fixtures::login_body("user_0", "kApten@1023"))
+        .await;
+
+    let body = fixtures::create_wall_post_pin_body(work_id);
+    app.post_wall_post(&body).await;
+
+    let wall_post_id: Uuid =
+        sqlx::query_scalar!(r#"SELECT id FROM wall_posts WHERE work_id=$1"#, work_id)
+            .fetch_one(&app.state.db_pool)
+            .await
+            .expect("db query failed");
+
+    let count: i64 = sqlx::query_scalar(r#"SELECT COUNT(*) FROM work_pins WHERE wall_post_id=$1"#)
+        .bind(wall_post_id)
+        .fetch_one(&app.state.db_pool)
+        .await
+        .expect("db query failed");
+
+    assert_eq!(count, 1);
 }

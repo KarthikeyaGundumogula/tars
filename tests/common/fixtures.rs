@@ -57,7 +57,8 @@ pub fn create_original_body(artists: &[Uuid]) -> serde_json::Value {
         "makers": [
             { "role": "Music Director", "artist": artists[3] },
             { "role": "Director",       "artist": artists[1] }
-        ]
+        ],
+        "category": "MOVIE"
     })
 }
 
@@ -265,5 +266,133 @@ pub fn remove_panelist_body(artist_id: Uuid) -> serde_json::Value {
     serde_json::json!({
         "insert": false,
         "artist_id": artist_id
+    })
+}
+
+// ---------------------------------------------------------------------------
+// Recommendation fixtures
+// ---------------------------------------------------------------------------
+
+pub fn create_recommendation_body(original_id: Uuid) -> serde_json::Value {
+    serde_json::json!({
+        "lines": "This is a great recommendation",
+        "original_id": original_id,
+        "score": 100
+    })
+}
+
+pub fn update_recommendation_body() -> serde_json::Value {
+    serde_json::json!({
+        "lines": "Updated recommendation text",
+        "score": 150
+    })
+}
+
+pub fn update_recommendation_score_only() -> serde_json::Value {
+    serde_json::json!({
+        "score": 200
+    })
+}
+
+pub fn update_recommendation_lines_only() -> serde_json::Value {
+    serde_json::json!({
+        "lines": "Updated lines only"
+    })
+}
+
+// ---------------------------------------------------------------------------
+// Wall post fixtures
+// ---------------------------------------------------------------------------
+
+pub fn create_wall_post_body(work_id: Uuid) -> serde_json::Value {
+    serde_json::json!({
+        "work_id": work_id,
+        "text_line": "This is a quote from the work"
+    })
+}
+
+pub fn create_wall_post_pin_body(work_id: Uuid) -> serde_json::Value {
+    serde_json::json!({
+        "work_id": work_id,
+        "text_line": null
+    })
+}
+
+pub fn create_wall_post_standalone_body() -> serde_json::Value {
+    serde_json::json!({
+        "work_id": null,
+        "text_line": "Standalone wall post"
+    })
+}
+
+// ---------------------------------------------------------------------------
+// Admin role management fixtures
+// ---------------------------------------------------------------------------
+
+pub fn create_role_body() -> serde_json::Value {
+    serde_json::json!({
+        "name": "moderator",
+        "description": "Can moderate content"
+    })
+}
+
+pub fn create_permission_body() -> serde_json::Value {
+    serde_json::json!({
+        "name": "delete_posts",
+        "description": "Can delete any post"
+    })
+}
+
+pub fn assign_permission_body() -> serde_json::Value {
+    serde_json::json!({
+        "role": "moderator",
+        "permission": "delete_posts"
+    })
+}
+
+pub fn revoke_permission_body() -> serde_json::Value {
+    serde_json::json!({
+        "role": "moderator",
+        "permission": "delete_posts"
+    })
+}
+
+pub fn update_profile_role_body(profile_id: Uuid) -> serde_json::Value {
+    serde_json::json!({
+        "profile_id": profile_id,
+        "new_role": "moderator"
+    })
+}
+
+// ---------------------------------------------------------------------------
+// Library surge fixtures
+// ---------------------------------------------------------------------------
+
+pub fn create_library_body_with_surge(original_id: Uuid, surge_score: i64) -> serde_json::Value {
+    serde_json::json!({
+        "original_id": original_id,
+        "episode_id": null,
+        "visibility": true,
+        "tagged_works": [],
+        "pre_thought": "I'm excited to watch this!",
+        "post_impression": "It was amazing!",
+        "status": "WATCHING",
+        "entry_type": "MOVIE",
+        "surge_score": surge_score
+    })
+}
+
+pub fn update_library_entry_with_surge() -> serde_json::Value {
+    serde_json::json!({
+        "pre_thought": "Updated pre-thought",
+        "post_impression": "Updated post-impression",
+        "status": "WATCHED",
+        "surge_score": 200
+    })
+}
+
+pub fn tag_work_to_library_body(work_id: Uuid) -> serde_json::Value {
+    serde_json::json!({
+        "work_id": work_id
     })
 }

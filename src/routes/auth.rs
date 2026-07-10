@@ -58,20 +58,24 @@ pub async fn sign_up_artist_handler(
         instagram_profile: data.instagram_profile,
         password_hash,
         color_theme: data.color_theme.to_string(),
-        role_name: None,
+        role_name: "artist".to_string(),
         current_peak_recommendations: 1000,
         current_peak_library: 1000,
         created_at: Utc::now(),
     };
-    let profile = insert_new_profile(&app.db_pool, artist).await?;
+    let profile = insert_new_profile(&app.db_pool, artist).await;
     match profile {
-        Some(profile) => {
+        Ok(Some(profile)) => {
             tracing::info!("Artist created: {:?}", profile.id);
             Ok(ProfileResponse::ProfileCreated(profile.id))
         }
-        None => {
-            tracing::error!("Failed to create artist");
+        Ok(None) => {
+            tracing::error!("Failed to create artist: RowNotFound");
             Err(ApiError::DbError(sqlx::Error::RowNotFound))
+        }
+        Err(e) => {
+            eprintln!("DB ERROR DURING INSERT: {:?}", e);
+            Err(e)
         }
     }
 }
@@ -96,7 +100,7 @@ pub async fn login_profile(
     };
     let token = create_jwt(
         &user.user_name,
-        &user.role_name.unwrap_or("artist".to_string()),
+        &user.role_name,
         &app.jwt_secret,
         user.id,
     )?;

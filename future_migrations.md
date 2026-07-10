@@ -80,4 +80,6 @@
     <!-- --- completed migration 11 -->
 71. **Create a junction table for work saves (artist, work_id)** 
 72. **Add not null constraint to the created at on wall_posts table**
-73. **Add indexes** - {Profile - user_name},{posts-artist_id,posts - created_at + id},{Edits,Scripts,Posters - post_id}
+73. **Add a new column normalized score for library entry**
+74. **Add Save for the wall posts and views**
+75. **Add indexes** - {Profile - user_name},{posts-artist_id,posts - created_at + id},{Edits,Scripts,Posters - post_id}

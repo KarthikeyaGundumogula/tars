@@ -1,6 +1,71 @@
 mod common;
-use common::{fixtures, setups::setup_set_creation, spawn_app};
+use common::{
+    fixtures,
+    setups::{setup_organizer_user, setup_set_creation},
+    spawn_app,
+};
 use uuid::Uuid;
+
+// ---------------------------------------------------------------------------
+// Organizer Role Tests for Set Creation
+// ---------------------------------------------------------------------------
+
+#[tokio::test]
+async fn create_set_returns_200_for_organizer_role() {
+    let (_, app) = setup_organizer_user().await;
+
+    let body = fixtures::create_set_body();
+    let response = app.post_set(&body).await;
+
+    assert!(
+        response.status().is_success(),
+        "Expected 2xx, got {}",
+        response.status()
+    );
+}
+
+#[tokio::test]
+async fn create_set_returns_200_for_admin_role() {
+    let app = spawn_app::spawn().await;
+
+    // Login as admin
+    common::setups::login_as_admin(&app).await;
+
+    let body = fixtures::create_set_body();
+    let response = app.post_set(&body).await;
+
+    assert!(
+        response.status().is_success(),
+        "Expected 2xx, got {}",
+        response.status()
+    );
+}
+
+#[tokio::test]
+async fn create_set_returns_401_for_artist_role() {
+    let app = spawn_app::spawn().await;
+
+    // Register and login as regular artist
+    let body = fixtures::register_body("regular_artist", "kApten@1023");
+    app.post_register(&body).await;
+    app.post_login(&fixtures::login_body("regular_artist", "kApten@1023"))
+        .await;
+
+    let set_body = fixtures::create_set_body();
+    let response = app.post_set(&set_body).await;
+
+    assert_eq!(response.status().as_u16(), 401);
+}
+
+#[tokio::test]
+async fn create_set_returns_401_for_unauthenticated_user() {
+    let app = spawn_app::spawn().await;
+
+    let body = fixtures::create_set_body();
+    let response = app.post_set(&body).await;
+
+    assert_eq!(response.status().as_u16(), 401);
+}
 
 // ---------------------------------------------------------------------------
 // Update Set
@@ -155,6 +220,67 @@ async fn leave_set_returns_401_when_not_logged_in() {
     let app = spawn_app::spawn().await;
 
     let response = app.delete_leave_set(uuid::Uuid::new_v4()).await;
+
+    assert_eq!(response.status().as_u16(), 401);
+}
+
+// ---------------------------------------------------------------------------
+// Festival Creation with Organizer Role
+// ---------------------------------------------------------------------------
+
+#[tokio::test]
+async fn create_festival_returns_200_for_set_owner_with_organizer_role() {
+    let (_, app) = setup_organizer_user().await;
+
+    // Create a set first
+    let set_body = fixtures::create_set_body();
+    app.post_set(&set_body).await;
+
+    let set_id: Uuid =
+        sqlx::query_scalar!(r#"SELECT id FROM sets WHERE name=$1"#, "My Awesome Set")
+            .fetch_one(&app.state.db_pool)
+            .await
+            .expect("db query failed");
+
+    // Create festival
+    let festival_body = fixtures::create_festival_body(set_id, &[]);
+    let response = app.post_festival(set_id, &festival_body).await;
+
+    assert!(
+        response.status().is_success(),
+        "Expected 2xx, got {}",
+        response.status()
+    );
+}
+
+#[tokio::test]
+async fn create_festival_returns_401_for_non_set_owner_with_organizer_role() {
+    let (artists, app, set_id) = setup_set_creation().await;
+
+    // Login as user_1 with organizer role
+    common::setups::login_as_admin(&app).await;
+    let role_body = fixtures::update_profile_role_body(artists[1]);
+    app.post_update_profile_role(&role_body).await;
+    app.post_login(&fixtures::login_body("user_1", "kApten@1023"))
+        .await;
+
+    // Try to create festival for set owned by user_0
+    let festival_body = fixtures::create_festival_body(set_id, &[]);
+    let response = app.post_festival(set_id, &festival_body).await;
+
+    assert_eq!(response.status().as_u16(), 401);
+}
+
+#[tokio::test]
+async fn create_festival_returns_401_for_artist_role() {
+    let (_, app, set_id) = setup_set_creation().await;
+
+    // Login as user_1 (artist role)
+    app.post_login(&fixtures::login_body("user_1", "kApten@1023"))
+        .await;
+
+    let festival_body = fixtures::create_festival_body(set_id, &[]);
+    let response = app.post_festival(set_id, &festival_body).await;
 
     assert_eq!(response.status().as_u16(), 401);
 }

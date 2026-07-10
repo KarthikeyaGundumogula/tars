@@ -22,5 +22,14 @@ pub async fn configure_postgres(config: DatabaseSettings) -> PgPool {
         .run(&connection_pool)
         .await
         .expect("Failed to migrate the database");
+
+    // Insert default roles needed by the tests
+    sqlx::query(
+        "INSERT INTO user_roles (name, description) VALUES ('artist', 'Default artist role'), ('admin', 'Admin role')"
+    )
+    .execute(&connection_pool)
+    .await
+    .expect("Failed to insert default roles");
+
     connection_pool
 }
