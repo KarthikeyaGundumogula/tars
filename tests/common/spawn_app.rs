@@ -81,7 +81,7 @@ impl TestApp {
 
     pub async fn post_update_profile(&self, body: &serde_json::Value) -> reqwest::Response {
         self.api_client
-            .post(&format!("{}/artists/update", &self.address))
+            .post(&format!("{}/artists/update_stage", &self.address))
             .json(body)
             .send()
             .await
@@ -108,7 +108,7 @@ impl TestApp {
 
     pub async fn post_favorite(&self, body: &serde_json::Value) -> reqwest::Response {
         self.api_client
-            .post(&format!("{}/artists/favorite", &self.address))
+            .post(&format!("{}/artists/favorite_artist", &self.address))
             .json(body)
             .send()
             .await
@@ -117,7 +117,7 @@ impl TestApp {
 
     pub async fn post_unfavorite(&self, body: &serde_json::Value) -> reqwest::Response {
         self.api_client
-            .post(&format!("{}/artists/unfavorite", &self.address))
+            .post(&format!("{}/artists/unfavorite_artist", &self.address))
             .json(body)
             .send()
             .await
@@ -206,18 +206,18 @@ impl TestApp {
             .expect("Failed to execute request.")
     }
 
-    pub async fn post_like_work(&self, body: &serde_json::Value) -> reqwest::Response {
+    pub async fn post_star_work(&self, body: &serde_json::Value) -> reqwest::Response {
         self.api_client
-            .post(&format!("{}/works/like", &self.address))
+            .post(&format!("{}/artists/star_work", &self.address))
             .json(body)
             .send()
             .await
             .expect("Failed to execute request.")
     }
 
-    pub async fn delete_dislike_work(&self, body: &serde_json::Value) -> reqwest::Response {
+    pub async fn delete_unstar_work(&self, body: &serde_json::Value) -> reqwest::Response {
         self.api_client
-            .delete(&format!("{}/works/dislike", &self.address))
+            .delete(&format!("{}/artists/unstar_work", &self.address))
             .json(body)
             .send()
             .await
@@ -375,6 +375,17 @@ impl TestApp {
             .expect("Failed to execute request.")
     }
 
+    pub async fn delete_recommendation(&self, recommendation_id: uuid::Uuid) -> reqwest::Response {
+        self.api_client
+            .delete(&format!(
+                "{}/library/recommendations/{}/delete",
+                &self.address, recommendation_id
+            ))
+            .send()
+            .await
+            .expect("Failed to execute request.")
+    }
+
     // -----------------------------------------------------------------------
     // Wall Posts
     // -----------------------------------------------------------------------
@@ -469,6 +480,60 @@ impl TestApp {
     pub async fn post_update_profile_role(&self, body: &serde_json::Value) -> reqwest::Response {
         self.api_client
             .post(&format!("{}/admin/update_user_role", &self.address))
+            .json(body)
+            .send()
+            .await
+            .expect("Failed to execute request.")
+    }
+
+    pub async fn post_save_work(&self, body: &serde_json::Value) -> reqwest::Response {
+        self.api_client
+            .post(&format!("{}/artists/save_work", &self.address))
+            .json(body)
+            .send()
+            .await
+            .expect("Failed to execute request.")
+    }
+
+    pub async fn delete_unsave_work(&self, body: &serde_json::Value) -> reqwest::Response {
+        self.api_client
+            .delete(&format!("{}/artists/unsave_work", &self.address))
+            .json(body)
+            .send()
+            .await
+            .expect("Failed to execute request.")
+    }
+
+    pub async fn post_boost_recommendation(&self, body: &serde_json::Value) -> reqwest::Response {
+        self.api_client
+            .post(&format!("{}/artists/boost_recommendation", &self.address))
+            .json(body)
+            .send()
+            .await
+            .expect("Failed to execute request.")
+    }
+
+    pub async fn delete_remove_recommendation_boost(&self, body: &serde_json::Value) -> reqwest::Response {
+        self.api_client
+            .delete(&format!("{}/artists/remove_recommendation_boost", &self.address))
+            .json(body)
+            .send()
+            .await
+            .expect("Failed to execute request.")
+    }
+
+    pub async fn post_save_recommendation(&self, body: &serde_json::Value) -> reqwest::Response {
+        self.api_client
+            .post(&format!("{}/artists/save_recommendation", &self.address))
+            .json(body)
+            .send()
+            .await
+            .expect("Failed to execute request.")
+    }
+
+    pub async fn delete_unsave_recommendation(&self, body: &serde_json::Value) -> reqwest::Response {
+        self.api_client
+            .delete(&format!("{}/artists/unsave_recommendation", &self.address))
             .json(body)
             .send()
             .await

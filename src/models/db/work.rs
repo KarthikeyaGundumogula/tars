@@ -94,7 +94,12 @@ pub struct WallPost {
     pub artist_id:Uuid,
     pub work_id: Option<Uuid>,
     pub text_line: Option<String>,
-    pub created_at:Option<DateTime<Utc>>
+    pub original_id: Option<Uuid>,
+    pub recommendation_id: Option<Uuid>,
+    pub total_views: i64,
+    pub total_saves: i64,
+    pub created_at:DateTime<Utc>,
+    pub updated_at:DateTime<Utc>
 }
 
 impl Resource for Work {

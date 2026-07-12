@@ -10,6 +10,11 @@ pub enum LibraryResponse {
     RecommendationUpdated(Uuid),
     WorkTaggedToLibraryEntry(Uuid, Uuid),
     LibraryEntryDeleted(Uuid),
+    RecommendationDeleted(Uuid),
+    BoostedRecommendation(bool),
+    UnBoostedRecommendation(bool),
+    SavedRecommendation(bool),
+    UnSavedRecommendation(bool)
 }
 
 impl IntoResponse for LibraryResponse {
@@ -34,6 +39,21 @@ impl IntoResponse for LibraryResponse {
             }
             Self::RecommendationUpdated(id) => {
                 (StatusCode::OK, Json(serde_json::json!({"id": id}))).into_response()
+            }
+            Self::RecommendationDeleted(id) => {
+                (StatusCode::OK, Json(serde_json::json!({"id": id}))).into_response()
+            }
+            Self::BoostedRecommendation(res) => {
+                (StatusCode::OK, Json(serde_json::json!({"success": res}))).into_response()
+            }
+            Self::UnBoostedRecommendation(res) => {
+                (StatusCode::OK, Json(serde_json::json!({"success": res}))).into_response()
+            }
+            Self::SavedRecommendation(res) => {
+                (StatusCode::OK, Json(serde_json::json!({"success": res}))).into_response()
+            }
+            Self::UnSavedRecommendation(res) => {
+                (StatusCode::OK, Json(serde_json::json!({"success": res}))).into_response()
             }
         }
     }

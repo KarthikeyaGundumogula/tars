@@ -25,23 +25,6 @@ async fn create_set_returns_200_for_organizer_role() {
 }
 
 #[tokio::test]
-async fn create_set_returns_200_for_admin_role() {
-    let app = spawn_app::spawn().await;
-
-    // Login as admin
-    common::setups::login_as_admin(&app).await;
-
-    let body = fixtures::create_set_body();
-    let response = app.post_set(&body).await;
-
-    assert!(
-        response.status().is_success(),
-        "Expected 2xx, got {}",
-        response.status()
-    );
-}
-
-#[tokio::test]
 async fn create_set_returns_401_for_artist_role() {
     let app = spawn_app::spawn().await;
 

@@ -36,7 +36,7 @@ pub enum ApiError {
     Serialization(#[from] JsonRejection),
     #[error("Invalid Url")]
     UrlError(#[from] PathRejection),
-    #[error("There is an error at the database")]
+    #[error("There is an error at the database: {0}")]
     DbError(#[from] sqlx::Error),
     #[error("password hashing failed")]
     Argon2Error(#[from] argon2::password_hash::Error),

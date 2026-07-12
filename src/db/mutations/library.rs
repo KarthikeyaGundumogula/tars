@@ -13,6 +13,16 @@ use crate::{
 
 pub async fn insert_new_library_entry(pool: &PgPool, data: LibraryEntry) -> Result<Uuid, ApiError> {
     let mut txn = pool.begin().await?;
+
+    // Read the peak BEFORE this entry can influence it, so we can freeze
+    // it onto the row as peak_snapshot.
+    let peak = sqlx::query_scalar!(
+        "SELECT current_peak_library FROM profiles WHERE id = $1",
+        data.profile_id
+    )
+    .fetch_one(&mut *txn)
+    .await?;
+
     let new_entry = sqlx::query_as!(
         LibraryEntry,
         r#"
@@ -29,23 +39,12 @@ pub async fn insert_new_library_entry(pool: &PgPool, data: LibraryEntry) -> Resu
           id,
           created_at,
           surge_score,
-          updated_at
+          updated_at,
+          peak_snapshot
         )
       VALUES (
-          $1,
-          $2,
-          $3,
-          $4,
-          $5,
-          $6,
-          $7,
-          $8,
-          $9,
-          $10,
-          $11,
-          $12,
-          $13
-        ) 
+          $1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14
+        )
         RETURNING original_id,
             profile_id,
             pub_visibility,
@@ -72,66 +71,62 @@ pub async fn insert_new_library_entry(pool: &PgPool, data: LibraryEntry) -> Resu
         data.id,
         data.created_at,
         data.surge_score,
-        data.updated_at
+        data.updated_at,
+        peak
     )
     .fetch_one(&mut *txn)
     .await?;
+
+    // Episode-level scoring isn't implemented yet — only originals-based
+    // entries get folded into originals' running stats.
+    if new_entry.original_id.is_none() {
+        txn.commit().await?;
+        return Ok(new_entry.id);
+    }
+
     sqlx::query!(
         r#"
-            WITH profile_data AS (
-        SELECT current_peak_library
-        FROM profiles
-        WHERE id = $1
+        WITH profile_data AS (
+            SELECT current_peak_library FROM profiles WHERE id = $1
         ),
         old_data AS (
-        SELECT mean_surge,
-            number_of_surges,
-            surge_m2
-        FROM originals
-        WHERE id = $2
+            SELECT mean_surge, number_of_surges, surge_m2
+            FROM originals WHERE id = $2
         ),
         calc AS (
-        SELECT old_data.number_of_surges + 1 AS new_count,
-            ($3 / profile_data.current_peak_library) AS x,
-            old_data.mean_surge AS old_mean,
-            old_data.mean_surge + (
-            ($3 / profile_data.current_peak_library) - old_data.mean_surge
-            ) / (old_data.number_of_surges + 1) AS new_mean,
-            old_data.surge_m2 AS old_m2
-        FROM old_data,
-            profile_data
-            ),
-            calc2 AS (
-            SELECT calc.*,
-                calc.old_m2 + (calc.x - calc.old_mean) * (calc.x - calc.new_mean) AS new_m2
+            SELECT old_data.number_of_surges + 1 AS new_count,
+                ($3::float8 / profile_data.current_peak_library) AS x,
+                old_data.mean_surge AS old_mean,
+                old_data.mean_surge + (($3::float8 / profile_data.current_peak_library) - old_data.mean_surge)
+                    / (old_data.number_of_surges + 1) AS new_mean,
+                old_data.surge_m2 AS old_m2
+            FROM old_data, profile_data
+        ),
+        calc2 AS (
+            SELECT calc.*, calc.old_m2 + (calc.x - calc.old_mean) * (calc.x - calc.new_mean) AS new_m2
             FROM calc
         )
         UPDATE originals
         SET number_of_surges = calc2.new_count,
-        mean_surge = calc2.new_mean,
-        surge_m2 = calc2.new_m2,
-        surge_spread = CASE
-            WHEN calc2.new_count > 1 THEN sqrt(calc2.new_m2 / (calc2.new_count - 1))
-            ELSE 0
-        END
+            mean_surge = calc2.new_mean,
+            surge_m2 = calc2.new_m2,
+            surge_spread = CASE WHEN calc2.new_count > 1
+                                 THEN sqrt(calc2.new_m2 / (calc2.new_count - 1))
+                                 ELSE 0 END
         FROM calc2
         WHERE originals.id = $2
         "#,
         data.profile_id,
-        data.original_id,
-        data.surge_score
+        new_entry.original_id,
+        new_entry.surge_score as f64
     )
     .execute(&mut *txn)
     .await?;
 
     sqlx::query!(
-        r#"
-    UPDATE profiles
-    SET current_peak_library = GREATEST(current_peak_library, $2)
-    WHERE id = $1
-    "#,
+        "UPDATE profiles SET current_peak_library = GREATEST(current_peak_library, $2) WHERE id = $1",
         data.profile_id,
-        data.surge_score
+        new_entry.surge_score
     )
     .execute(&mut *txn)
     .await?;
@@ -148,26 +143,10 @@ pub async fn insert_new_recommendation(
     let res = sqlx::query_scalar!(
         r#"
         INSERT INTO recommendations (
-        id,
-            original_id,
-            artist_id,
-            notes,
-            created_at,
-            updated_at,
-            surge_score,
-            boost_number,
-            saves
-        ) VALUES (
-            $1,
-            $2,
-            $3,
-            $4,
-            $5,
-            $6,
-            $7,
-            $8,
-            $9
-        ) RETURNING id;
+        id, original_id, artist_id, notes, created_at, updated_at,
+            surge_score, boost_number, saves
+        ) VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9)
+        RETURNING id;
         "#,
         data.id,
         data.original_id,
@@ -221,10 +200,10 @@ pub async fn update_recommendation(
     .await?;
     if let Some(_) = data.score {
         sqlx::query!(
-                "
+            "
             WITH current_peak AS (
-                SELECT surge_score 
-                FROM recommendations 
+                SELECT surge_score
+                FROM recommendations
                 WHERE artist_id = $1
                 ORDER BY surge_score DESC
                 LIMIT 1
@@ -233,13 +212,12 @@ pub async fn update_recommendation(
             SET current_peak_recommendations = GREATEST(current_peak.surge_score,1000)
             FROM current_peak
             WHERE profiles.id = $1
-            AND
-            profiles.current_peak_recommendations IS DISTINCT FROM GREATEST(current_peak.surge_score, 1000)
+            AND profiles.current_peak_recommendations IS DISTINCT FROM GREATEST(current_peak.surge_score, 1000)
             ",
-                artist_id
-            )
-            .execute(&mut *txn)
-            .await?;
+            artist_id
+        )
+        .execute(&mut *txn)
+        .await?;
     }
     txn.commit().await?;
     Ok(res)
@@ -250,24 +228,155 @@ pub async fn update_library_entry(
     data: UpdateLibraryEntryReq,
     id: Uuid,
 ) -> Result<Uuid, ApiError> {
-    Ok(sqlx::query_scalar!(
+    let mut txn = pool.begin().await?;
+
+    let entry = sqlx::query!(
         r#"
-      UPDATE library
-      SET
-          pre_thought = COALESCE($1, pre_thought),
-          post_impression = COALESCE($2, post_impression),
-          status = COALESCE($3,status),
-          updated_at = NOW()
-      WHERE id = $4
-      RETURNING id;
-      "#,
+        UPDATE library
+        SET
+            pre_thought = COALESCE($1, pre_thought),
+            post_impression = COALESCE($2, post_impression),
+            status = COALESCE($3, status),
+            updated_at = NOW()
+        WHERE id = $4
+        RETURNING id, original_id, profile_id, surge_score, peak_snapshot;
+        "#,
         data.pre_thought.as_ref().map(|t| t.to_string()),
         data.post_impression.as_ref().map(|t| t.to_string()),
         data.status as Option<WatchlistStatus>,
         id
     )
-    .fetch_one(pool)
-    .await?)
+    .fetch_one(&mut *txn)
+    .await?;
+
+    // Episode-level scoring isn't implemented yet — skip originals update
+    // for episode-type entries (original_id is NULL for those).
+    let Some(original_id) = entry.original_id else {
+        txn.commit().await?;
+        return Ok(entry.id);
+    };
+
+    if let Some(new_score) = data.surge_score {
+        let stats = sqlx::query!(
+            r#"
+            WITH peak AS (
+                SELECT current_peak_library FROM profiles WHERE id = $1
+            ),
+            orig AS (
+                SELECT mean_surge, surge_m2, number_of_surges
+                FROM originals WHERE id = $2
+            ),
+            calc AS (
+                SELECT
+                    orig.number_of_surges AS n,
+                    ($3::float8 / $4::float8) AS x_old,
+                    ($5::float8 / peak.current_peak_library) AS x_new,
+                    orig.mean_surge AS old_mean,
+                    orig.surge_m2 AS old_m2,
+                    peak.current_peak_library AS peak_now
+                FROM orig, peak
+            ),
+            removed AS (
+                SELECT calc.*,
+                    CASE WHEN calc.n > 1
+                         THEN (calc.n * calc.old_mean - calc.x_old) / (calc.n - 1)
+                         ELSE 0 END AS mean_r,
+                    CASE WHEN calc.n > 1
+                         THEN calc.old_m2 - (calc.x_old - calc.old_mean) *
+                              (calc.x_old - (calc.n * calc.old_mean - calc.x_old) / (calc.n - 1))
+                         ELSE 0 END AS m2_r
+                FROM calc
+            ),
+            final AS (
+                SELECT removed.*,
+                    removed.mean_r + (removed.x_new - removed.mean_r) / removed.n AS new_mean,
+                    removed.m2_r + (removed.x_new - removed.mean_r) *
+                        (removed.x_new - (removed.mean_r + (removed.x_new - removed.mean_r) / removed.n)) AS new_m2
+                FROM removed
+            )
+            UPDATE originals
+            SET mean_surge   = final.new_mean,
+                surge_m2     = final.new_m2,
+                surge_spread = CASE WHEN final.n > 1
+                                    THEN sqrt(final.new_m2 / (final.n - 1))
+                                    ELSE 0 END
+            FROM final
+            WHERE originals.id = $2
+            RETURNING final.peak_now;
+            "#,
+            entry.profile_id,
+            original_id,
+            entry.surge_score as f64,
+            entry.peak_snapshot as f64,
+            new_score as f64
+        )
+        .fetch_one(&mut *txn)
+        .await?;
+
+        sqlx::query!(
+            r#"
+            UPDATE library
+            SET surge_score = $1, peak_snapshot = $2
+            WHERE id = $3
+            "#,
+            new_score,
+            stats.peak_now,
+            entry.id
+        )
+        .execute(&mut *txn)
+        .await?;
+
+        sqlx::query!(
+            "UPDATE profiles SET current_peak_library = GREATEST(current_peak_library, $1) WHERE id = $2",
+            new_score,
+            entry.profile_id
+        )
+        .execute(&mut *txn)
+        .await?;
+    }
+
+    txn.commit().await?;
+    Ok(entry.id)
+}
+
+pub async fn delete_recommendation(
+    pool: &PgPool,
+    recommendation_id: Uuid,
+    artist_id: Uuid,
+) -> Result<(), ApiError> {
+    let mut txn = pool.begin().await?;
+    sqlx::query!(
+        "
+        DELETE FROM recommendations
+        WHERE id = $1
+        AND artist_id = $2
+        ",
+        recommendation_id,
+        artist_id
+    )
+    .execute(&mut *txn)
+    .await?;
+    sqlx::query!(
+        "
+            WITH current_peak AS (
+                SELECT surge_score
+                FROM recommendations
+                WHERE artist_id = $1
+                ORDER BY surge_score DESC
+                LIMIT 1
+            )
+            UPDATE profiles
+            SET current_peak_recommendations = GREATEST(current_peak.surge_score,1000)
+            FROM current_peak
+            WHERE profiles.id = $1
+            AND profiles.current_peak_recommendations IS DISTINCT FROM GREATEST(current_peak.surge_score, 1000)
+    ",
+        artist_id
+    )
+    .execute(&mut *txn)
+    .await?;
+    txn.commit().await?;
+    Ok(())
 }
 
 pub async fn add_new_tagged_work(
@@ -277,7 +386,7 @@ pub async fn add_new_tagged_work(
 ) -> Result<Uuid, ApiError> {
     Ok(sqlx::query_scalar!(
         "
-      Update library
+      UPDATE library
       SET tagged_works = array_append(tagged_works, $1)
       WHERE id = $2
       RETURNING id;
@@ -290,14 +399,93 @@ pub async fn add_new_tagged_work(
 }
 
 pub async fn delete_library_entry(pool: &PgPool, entry_id: Uuid) -> Result<(), ApiError> {
-    sqlx::query!(
-        "
-      DELETE FROM library
-      WHERE id = $1
-      ",
+    let mut txn = pool.begin().await?;
+
+    let entry = sqlx::query!(
+        r#"
+        SELECT original_id, profile_id, surge_score, peak_snapshot
+        FROM library
+        WHERE id = $1
+        "#,
         entry_id
     )
-    .execute(pool)
+    .fetch_one(&mut *txn)
     .await?;
+
+    sqlx::query!("DELETE FROM library WHERE id = $1", entry_id)
+        .execute(&mut *txn)
+        .await?;
+
+    // Episode-level scoring isn't implemented yet — skip originals update
+    // for episode-type entries.
+    let Some(original_id) = entry.original_id else {
+        txn.commit().await?;
+        return Ok(());
+    };
+
+    sqlx::query!(
+        r#"
+        WITH orig AS (
+            SELECT mean_surge, surge_m2, number_of_surges
+            FROM originals WHERE id = $1
+        ),
+        calc AS (
+            SELECT
+                orig.number_of_surges AS n,
+                ($2::float8 / $3::float8) AS x_old,
+                orig.mean_surge AS old_mean,
+                orig.surge_m2 AS old_m2
+            FROM orig
+        ),
+        final AS (
+            SELECT
+                calc.*,
+                GREATEST(calc.n - 1, 0) AS new_count,
+                CASE WHEN calc.n > 1
+                     THEN (calc.n * calc.old_mean - calc.x_old) / (calc.n - 1)
+                     ELSE 0 END AS new_mean,
+                CASE WHEN calc.n > 1
+                     THEN calc.old_m2 - (calc.x_old - calc.old_mean) *
+                          (calc.x_old - (calc.n * calc.old_mean - calc.x_old) / (calc.n - 1))
+                     ELSE 0 END AS new_m2
+            FROM calc
+        )
+        UPDATE originals
+        SET number_of_surges = final.new_count,
+            mean_surge       = final.new_mean,
+            surge_m2         = final.new_m2,
+            surge_spread     = CASE WHEN final.new_count > 1
+                                    THEN sqrt(final.new_m2 / (final.new_count - 1))
+                                    ELSE 0 END
+        FROM final
+        WHERE originals.id = $1
+        "#,
+        original_id,
+        entry.surge_score as f64,
+        entry.peak_snapshot as f64
+    )
+    .execute(&mut *txn)
+    .await?;
+
+    sqlx::query!(
+        r#"
+        WITH current_peak AS (
+            SELECT MAX(surge_score) AS max_score
+            FROM library
+            WHERE profile_id = $1
+        )
+        UPDATE profiles
+        SET current_peak_library = GREATEST(COALESCE(current_peak.max_score, 0), 1000)
+        FROM current_peak
+        WHERE profiles.id = $1
+        AND profiles.current_peak_library
+            IS DISTINCT FROM GREATEST(COALESCE(current_peak.max_score, 0), 1000)
+        "#,
+        entry.profile_id
+    )
+    .execute(&mut *txn)
+    .await?;
+
+    txn.commit().await?;
     Ok(())
 }

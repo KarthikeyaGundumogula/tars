@@ -207,9 +207,9 @@ pub fn update_work_body() -> serde_json::Value {
     })
 }
 
-pub fn like_work_body(work_id: Uuid) -> serde_json::Value {
+pub fn entity_action_body(work_id: Uuid) -> serde_json::Value {
     serde_json::json!({
-        "work_id": work_id
+        "entity_id": work_id
     })
 }
 
@@ -322,6 +322,24 @@ pub fn create_wall_post_standalone_body() -> serde_json::Value {
     serde_json::json!({
         "work_id": null,
         "text_line": "Standalone wall post"
+    })
+}
+
+pub fn create_wall_post_with_original(original_id: Uuid) -> serde_json::Value {
+    serde_json::json!({
+        "work_id": null,
+        "text_line": "Quote with original",
+        "original_id": original_id
+    })
+}
+
+pub fn create_wall_post_with_recommendation(
+    recommendation_id: Uuid,
+) -> serde_json::Value {
+    serde_json::json!({
+        "work_id": null,
+        "text_line": "Quote with recommendation",
+        "recommendation_id": recommendation_id
     })
 }
 

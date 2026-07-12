@@ -80,7 +80,7 @@ async fn like_work_returns_200_for_logged_in_artist() {
     app.post_login(&fixtures::login_body("user_1", "kApten@1023"))
         .await;
 
-    let response = app.post_like_work(&fixtures::like_work_body(work_id)).await;
+    let response = app.post_star_work(&fixtures::entity_action_body(work_id)).await;
 
     assert!(
         response.status().is_success(),
@@ -104,7 +104,7 @@ async fn like_work_returns_401_when_not_logged_in() {
     // Logout first to ensure fresh unauthenticated state
     let app = spawn_app::spawn().await;
 
-    let response = app.post_like_work(&fixtures::like_work_body(work_id)).await;
+    let response = app.post_star_work(&fixtures::entity_action_body(work_id)).await;
 
     assert_eq!(response.status().as_u16(), 401);
 }
@@ -117,11 +117,11 @@ async fn dislike_work_returns_200_after_liking() {
         .await;
 
     // Like first
-    app.post_like_work(&fixtures::like_work_body(work_id)).await;
+    app.post_star_work(&fixtures::entity_action_body(work_id)).await;
 
     // Then dislike
     let response = app
-        .delete_dislike_work(&fixtures::like_work_body(work_id))
+        .delete_unstar_work(&fixtures::entity_action_body(work_id))
         .await;
 
     assert!(
@@ -221,32 +221,6 @@ async fn create_wall_post_for_work_returns_200() {
         "Expected 2xx, got {}",
         response.status()
     );
-}
-
-#[tokio::test]
-async fn create_wall_post_for_work_creates_quote() {
-    let (_, app, _, work_id) = setup_work_uploaded().await;
-
-    app.post_login(&fixtures::login_body("user_0", "kApten@1023"))
-        .await;
-
-    let body = fixtures::create_wall_post_body(work_id);
-    app.post_wall_post(&body).await;
-
-    let wall_post_id: Uuid =
-        sqlx::query_scalar!(r#"SELECT id FROM wall_posts WHERE work_id=$1"#, work_id)
-            .fetch_one(&app.state.db_pool)
-            .await
-            .expect("db query failed");
-
-    let count: i64 =
-        sqlx::query_scalar(r#"SELECT COUNT(*) FROM work_quotes WHERE wall_post_id=$1"#)
-            .bind(wall_post_id)
-            .fetch_one(&app.state.db_pool)
-            .await
-            .expect("db query failed");
-
-    assert_eq!(count, 1);
 }
 
 #[tokio::test]

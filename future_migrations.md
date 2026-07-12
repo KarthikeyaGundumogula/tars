@@ -78,8 +78,16 @@
 69. **For implmenting the spread we need to use the welford algorith we need new columns in the originals table for film surge scores with storing avg and number of values and the m2** - ✅
 70. **Rename the work_likes to the work_stars** - ✅
     <!-- --- completed migration 11 -->
-71. **Create a junction table for work saves (artist, work_id)** 
-72. **Add not null constraint to the created at on wall_posts table**
-73. **Add a new column normalized score for library entry**
-74. **Add Save for the wall posts and views**
-75. **Add indexes** - {Profile - user_name},{posts-artist_id,posts - created_at + id},{Edits,Scripts,Posters - post_id}
+71. **Add not null constraint to the created at on wall_posts table** - ✅
+72. **Add a new column normalized score for library entry** - ✅
+73. **add a column on wallposts to include the recommendations and originals** - ✅
+74. **Add number of saves and views columns for the wall posts** - ✅
+75. **create a junction table to store wall_post saves** - ✅
+76. **create a junction table to store recommendation stars** - ✅
+77. **Delelte work quotes table we dont need another table to get the quotes** - we already have a separate table for the work pins and works quotes is an redundant table because it is underthe hood a work pin just with an extra line so we will use the same table to store the pins and quotes  - ✅
+78. **create a junction table to store the profile spirit** - right now the profile spirit is how many unique personalities interacted with the profile not neccesrly follows so we store a one way relationship like the primary key is user1->user2's work means user1 interacted with user2's work and user2 is the artist that count as spirit 1. - ✅
+    <!-- ---Completed migration 11 and 12--- -->
+79. **create a junction table for boost_recommendations_profiles**
+80. **Add another column for spirit table to store the token count** - this is added because when a new star s added then we increment this count same ofr any incremental engagement if a decremental engagement is made we decrement the count if the decremental count reaches to zero then we delete the row and decrease the spirit in future it will help us to evaluate the engagemnt between two profiles and can be used for giveaways or super fan profiles to boost engagement. 
+81. **Remove the star recommendations table** - we dont need that so what we are going to do is 
+82. **Add indexes** - {Profile - user_name},{posts-artist_id,posts - created_at + id},{Edits,Scripts,Posters - post_id}

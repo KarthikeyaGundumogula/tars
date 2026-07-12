@@ -11,7 +11,7 @@ use uuid::Uuid;
 
 use crate::{
     AppState, db::mutations::library::{
-        add_new_tagged_work, delete_library_entry, insert_new_library_entry, insert_new_recommendation, update_library_entry, update_recommendation,
+        add_new_tagged_work, delete_library_entry, delete_recommendation, insert_new_library_entry, insert_new_recommendation, update_library_entry, update_recommendation,
     }, errors::ApiError, models::{
         db::library::{LibraryEntry, Recommendation},
         requests::library::{
@@ -110,6 +110,15 @@ async fn update_recommedation_handler(
     Ok(LibraryResponse::RecommendationUpdated(res))
 }
 
+#[instrument(name = "delete recommendation", skip(app), err, fields(recommendation_id = %resource_id))]
+async fn delete_recommendation_handler(
+    State(app): State<Arc<AppState>>,
+    OwnedResourceOrAdmin { resource_id, user_id,.. }: OwnedResourceOrAdmin<Recommendation>,
+) -> Result<LibraryResponse, ApiError> {
+    delete_recommendation(&app.db_pool, resource_id, user_id).await?;
+    Ok(LibraryResponse::RecommendationDeleted(resource_id))
+}
+
 pub fn router() -> Router<Arc<AppState>> {
     Router::new()
         .route("/new", post(new_library_entry_handler))
@@ -126,5 +135,9 @@ pub fn router() -> Router<Arc<AppState>> {
         .route(
             "/{resource_id}/delete",
             delete(delete_library_entry_handler),
+        )
+        .route(
+            "/recommendations/{resource_id}/delete",
+            delete(delete_recommendation_handler)
         )
 }

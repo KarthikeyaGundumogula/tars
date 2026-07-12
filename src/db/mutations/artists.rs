@@ -137,7 +137,7 @@ pub async fn update_profile_role(
 }
 
 pub async fn insert_new_favorite(
-    pool: &PgPool,
+    txn: &mut sqlx::Transaction<'_, sqlx::Postgres>,
     profile_id: Uuid,
     favoriting_id: Uuid,
 ) -> Result<bool, ApiError> {
@@ -149,7 +149,7 @@ pub async fn insert_new_favorite(
         profile_id,
         favoriting_id
     )
-    .execute(pool)
+    .execute(&mut **txn)
     .await?
     .rows_affected()
         == 1)
@@ -174,24 +174,137 @@ pub async fn delete_favorite(
         == 1)
 }
 
-pub async fn update_profile_presence(
+pub async fn insert_save_recommendation(
+    txn: &mut sqlx::Transaction<'_, sqlx::Postgres>,
+    profile_id: Uuid,
+    recommendation_id: Uuid,
+) -> Result<Uuid, ApiError> {
+    sqlx::query!(
+        r#"
+        INSERT INTO saved_recommendations (artist_id, recommendation_id, created_at)
+        VALUES ($1, $2, NOW())
+        ON CONFLICT DO NOTHING
+        "#,
+        profile_id,
+        recommendation_id
+    )
+    .execute(&mut **txn)
+    .await?;
+    let artist_id=sqlx::query_scalar!(
+        "
+        UPDATE recommendations 
+        SET saves = saves+1
+        WHERE id = $1
+        RETURNING artist_id
+        ",
+        recommendation_id
+    )
+    .fetch_one(&mut **txn)
+    .await?;
+
+    Ok(artist_id)
+}
+
+pub async fn delete_save_recommendation(
     pool: &PgPool,
     profile_id: Uuid,
-    spirit: i64,
+    recommendation_id: Uuid,
+) -> Result<bool, ApiError> {
+    let mut txn = pool.begin().await?;
+    sqlx::query!(
+        r#"
+        DELETE FROM saved_recommendations WHERE artist_id = $1 AND recommendation_id = $2;
+        "#,
+        profile_id,
+        recommendation_id
+    )
+    .execute(&mut *txn)
+    .await?;
+    sqlx::query!(
+        "
+        UPDATE recommendations 
+        SET saves = saves-1
+        WHERE id = $1
+        ",
+        recommendation_id
+    )
+    .execute(&mut *txn)
+    .await?;
+    txn.commit().await?;
+    Ok(true)
+}
+
+pub async fn insert_boost_recommendation(
+    txn: &mut sqlx::Transaction<'_, sqlx::Postgres>,
+    // profile_id:Uuid,
+    recommendation_id: Uuid,
+) -> Result<Uuid, ApiError> {
+    let artsit_id= sqlx::query_scalar!(
+        r#"
+        UPDATE recommendations
+        SET boost_number = boost_number+1
+        WHERE id = $1
+        RETURNING artist_id
+        "#,
+        recommendation_id
+    )
+    .fetch_one(&mut **txn)
+    .await?;
+    // TODO: UPDATE THE BOOST RECOMMENDATION TABLE
+
+    Ok(artsit_id)
+}
+
+pub async fn delete_boost_recommendation(
+    pool: &PgPool,
+    // profile_id:Uuid,
+    recommendation_id: Uuid,
 ) -> Result<bool, ApiError> {
     Ok(sqlx::query!(
         r#"
-        UPDATE profiles
-        SET spirit = $1
-        WHERE id = $2
+        UPDATE recommendations
+        SET boost_number = boost_number-1
+        WHERE id = $1
         "#,
-        &spirit,
-        profile_id
+        recommendation_id
     )
     .execute(pool)
     .await?
     .rows_affected()
         == 1)
+}
+
+pub async fn update_profile_spirit(
+    txn: &mut sqlx::Transaction<'_, sqlx::Postgres>,
+    profile_id: Uuid,
+    user_id: Uuid,
+) -> Result<bool, ApiError> {
+    let res = sqlx::query!(
+        r#"
+        INSERT INTO spirit (artist, fan) VALUES ($1, $2)
+        ON CONFLICT DO NOTHING
+        "#,
+        profile_id,
+        user_id
+    )
+    .execute(&mut **txn)
+    .await?
+    .rows_affected();
+    if res == 1 {
+        sqlx::query!(
+            "
+        UPDATE profiles
+        SET spirit = spirit + 1
+        WHERE id = $1
+        ",
+            profile_id
+        )
+        .execute(&mut **txn)
+        .await?;
+        Ok(true)
+    } else {
+        Ok(false)
+    }
 }
 
 pub async fn get_profile_auth_details(

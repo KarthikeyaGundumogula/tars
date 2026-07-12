@@ -14,12 +14,12 @@ use uuid::Uuid;
 use crate::{
     AppState,
     db::mutations::works::{
-        delete_work, delete_work_like, insert_wall_post, insert_work_like, update_work_title,
+        delete_work, insert_wall_post, update_work_title,
     },
     errors::ApiError,
     models::{
         db::work::{WallPost, Work, WorkCategory},
-        requests::works::{LikeWork, NewWallPostReq, UpdateWorkReq},
+        requests::works::{ NewWallPostReq, UpdateWorkReq},
         response::WorkResponse,
     },
     services::{
@@ -55,17 +55,6 @@ async fn update_work_handler(
     }
 }
 
-#[instrument(name = "like_work", skip(app,data), err,fields(work_id = data.work_id.to_string(), profile_id = user.profile_id.to_string()))]
-async fn like_work_handler(
-    State(app): State<Arc<AppState>>,
-    Artist(user): Artist,
-    AppJson(data): AppJson<LikeWork>,
-) -> Result<WorkResponse, ApiError> {
-    let res = insert_work_like(&app.db_pool, data.work_id, user.profile_id).await?;
-
-    Ok(WorkResponse::AddedWorkLike(res))
-}
-
 #[instrument(name = "new wall post",skip(app,data),err,fields(artist_id = user.profile_id.to_string()))]
 async fn create_new_wall_post_handler(
     State(app): State<Arc<AppState>>,
@@ -77,20 +66,15 @@ async fn create_new_wall_post_handler(
         artist_id: user.profile_id,
         work_id: data.work_id,
         text_line: data.text_line,
-        created_at: Some(Utc::now()),
+        original_id: data.original_id,
+        recommendation_id: data.recommendation_id,
+        total_views: 0,
+        total_saves: 0,
+        created_at: Utc::now(),
+        updated_at: Utc::now(),
     };
     let res = insert_wall_post(&app.db_pool, wall_post).await?;
     Ok(WorkResponse::NewWallPostCreated(res.id))
-}
-
-#[instrument(name = "dislike work",skip(app,data),fields(artist_id = user.profile_id.to_string(), work_id = data.work_id.to_string()),err)]
-async fn dislike_work_handler(
-    State(app): State<Arc<AppState>>,
-    Artist(user): Artist,
-    AppJson(data): AppJson<LikeWork>,
-) -> Result<WorkResponse, ApiError> {
-    let res = delete_work_like(&app.db_pool, data.work_id, user.profile_id).await?;
-    Ok(WorkResponse::RemovedWorkLike(res))
 }
 
 #[instrument(name = "delete work",skip(app),fields(work_id= resource_id.to_string()))]
@@ -107,7 +91,5 @@ pub fn router() -> Router<Arc<AppState>> {
         .route("/new/{work_type}", post(create_new_work_handler))
         .route("/new/wall_post", post(create_new_wall_post_handler))
         .route("/{resource_id}/update", post(update_work_handler))
-        .route("/like", post(like_work_handler))
-        .route("/dislike", delete(dislike_work_handler))
         .route("/{resource_id}/delete", delete(delete_work_handler))
 }

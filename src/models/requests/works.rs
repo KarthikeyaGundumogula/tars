@@ -36,8 +36,10 @@ pub struct UploadScriptReq {
 
 #[derive(Deserialize)]
 pub struct NewWallPostReq {
-    pub text_line:Option<String>,
-    pub work_id:Option<Uuid>
+    pub text_line: Option<String>,
+    pub work_id: Option<Uuid>,
+    pub original_id: Option<Uuid>,
+    pub recommendation_id: Option<Uuid>,
 }
 
 #[derive(Deserialize)]
@@ -46,6 +48,6 @@ pub struct UpdateWorkReq {
 }
 
 #[derive(Deserialize)]
-pub struct LikeWork {
-    pub work_id: Uuid,
+pub struct EntityAction {
+    pub entity_id: Uuid,
 }
