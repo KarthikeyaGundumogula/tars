@@ -2,7 +2,9 @@ use sqlx::{self, PgPool};
 use uuid::Uuid;
 
 use crate::{
-    db::mutations::artists::increment_spirit_relation, errors::ApiError, models::db::work::{
+    db::mutations::artists::increment_spirit_relation,
+    errors::ApiError,
+    models::db::work::{
         Edit, EditFormat, Poster, PosterFormat, Script, SupportedPlatforms, WallPost, Work,
         WorkCategory,
     },
@@ -48,60 +50,48 @@ pub async fn insert_work_star(
     work_id: Uuid,
     profile_id: Uuid,
 ) -> Result<Uuid, ApiError> {
-    let res = sqlx::query!(
+    let artist = sqlx::query_scalar!(
         r#"
-            INSERT INTO work_stars (work_id,profile_id,created_at) VALUES ($1,$2,NOW()) ON CONFLICT(work_id,profile_id) DO NOTHING;
-            "#,
+        WITH inserted AS (
+            INSERT INTO work_stars (work_id,profile_id,created_at) VALUES ($1,$2,NOW()) ON CONFLICT(work_id,profile_id) DO NOTHING RETURNING work_id
+        )
+        UPDATE works
+            SET stars = stars + 1
+            WHERE id = $1 AND EXISTS (SELECT 1 FROM inserted)
+            RETURNING artist_id
+        "#,
         work_id,
         profile_id
     )
-    .execute(&mut **txn)
-    .await?.rows_affected();
-    if res > 0 {
-        let artist = sqlx::query_scalar!(
-            "
-    UPDATE works
-    SET stars = stars + 1
-    WHERE id = $1
-    RETURNING artist_id
-    ",
-            work_id
-        )
-        .fetch_one(&mut **txn)
-        .await?;
-        Ok(artist)
-    } else {
-        Err(ApiError::BadRequest("Already Starred".to_string()))
+    .fetch_optional(&mut **txn)
+    .await?;
+    match artist {
+        Some(artist_id) => Ok(artist_id),
+        None => Err(ApiError::BadRequest("Already Starred".to_string())),
     }
 }
 
 pub async fn delete_work_star(
-    pool: &PgPool,
+    txn: &mut sqlx::Transaction<'_, sqlx::Postgres>,
     work_id: Uuid,
     profile_id: Uuid,
-) -> Result<bool, ApiError> {
-    let mut txn = pool.begin().await?;
-    sqlx::query!(
+) -> Result<Uuid, ApiError> {
+    let artist = sqlx::query_scalar!(
         r#"
-            DELETE FROM work_stars WHERE work_id = $1 AND profile_id = $2;
-            "#,
+        WITH work_records AS(
+            DELETE FROM work_stars WHERE work_id = $1 AND profile_id = $2 RETURNING work_id
+        )
+        UPDATE works
+            SET stars = works.stars-1
+            WHERE id = $1 AND EXISTS (SELECT 1 FROM work_records)
+            RETURNING artist_id
+        "#,
         work_id,
         profile_id
     )
-    .execute(&mut *txn)
+    .fetch_one(&mut **txn)
     .await?;
-    sqlx::query!(
-        "
-        UPDATE works
-        SET stars = stars-1
-        WHERE id = $1
-        ",
-        work_id
-    )
-    .execute(&mut *txn)
-    .await?;
-    txn.commit().await?;
-    Ok(true)
+    Ok(artist)
 }
 
 pub async fn insert_wall_post(pool: &PgPool, data: WallPost) -> Result<WallPost, ApiError> {
@@ -144,6 +134,25 @@ pub async fn insert_wall_post(pool: &PgPool, data: WallPost) -> Result<WallPost,
     }
     tx.commit().await?;
     Ok(wall_post)
+}
+
+pub async fn insert_wall_post_reaction(
+    pool: &PgPool,
+    post_id: Uuid,
+    user_id: Uuid,
+    reaction: String,
+) -> Result<bool, ApiError> {
+    sqlx::query!(
+        r#"
+        INSERT INTO wall_post_reactions (wall_post_id, profile_id,reaction, created_at) VALUES ($1, $2, $3, NOW());
+        "#,
+        post_id,
+        user_id,
+        reaction,
+    )
+    .fetch_one(pool)
+    .await?;
+    Ok(true)
 }
 
 pub async fn delete_work(pool: &PgPool, work_id: Uuid) -> Result<bool, ApiError> {
@@ -251,57 +260,41 @@ pub async fn insert_work_save(
     work_id: Uuid,
     user_id: Uuid,
 ) -> Result<Uuid, ApiError> {
-    let res = sqlx::query!(
-        "
-        INSERT INTO saved_works (work_id, artist_id,created_at)
-        VALUES ($1, $2, NOW())
-        ON CONFLICT DO NOTHING
-        ",
+    let artist_id = sqlx::query_scalar!(
+        r#"
+        WITH inserted AS (
+            INSERT INTO saved_works (work_id, artist_id,created_at) VALUES ($1, $2, NOW()) ON CONFLICT DO NOTHING RETURNING work_id
+        )
+        UPDATE works
+            SET saves = saves+1
+            WHERE id = $1 AND EXISTS (SELECT 1 FROM inserted)
+            RETURNING artist_id
+        "#,
         work_id,
         user_id
     )
-    .execute(&mut **txn)
-    .await?
-    .rows_affected();
-    if res > 0 {
-        let artist_id = sqlx::query_scalar!(
-            "
-    UPDATE works 
-    SET saves = saves+1
-    WHERE id = $1
-    RETURNING artist_id
-    ",
-            work_id
-        )
-        .fetch_one(&mut **txn)
-        .await?;
-        Ok(artist_id)
-    } else {
-        Err(ApiError::BadRequest("Work not found".to_string()))
+    .fetch_optional(&mut **txn)
+    .await?;
+    match artist_id {
+        Some(id) => Ok(id),
+        None => Err(ApiError::BadRequest("Work not found".to_string())),
     }
 }
 
 pub async fn delete_work_save(pool: &PgPool, work_id: Uuid, user_id: Uuid) -> Result<(), ApiError> {
-    let mut txn = pool.begin().await?;
     sqlx::query!(
-        "
-        DELETE FROM saved_works WHERE work_id = $1 AND artist_id = $2;
-        ",
+        r#"
+        WITH deleted AS (
+            DELETE FROM saved_works WHERE work_id = $1 AND artist_id = $2 RETURNING work_id
+        )
+        UPDATE works
+            SET saves = saves-1
+            WHERE id = $1 AND EXISTS (SELECT 1 FROM deleted)
+        "#,
         work_id,
         user_id
     )
-    .execute(&mut *txn)
+    .execute(pool)
     .await?;
-    sqlx::query!(
-        "
-    UPDATE works 
-    SET saves = saves-1
-    WHERE id = $1
-    ",
-        work_id
-    )
-    .execute(&mut *txn)
-    .await?;
-    txn.commit().await?;
     Ok(())
 }

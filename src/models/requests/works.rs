@@ -51,3 +51,9 @@ pub struct UpdateWorkReq {
 pub struct EntityAction {
     pub entity_id: Uuid,
 }
+
+#[derive(Deserialize)]
+pub struct PostReaction {
+    pub wall_post_id: Uuid,
+    pub reaction: String,
+}

@@ -156,7 +156,7 @@ pub async fn insert_new_favorite(
 }
 
 pub async fn delete_favorite(
-    pool: &PgPool,
+    txn: &mut sqlx::Transaction<'_, sqlx::Postgres>,
     profile_id: Uuid,
     favoriting_id: Uuid,
 ) -> Result<bool, ApiError> {
@@ -168,7 +168,7 @@ pub async fn delete_favorite(
         profile_id,
         favoriting_id
     )
-    .execute(pool)
+    .execute(&mut **txn)
     .await?
     .rows_affected()
         == 1)
@@ -179,30 +179,28 @@ pub async fn insert_save_recommendation(
     profile_id: Uuid,
     recommendation_id: Uuid,
 ) -> Result<Uuid, ApiError> {
-    sqlx::query!(
+    let artist_id = sqlx::query_scalar!(
         r#"
-        INSERT INTO saved_recommendations (artist_id, recommendation_id, created_at)
-        VALUES ($1, $2, NOW())
-        ON CONFLICT DO NOTHING
+        WITH inserted AS (
+            INSERT INTO saved_recommendations (artist_id, recommendation_id, created_at)
+            VALUES ($1, $2, NOW())
+            ON CONFLICT DO NOTHING
+            RETURNING recommendation_id
+        )
+        UPDATE recommendations
+            SET saves = saves+1
+            WHERE id = $2 AND EXISTS (SELECT 1 FROM inserted)
+            RETURNING artist_id
         "#,
         profile_id,
         recommendation_id
     )
-    .execute(&mut **txn)
+    .fetch_optional(&mut **txn)
     .await?;
-    let artist_id = sqlx::query_scalar!(
-        "
-        UPDATE recommendations 
-        SET saves = saves+1
-        WHERE id = $1
-        RETURNING artist_id
-        ",
-        recommendation_id
-    )
-    .fetch_one(&mut **txn)
-    .await?;
-
-    Ok(artist_id)
+    match artist_id {
+        Some(id) => Ok(id),
+        None => Err(ApiError::BadRequest("Already saved".to_string())),
+    }
 }
 
 pub async fn delete_save_recommendation(
@@ -210,36 +208,29 @@ pub async fn delete_save_recommendation(
     profile_id: Uuid,
     recommendation_id: Uuid,
 ) -> Result<bool, ApiError> {
-    let mut txn = pool.begin().await?;
-    sqlx::query!(
+    let result = sqlx::query!(
         r#"
-        DELETE FROM saved_recommendations WHERE artist_id = $1 AND recommendation_id = $2;
+        WITH deleted AS (
+            DELETE FROM saved_recommendations WHERE artist_id = $1 AND recommendation_id = $2 RETURNING recommendation_id
+        )
+        UPDATE recommendations
+            SET saves = saves-1
+            WHERE id = $2 AND EXISTS (SELECT 1 FROM deleted)
         "#,
         profile_id,
         recommendation_id
     )
-    .execute(&mut *txn)
+    .execute(pool)
     .await?;
-    sqlx::query!(
-        "
-        UPDATE recommendations 
-        SET saves = saves-1
-        WHERE id = $1
-        ",
-        recommendation_id
-    )
-    .execute(&mut *txn)
-    .await?;
-    txn.commit().await?;
-    Ok(true)
+    Ok(result.rows_affected() > 0)
 }
 
 pub async fn insert_boost_recommendation(
     txn: &mut sqlx::Transaction<'_, sqlx::Postgres>,
-    profile_id:Uuid,
+    profile_id: Uuid,
     recommendation_id: Uuid,
 ) -> Result<Uuid, ApiError> {
-    let artsit_id = sqlx::query_scalar!(
+    let artist_id = sqlx::query_scalar!(
         r#"
         WITH boost_records AS(
             INSERT INTO recommendation_boosts (recommendation_id, user_id, created_at)
@@ -248,18 +239,19 @@ pub async fn insert_boost_recommendation(
             RETURNING recommendation_id
         )
         UPDATE recommendations
-        SET boost_number = recommendations.boost_number+1
-        WHERE id = $1
-        RETURNING artist_id
+            SET boost_number = recommendations.boost_number+1
+            WHERE id = $1 AND EXISTS (SELECT 1 FROM boost_records)
+            RETURNING artist_id
         "#,
         recommendation_id,
         profile_id
     )
-    .fetch_one(&mut **txn)
+    .fetch_optional(&mut **txn)
     .await?;
-    // TODO: UPDATE THE BOOST RECOMMENDATION TABLE
-
-    Ok(artsit_id)
+    match artist_id {
+        Some(id) => Ok(id),
+        None => Err(ApiError::BadRequest("Already boosted".to_string())),
+    }
 }
 
 pub async fn increment_spirit_relation(
@@ -323,8 +315,8 @@ pub async fn delete_boost_recommendation(
             RETURNING recommendation_id
         )
         UPDATE recommendations
-        SET boost_number = recommendations.boost_number-1
-        WHERE id = $1
+            SET boost_number = recommendations.boost_number-1
+            WHERE id = $1 AND EXISTS (SELECT 1 FROM boost_records)
         "#,
         recommendation_id,
         profile_id
@@ -332,7 +324,7 @@ pub async fn delete_boost_recommendation(
     .execute(pool)
     .await?
     .rows_affected()
-        == 1)
+        > 0)
 }
 
 pub async fn get_profile_auth_details(

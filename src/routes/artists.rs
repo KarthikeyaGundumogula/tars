@@ -8,24 +8,17 @@ use axum::{
 use tracing::instrument;
 
 use crate::{
-    AppState,
-    db::mutations::{
+    AppState, db::mutations::{
         artists::{
-            delete_boost_recommendation, delete_favorite, delete_save_recommendation,
-            insert_boost_recommendation, insert_new_favorite, insert_save_recommendation,
-            update_profile_details, increment_spirit_relation,
-        },
-        works::{delete_work_save, delete_work_star, insert_work_save, insert_work_star},
-    },
-    errors::ApiError,
-    models::{
+            decrement_spirit_tokens, delete_boost_recommendation, delete_favorite, delete_save_recommendation, increment_spirit_relation, insert_boost_recommendation, insert_new_favorite, insert_save_recommendation, update_profile_details,
+        }, works::{delete_work_save, delete_work_star, insert_work_save, insert_work_star},
+    }, errors::ApiError, models::{
         requests::{
             artist::{FavoriteActionReq, UpdateProfileReq},
             works::EntityAction,
         },
         response::{LibraryResponse, ProfileResponse, WorkResponse},
-    },
-    services::{auth_service::extractor::Artist, json_extractor::AppJson},
+    }, services::{auth_service::extractor::Artist, json_extractor::AppJson},
 };
 
 #[instrument(name = "update profile details", skip(app, user, data),fields(profile_id = %user.profile_id.to_string()))]
@@ -58,7 +51,10 @@ async fn remove_from_favorite_profiles_handler(
     Artist(user): Artist,
     AppJson(data): AppJson<FavoriteActionReq>,
 ) -> Result<ProfileResponse, ApiError> {
-    let res = delete_favorite(&app.db_pool, user.profile_id, data.artist_id).await?;
+    let mut txn = app.db_pool.begin().await?;
+    let res = delete_favorite(&mut txn, user.profile_id, data.artist_id).await?;
+    decrement_spirit_tokens(&mut txn, data.artist_id, user.profile_id).await?;
+    txn.commit().await?;
     Ok(ProfileResponse::FavoriteArtistRemoved(res))
 }
 
@@ -81,8 +77,11 @@ async fn dislike_work_handler(
     Artist(user): Artist,
     AppJson(data): AppJson<EntityAction>,
 ) -> Result<WorkResponse, ApiError> {
-    let res = delete_work_star(&app.db_pool, data.entity_id, user.profile_id).await?;
-    Ok(WorkResponse::RemovedWorkStar(res))
+    let mut txn = app.db_pool.begin().await?;
+    let artist = delete_work_star(&mut txn, data.entity_id, user.profile_id).await?;
+    decrement_spirit_tokens(&mut txn, artist, user.profile_id).await?;
+    txn.commit().await?;
+    Ok(WorkResponse::RemovedWorkStar(true))
 }
 
 #[instrument(name = "save work",skip(app,data),fields(artist_id=%user.profile_id,work_id = %data.entity_id))]
@@ -162,6 +161,10 @@ async fn remove_reaction_handler() {
     todo!()
 }
 
+async fn delete_wall_post_handler() {
+    todo!()
+}
+
 pub fn router() -> Router<Arc<AppState>> {
     Router::new()
         .route("/update_stage", post(update_stage_details_handler))
@@ -186,4 +189,5 @@ pub fn router() -> Router<Arc<AppState>> {
         .route("/unstar_work", delete(dislike_work_handler))
         .route("/add_reaction", post(add_reaction_handler))
         .route("/remove_reaction", post(remove_reaction_handler))
+        .route("/delete/wall_post", delete(delete_wall_post_handler))
 }

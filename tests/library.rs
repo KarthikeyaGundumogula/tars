@@ -306,3 +306,469 @@ async fn delete_library_entry_removes_from_database() {
 
     assert_eq!(count, 0);
 }
+
+// ---------------------------------------------------------------------------
+// Surge Score Edge Cases - Peak Score Threshold
+// ---------------------------------------------------------------------------
+
+#[tokio::test]
+async fn library_peak_stays_at_1000_when_all_scores_below_threshold() {
+    let (artists, app, original_id) = setup_edit_upload().await;
+
+    app.post_login(&fixtures::login_body("user_0", "kApten@1023"))
+        .await;
+
+    // Create entries with scores below 1000
+    app.post_library(&fixtures::create_library_body_with_surge(original_id, 500))
+        .await;
+    app.post_library(&fixtures::create_library_body_with_surge(original_id, 800))
+        .await;
+
+    let peak: i64 =
+        sqlx::query_scalar(r#"SELECT COALESCE(current_peak_library, 0) FROM profiles WHERE id=$1"#)
+            .bind(artists[0])
+            .fetch_one(&app.state.db_pool)
+            .await
+            .expect("db query failed");
+
+    assert_eq!(peak, 1000, "Peak should be at minimum threshold of 1000");
+}
+
+#[tokio::test]
+async fn library_peak_updates_to_actual_score_when_above_threshold() {
+    let (artists, app, original_id) = setup_edit_upload().await;
+
+    app.post_login(&fixtures::login_body("user_0", "kApten@1023"))
+        .await;
+
+    app.post_library(&fixtures::create_library_body_with_surge(original_id, 1500))
+        .await;
+
+    let peak: i64 =
+        sqlx::query_scalar(r#"SELECT COALESCE(current_peak_library, 0) FROM profiles WHERE id=$1"#)
+            .bind(artists[0])
+            .fetch_one(&app.state.db_pool)
+            .await
+            .expect("db query failed");
+
+    assert_eq!(
+        peak, 1500,
+        "Peak should be the actual score when above 1000"
+    );
+}
+
+#[tokio::test]
+async fn library_peak_remains_at_threshold_when_deleting_below_threshold_entries() {
+    let (artists, app, original_id) = setup_edit_upload().await;
+
+    app.post_login(&fixtures::login_body("user_0", "kApten@1023"))
+        .await;
+
+    app.post_library(&fixtures::create_library_body_with_surge(original_id, 500))
+        .await;
+    app.post_library(&fixtures::create_library_body_with_surge(original_id, 700))
+        .await;
+
+    let entry_id: Uuid = sqlx::query_scalar!(
+        r#"SELECT id FROM library WHERE original_id=$1 ORDER BY created_at LIMIT 1"#,
+        original_id
+    )
+    .fetch_one(&app.state.db_pool)
+    .await
+    .expect("db query failed");
+
+    app.delete_library_entry(entry_id).await;
+
+    let peak: i64 =
+        sqlx::query_scalar(r#"SELECT COALESCE(current_peak_library, 0) FROM profiles WHERE id=$1"#)
+            .bind(artists[0])
+            .fetch_one(&app.state.db_pool)
+            .await
+            .expect("db query failed");
+
+    assert_eq!(peak, 1000, "Peak should remain at 1000 threshold");
+}
+
+// ---------------------------------------------------------------------------
+// Surge Score Edge Cases - Update Scenarios
+// ---------------------------------------------------------------------------
+
+#[tokio::test]
+async fn updating_peak_score_downward_recalculates_to_second_highest() {
+    let (artists, app, original_id) = setup_edit_upload().await;
+
+    app.post_login(&fixtures::login_body("user_0", "kApten@1023"))
+        .await;
+
+    // Create multiple entries with different scores
+    app.post_library(&fixtures::create_library_body_with_surge(original_id, 2000))
+        .await;
+    app.post_library(&fixtures::create_library_body_with_surge(original_id, 1500))
+        .await;
+    app.post_library(&fixtures::create_library_body_with_surge(original_id, 1200))
+        .await;
+
+    // Get the highest entry
+    let entry_id: Uuid = sqlx::query_scalar!(
+        r#"SELECT id FROM library WHERE original_id=$1 ORDER BY surge_score DESC LIMIT 1"#,
+        original_id
+    )
+    .fetch_one(&app.state.db_pool)
+    .await
+    .expect("db query failed");
+
+    // Update the highest score downward
+    let update_body = serde_json::json!({
+        "surge_score": 800
+    });
+    app.post_update_library_entry(entry_id, &update_body).await;
+
+    let peak: i64 =
+        sqlx::query_scalar(r#"SELECT COALESCE(current_peak_library, 0) FROM profiles WHERE id=$1"#)
+            .bind(artists[0])
+            .fetch_one(&app.state.db_pool)
+            .await
+            .expect("db query failed");
+
+    assert_eq!(
+        peak, 1500,
+        "Peak should move to second highest score (1500)"
+    );
+}
+
+#[tokio::test]
+async fn updating_non_peak_score_does_not_change_peak() {
+    let (artists, app, original_id) = setup_edit_upload().await;
+
+    app.post_login(&fixtures::login_body("user_0", "kApten@1023"))
+        .await;
+
+    app.post_library(&fixtures::create_library_body_with_surge(original_id, 2000))
+        .await;
+    app.post_library(&fixtures::create_library_body_with_surge(original_id, 1000))
+        .await;
+
+    // Get a non-peak entry
+    let entry_id: Uuid = sqlx::query_scalar!(
+        r#"SELECT id FROM library WHERE original_id=$1 ORDER BY surge_score ASC LIMIT 1"#,
+        original_id
+    )
+    .fetch_one(&app.state.db_pool)
+    .await
+    .expect("db query failed");
+
+    let update_body = serde_json::json!({
+        "surge_score": 500
+    });
+    app.post_update_library_entry(entry_id, &update_body).await;
+
+    let peak: i64 =
+        sqlx::query_scalar(r#"SELECT COALESCE(current_peak_library, 0) FROM profiles WHERE id=$1"#)
+            .bind(artists[0])
+            .fetch_one(&app.state.db_pool)
+            .await
+            .expect("db query failed");
+
+    assert_eq!(peak, 2000, "Peak should remain unchanged");
+}
+
+#[tokio::test]
+async fn updating_score_upward_increases_peak() {
+    let (artists, app, original_id) = setup_edit_upload().await;
+
+    app.post_login(&fixtures::login_body("user_0", "kApten@1023"))
+        .await;
+
+    app.post_library(&fixtures::create_library_body_with_surge(original_id, 1500))
+        .await;
+    app.post_library(&fixtures::create_library_body_with_surge(original_id, 1200))
+        .await;
+
+    // Get the second highest entry
+    let entry_id: Uuid = sqlx::query_scalar!(
+        r#"SELECT id FROM library WHERE original_id=$1 ORDER BY surge_score DESC OFFSET 1 LIMIT 1"#,
+        original_id
+    )
+    .fetch_one(&app.state.db_pool)
+    .await
+    .expect("db query failed");
+
+    let update_body = serde_json::json!({
+        "surge_score": 2500
+    });
+    app.post_update_library_entry(entry_id, &update_body).await;
+
+    let peak: i64 =
+        sqlx::query_scalar(r#"SELECT COALESCE(current_peak_library, 0) FROM profiles WHERE id=$1"#)
+            .bind(artists[0])
+            .fetch_one(&app.state.db_pool)
+            .await
+            .expect("db query failed");
+
+    assert_eq!(peak, 2500, "Peak should increase to new highest score");
+}
+
+// ---------------------------------------------------------------------------
+// Surge Score Edge Cases - Deletion Scenarios
+// ---------------------------------------------------------------------------
+
+#[tokio::test]
+async fn deleting_peak_entry_recalculates_to_second_highest() {
+    let (artists, app, original_id) = setup_edit_upload().await;
+
+    app.post_login(&fixtures::login_body("user_0", "kApten@1023"))
+        .await;
+
+    app.post_library(&fixtures::create_library_body_with_surge(original_id, 2000))
+        .await;
+    app.post_library(&fixtures::create_library_body_with_surge(original_id, 1500))
+        .await;
+    app.post_library(&fixtures::create_library_body_with_surge(original_id, 1000))
+        .await;
+
+    // Delete the peak entry
+    let entry_id: Uuid = sqlx::query_scalar!(
+        r#"SELECT id FROM library WHERE original_id=$1 ORDER BY surge_score DESC LIMIT 1"#,
+        original_id
+    )
+    .fetch_one(&app.state.db_pool)
+    .await
+    .expect("db query failed");
+
+    app.delete_library_entry(entry_id).await;
+
+    let peak: i64 =
+        sqlx::query_scalar(r#"SELECT COALESCE(current_peak_library, 0) FROM profiles WHERE id=$1"#)
+            .bind(artists[0])
+            .fetch_one(&app.state.db_pool)
+            .await
+            .expect("db query failed");
+
+    assert_eq!(peak, 1500, "Peak should move to second highest (1500)");
+}
+
+#[tokio::test]
+async fn deleting_non_peak_entry_does_not_change_peak() {
+    let (artists, app, original_id) = setup_edit_upload().await;
+
+    app.post_login(&fixtures::login_body("user_0", "kApten@1023"))
+        .await;
+
+    app.post_library(&fixtures::create_library_body_with_surge(original_id, 2000))
+        .await;
+    app.post_library(&fixtures::create_library_body_with_surge(original_id, 1000))
+        .await;
+
+    // Delete non-peak entry
+    let entry_id: Uuid = sqlx::query_scalar!(
+        r#"SELECT id FROM library WHERE original_id=$1 ORDER BY surge_score ASC LIMIT 1"#,
+        original_id
+    )
+    .fetch_one(&app.state.db_pool)
+    .await
+    .expect("db query failed");
+
+    app.delete_library_entry(entry_id).await;
+
+    let peak: i64 =
+        sqlx::query_scalar(r#"SELECT COALESCE(current_peak_library, 0) FROM profiles WHERE id=$1"#)
+            .bind(artists[0])
+            .fetch_one(&app.state.db_pool)
+            .await
+            .expect("db query failed");
+
+    assert_eq!(peak, 2000, "Peak should remain unchanged");
+}
+
+#[tokio::test]
+async fn deleting_last_entry_resets_peak_to_threshold() {
+    let (artists, app, original_id) = setup_edit_upload().await;
+
+    app.post_login(&fixtures::login_body("user_0", "kApten@1023"))
+        .await;
+
+    app.post_library(&fixtures::create_library_body_with_surge(original_id, 1500))
+        .await;
+
+    let entry_id: Uuid = sqlx::query_scalar!(
+        r#"SELECT id FROM library WHERE original_id=$1"#,
+        original_id
+    )
+    .fetch_one(&app.state.db_pool)
+    .await
+    .expect("db query failed");
+
+    app.delete_library_entry(entry_id).await;
+
+    let peak: i64 =
+        sqlx::query_scalar(r#"SELECT COALESCE(current_peak_library, 0) FROM profiles WHERE id=$1"#)
+            .bind(artists[0])
+            .fetch_one(&app.state.db_pool)
+            .await
+            .expect("db query failed");
+
+    assert_eq!(
+        peak, 1000,
+        "Peak should reset to threshold when no entries exist"
+    );
+}
+
+// ---------------------------------------------------------------------------
+// Surge Score Edge Cases - Original Statistics
+// ---------------------------------------------------------------------------
+
+#[tokio::test]
+async fn single_entry_calculates_correct_mean_surge() {
+    let (_, app, original_id) = setup_edit_upload().await;
+
+    app.post_login(&fixtures::login_body("user_0", "kApten@1023"))
+        .await;
+
+    app.post_library(&fixtures::create_library_body_with_surge(original_id, 1500))
+        .await;
+
+    let mean_surge: f64 = sqlx::query_scalar(
+        r#"SELECT COALESCE(mean_surge::float8, 0.0) FROM originals WHERE id=$1"#,
+    )
+    .bind(original_id)
+    .fetch_one(&app.state.db_pool)
+    .await
+    .expect("db query failed");
+
+    assert_eq!(
+        mean_surge, 1500.0,
+        "Mean should equal the single entry score"
+    );
+}
+
+#[tokio::test]
+async fn multiple_entries_calculate_correct_mean_surge() {
+    let (_, app, original_id) = setup_edit_upload().await;
+
+    app.post_login(&fixtures::login_body("user_0", "kApten@1023"))
+        .await;
+
+    app.post_library(&fixtures::create_library_body_with_surge(original_id, 1000))
+        .await;
+    app.post_library(&fixtures::create_library_body_with_surge(original_id, 2000))
+        .await;
+    app.post_library(&fixtures::create_library_body_with_surge(original_id, 3000))
+        .await;
+
+    let mean_surge: f64 = sqlx::query_scalar(
+        r#"SELECT COALESCE(mean_surge::float8, 0.0) FROM originals WHERE id=$1"#,
+    )
+    .bind(original_id)
+    .fetch_one(&app.state.db_pool)
+    .await
+    .expect("db query failed");
+
+    assert!(
+        (mean_surge - 2000.0).abs() < 0.01,
+        "Mean should be (1000+2000+3000)/3 = 2000"
+    );
+}
+
+#[tokio::test]
+async fn updating_entry_score_recalculates_mean_surge() {
+    let (_, app, original_id) = setup_edit_upload().await;
+
+    app.post_login(&fixtures::login_body("user_0", "kApten@1023"))
+        .await;
+
+    app.post_library(&fixtures::create_library_body_with_surge(original_id, 1000))
+        .await;
+    app.post_library(&fixtures::create_library_body_with_surge(original_id, 2000))
+        .await;
+
+    let entry_id: Uuid = sqlx::query_scalar!(
+        r#"SELECT id FROM library WHERE original_id=$1 ORDER BY surge_score ASC LIMIT 1"#,
+        original_id
+    )
+    .fetch_one(&app.state.db_pool)
+    .await
+    .expect("db query failed");
+
+    let update_body = serde_json::json!({
+        "surge_score": 3000
+    });
+    app.post_update_library_entry(entry_id, &update_body).await;
+
+    let mean_surge: f64 = sqlx::query_scalar(
+        r#"SELECT COALESCE(mean_surge::float8, 0.0) FROM originals WHERE id=$1"#,
+    )
+    .bind(original_id)
+    .fetch_one(&app.state.db_pool)
+    .await
+    .expect("db query failed");
+
+    assert!(
+        (mean_surge - 2500.0).abs() < 0.01,
+        "Mean should be (3000+2000)/2 = 2500"
+    );
+}
+
+#[tokio::test]
+async fn deleting_entry_recalculates_mean_surge() {
+    let (_, app, original_id) = setup_edit_upload().await;
+
+    app.post_login(&fixtures::login_body("user_0", "kApten@1023"))
+        .await;
+
+    app.post_library(&fixtures::create_library_body_with_surge(original_id, 1000))
+        .await;
+    app.post_library(&fixtures::create_library_body_with_surge(original_id, 2000))
+        .await;
+    app.post_library(&fixtures::create_library_body_with_surge(original_id, 3000))
+        .await;
+
+    let entry_id: Uuid = sqlx::query_scalar!(
+        r#"SELECT id FROM library WHERE original_id=$1 ORDER BY surge_score DESC LIMIT 1"#,
+        original_id
+    )
+    .fetch_one(&app.state.db_pool)
+    .await
+    .expect("db query failed");
+
+    app.delete_library_entry(entry_id).await;
+
+    let mean_surge: f64 = sqlx::query_scalar(
+        r#"SELECT COALESCE(mean_surge::float8, 0.0) FROM originals WHERE id=$1"#,
+    )
+    .bind(original_id)
+    .fetch_one(&app.state.db_pool)
+    .await
+    .expect("db query failed");
+
+    assert!(
+        (mean_surge - 1500.0).abs() < 0.01,
+        "Mean should be (1000+2000)/2 = 1500"
+    );
+}
+
+#[tokio::test]
+async fn surge_spread_calculated_correctly_for_multiple_entries() {
+    let (_, app, original_id) = setup_edit_upload().await;
+
+    app.post_login(&fixtures::login_body("user_0", "kApten@1023"))
+        .await;
+
+    app.post_library(&fixtures::create_library_body_with_surge(original_id, 1000))
+        .await;
+    app.post_library(&fixtures::create_library_body_with_surge(original_id, 2000))
+        .await;
+
+    let surge_spread: f64 = sqlx::query_scalar(
+        r#"SELECT COALESCE(surge_spread::float8, 0.0) FROM originals WHERE id=$1"#,
+    )
+    .bind(original_id)
+    .fetch_one(&app.state.db_pool)
+    .await
+    .expect("db query failed");
+
+    // Standard deviation of [1000, 2000] is 500
+    assert!(
+        (surge_spread - 500.0).abs() < 1.0,
+        "Surge spread should be ~500"
+    );
+}
