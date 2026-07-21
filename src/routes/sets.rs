@@ -3,7 +3,7 @@ use std::sync::Arc;
 use axum::{
     Router,
     extract::State,
-    routing::{delete, post},
+    routing::{delete, post, put},
 };
 use chrono::Utc;
 use tracing::instrument;
@@ -143,6 +143,18 @@ async fn leave_set_handler(
     Ok(SetResponse::SetMemberDeleted(entity_id, user_id))
 }
 
+async fn create_new_discussion_handler() -> Result<SetResponse, ApiError> {
+    todo!()
+}
+
+async fn create_new_comment_handler() -> Result<SetResponse, ApiError> {
+    todo!()
+}
+
+async fn update_comment_handler() -> Result<SetResponse, ApiError> {
+    todo!()
+}
+
 pub fn router() -> Router<Arc<AppState>> {
     Router::new()
         .route("/new", post(create_new_set_handler))
@@ -153,4 +165,7 @@ pub fn router() -> Router<Arc<AppState>> {
         .route("/{resource_id}/update", post(update_set_details_handler))
         .route("/join", post(join_set_handler))
         .route("/{entity_id}/leave", delete(leave_set_handler))
+        .route("/new/discussion", post(create_new_discussion_handler))
+        .route("/new/comment", post(create_new_comment_handler))
+        .route("/update/comment/{resource_id}", put(update_comment_handler))
 }

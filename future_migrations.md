@@ -87,7 +87,8 @@
 77. **Delelte work quotes table we dont need another table to get the quotes** - we already have a separate table for the work pins and works quotes is an redundant table because it is underthe hood a work pin just with an extra line so we will use the same table to store the pins and quotes  - ✅
 78. **create a junction table to store the profile spirit** - right now the profile spirit is how many unique personalities interacted with the profile not neccesrly follows so we store a one way relationship like the primary key is user1->user2's work means user1 interacted with user2's work and user2 is the artist that count as spirit 1. - ✅
     <!-- ---Completed migration 11 and 12--- -->
-79. **create a junction table for boost_recommendations_profiles**
-80. **Add another column for spirit table to store the token count** - this is added because when a new star s added then we increment this count same ofr any incremental engagement if a decremental engagement is made we decrement the count if the decremental count reaches to zero then we delete the row and decrease the spirit in future it will help us to evaluate the engagemnt between two profiles and can be used for giveaways or super fan profiles to boost engagement. 
-81. **Remove the star recommendations table** - we dont need that so what we are going to do is 
-82. **Add indexes** - {Profile - user_name},{posts-artist_id,posts - created_at + id},{Edits,Scripts,Posters - post_id}
+80. **Add another column for spirit table to store the token count** - this is added because when a new star is added then we increment this count same for any incremental engagement if a decremental engagement is made we decrement the count if the decremental count reaches to zero then we delete the row and decrease the spirit in future it will help us to evaluate the engagemnt between two profiles and can be used for giveaways or super fan profiles to boost engagement. - ✅
+81. **Remove the star recommendations table** - use this for boosted recommendations because boostnig is supporting right, wall framing is showing the love and saving is for future references what is the point of starring - ✅
+82. **Add the discussion feature tables posts(title,content,author,total_reactions,Set_id,created_at,updated_at), comments(content,author,Optional<work_id>,path,ID)** - ✅
+83. **add wall_post reactions junction table and hndle the emoji validation in the domain logic** - ✅
+85. **Add indexes** - {Profile - user_name},{posts-artist_id,posts - created_at + id},{Edits,Scripts,Posters - post_id}

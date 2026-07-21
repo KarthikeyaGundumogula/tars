@@ -8,16 +8,24 @@ use axum::{
 use tracing::instrument;
 
 use crate::{
-    AppState, db::mutations::{
+    AppState,
+    db::mutations::{
         artists::{
-            delete_boost_recommendation, delete_favorite, delete_save_recommendation, insert_boost_recommendation, insert_new_favorite, insert_save_recommendation, update_profile_details, update_profile_spirit,
-        }, works::{delete_work_save, delete_work_star, insert_work_save, insert_work_star},
-    }, errors::ApiError, models::{
+            delete_boost_recommendation, delete_favorite, delete_save_recommendation,
+            insert_boost_recommendation, insert_new_favorite, insert_save_recommendation,
+            update_profile_details, increment_spirit_relation,
+        },
+        works::{delete_work_save, delete_work_star, insert_work_save, insert_work_star},
+    },
+    errors::ApiError,
+    models::{
         requests::{
             artist::{FavoriteActionReq, UpdateProfileReq},
             works::EntityAction,
-        }, response::{LibraryResponse, ProfileResponse, WorkResponse},
-    }, services::{auth_service::extractor::Artist, json_extractor::AppJson},
+        },
+        response::{LibraryResponse, ProfileResponse, WorkResponse},
+    },
+    services::{auth_service::extractor::Artist, json_extractor::AppJson},
 };
 
 #[instrument(name = "update profile details", skip(app, user, data),fields(profile_id = %user.profile_id.to_string()))]
@@ -39,7 +47,7 @@ async fn add_to_favorite_profiles_handler(
 ) -> Result<ProfileResponse, ApiError> {
     let mut txn = app.db_pool.begin().await?;
     let res = insert_new_favorite(&mut txn, user.profile_id, data.artist_id).await?;
-    update_profile_spirit(&mut txn, data.artist_id, user.profile_id).await?;
+    increment_spirit_relation(&mut txn, data.artist_id, user.profile_id).await?;
     txn.commit().await?;
     Ok(ProfileResponse::FavoritedArtist(res))
 }
@@ -62,7 +70,7 @@ async fn star_work_handler(
 ) -> Result<WorkResponse, ApiError> {
     let mut txn = app.db_pool.begin().await?;
     let artist = insert_work_star(&mut txn, data.entity_id, user.profile_id).await?;
-    update_profile_spirit(&mut txn, artist, user.profile_id).await?;
+    increment_spirit_relation(&mut txn, artist, user.profile_id).await?;
     txn.commit().await?;
     Ok(WorkResponse::AddedWorkStar(true))
 }
@@ -85,7 +93,7 @@ async fn save_work_handler(
 ) -> Result<WorkResponse, ApiError> {
     let mut txn = app.db_pool.begin().await?;
     let artist = insert_work_save(&mut txn, data.entity_id, user.profile_id).await?;
-    update_profile_spirit(&mut txn, artist, user.profile_id).await?;
+    increment_spirit_relation(&mut txn, artist, user.profile_id).await?;
     txn.commit().await?;
     Ok(WorkResponse::AddedWorkSave(true))
 }
@@ -107,8 +115,8 @@ async fn boost_recommendation_handler(
     Json(data): Json<EntityAction>,
 ) -> Result<LibraryResponse, ApiError> {
     let mut txn = app.db_pool.begin().await?;
-    let artist_id = insert_boost_recommendation(&mut txn, data.entity_id).await?;
-    update_profile_spirit(&mut txn, artist_id, user.profile_id).await?;
+    let artist_id = insert_boost_recommendation(&mut txn, user.profile_id, data.entity_id).await?;
+    increment_spirit_relation(&mut txn, artist_id, user.profile_id).await?;
     txn.commit().await?;
     Ok(LibraryResponse::BoostedRecommendation(true))
 }
@@ -119,7 +127,7 @@ async fn remove_recommendation_boost_handler(
     Artist(user): Artist,
     Json(data): Json<EntityAction>,
 ) -> Result<LibraryResponse, ApiError> {
-    delete_boost_recommendation(&app.db_pool, data.entity_id).await?;
+    delete_boost_recommendation(&app.db_pool, user.profile_id, data.entity_id).await?;
     Ok(LibraryResponse::UnBoostedRecommendation(true))
 }
 
@@ -131,7 +139,7 @@ async fn save_recommendation_handler(
 ) -> Result<LibraryResponse, ApiError> {
     let mut txn = app.db_pool.begin().await?;
     let artist_id = insert_save_recommendation(&mut txn, user.profile_id, data.entity_id).await?;
-    update_profile_spirit(&mut txn, artist_id, user.profile_id).await?;
+    increment_spirit_relation(&mut txn, artist_id, user.profile_id).await?;
     txn.commit().await?;
     Ok(LibraryResponse::SavedRecommendation(true))
 }
@@ -146,11 +154,22 @@ async fn unsave_recommendation_handler(
     Ok(LibraryResponse::UnSavedRecommendation(true))
 }
 
+async fn add_reaction_handler() {
+    todo!()
+}
+
+async fn remove_reaction_handler() {
+    todo!()
+}
+
 pub fn router() -> Router<Arc<AppState>> {
     Router::new()
         .route("/update_stage", post(update_stage_details_handler))
         .route("/favorite_artist", post(add_to_favorite_profiles_handler))
-        .route("/unfavorite_artist", post(remove_from_favorite_profiles_handler))
+        .route(
+            "/unfavorite_artist",
+            post(remove_from_favorite_profiles_handler),
+        )
         .route("/save_work", post(save_work_handler))
         .route("/unsave_work", delete(unsave_work_handler))
         .route("/boost_recommendation", post(boost_recommendation_handler))
@@ -165,4 +184,6 @@ pub fn router() -> Router<Arc<AppState>> {
         )
         .route("/star_work", post(star_work_handler))
         .route("/unstar_work", delete(dislike_work_handler))
+        .route("/add_reaction", post(add_reaction_handler))
+        .route("/remove_reaction", post(remove_reaction_handler))
 }

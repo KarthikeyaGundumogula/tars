@@ -2,9 +2,7 @@ use sqlx::{self, PgPool};
 use uuid::Uuid;
 
 use crate::{
-    db::mutations::artists::update_profile_spirit,
-    errors::ApiError,
-    models::db::work::{
+    db::mutations::artists::increment_spirit_relation, errors::ApiError, models::db::work::{
         Edit, EditFormat, Poster, PosterFormat, Script, SupportedPlatforms, WallPost, Work,
         WorkCategory,
     },
@@ -141,7 +139,7 @@ pub async fn insert_wall_post(pool: &PgPool, data: WallPost) -> Result<WallPost,
         .fetch_one(&mut *tx)
         .await?;
         if let Some(artist_id) = artist_id {
-            update_profile_spirit(&mut tx, artist_id, data.artist_id).await?;
+            increment_spirit_relation(&mut tx, artist_id, data.artist_id).await?;
         }
     }
     tx.commit().await?;

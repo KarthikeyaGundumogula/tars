@@ -190,7 +190,7 @@ pub async fn insert_save_recommendation(
     )
     .execute(&mut **txn)
     .await?;
-    let artist_id=sqlx::query_scalar!(
+    let artist_id = sqlx::query_scalar!(
         "
         UPDATE recommendations 
         SET saves = saves+1
@@ -236,17 +236,24 @@ pub async fn delete_save_recommendation(
 
 pub async fn insert_boost_recommendation(
     txn: &mut sqlx::Transaction<'_, sqlx::Postgres>,
-    // profile_id:Uuid,
+    profile_id:Uuid,
     recommendation_id: Uuid,
 ) -> Result<Uuid, ApiError> {
-    let artsit_id= sqlx::query_scalar!(
+    let artsit_id = sqlx::query_scalar!(
         r#"
+        WITH boost_records AS(
+            INSERT INTO recommendation_boosts (recommendation_id, user_id, created_at)
+            VALUES ($1, $2, NOW())
+            ON CONFLICT DO NOTHING
+            RETURNING recommendation_id
+        )
         UPDATE recommendations
-        SET boost_number = boost_number+1
+        SET boost_number = recommendations.boost_number+1
         WHERE id = $1
         RETURNING artist_id
         "#,
-        recommendation_id
+        recommendation_id,
+        profile_id
     )
     .fetch_one(&mut **txn)
     .await?;
@@ -255,56 +262,77 @@ pub async fn insert_boost_recommendation(
     Ok(artsit_id)
 }
 
-pub async fn delete_boost_recommendation(
-    pool: &PgPool,
-    // profile_id:Uuid,
-    recommendation_id: Uuid,
-) -> Result<bool, ApiError> {
-    Ok(sqlx::query!(
+pub async fn increment_spirit_relation(
+    txn: &mut sqlx::Transaction<'_, sqlx::Postgres>,
+    profile_id: Uuid,
+    user_id: Uuid,
+) -> Result<Uuid, ApiError> {
+    let spirit_id = sqlx::query_scalar!(
         r#"
-        UPDATE recommendations
-        SET boost_number = boost_number-1
-        WHERE id = $1
+        INSERT INTO spirit (artist, fan, token_count)
+        VALUES ($1, $2, 0)
+        ON CONFLICT (artist, fan)
+        DO UPDATE SET token_count = spirit.token_count + 1
+        RETURNING artist
         "#,
-        recommendation_id
+        profile_id,
+        user_id
     )
-    .execute(pool)
-    .await?
-    .rows_affected()
-        == 1)
+    .fetch_one(&mut **txn)
+    .await?;
+    Ok(spirit_id)
 }
 
-pub async fn update_profile_spirit(
+pub async fn decrement_spirit_tokens(
     txn: &mut sqlx::Transaction<'_, sqlx::Postgres>,
     profile_id: Uuid,
     user_id: Uuid,
 ) -> Result<bool, ApiError> {
-    let res = sqlx::query!(
+    Ok(sqlx::query!(
         r#"
-        INSERT INTO spirit (artist, fan) VALUES ($1, $2)
-        ON CONFLICT DO NOTHING
+        WITH decremented AS(
+         UPDATE spirit
+        SET token_count = token_count - 1
+        WHERE artist= $1 AND fan = $2
+        RETURNING token_count
+        )
+        DELETE FROM spirit 
+        WHERE (artist,fan ) IN (
+            SELECT artist, fan FROM decremented WHERE token_count <= 0
+        )
         "#,
         profile_id,
         user_id
     )
     .execute(&mut **txn)
     .await?
-    .rows_affected();
-    if res == 1 {
-        sqlx::query!(
-            "
-        UPDATE profiles
-        SET spirit = spirit + 1
-        WHERE id = $1
-        ",
-            profile_id
+    .rows_affected()
+        > 0)
+}
+
+pub async fn delete_boost_recommendation(
+    pool: &PgPool,
+    profile_id: Uuid,
+    recommendation_id: Uuid,
+) -> Result<bool, ApiError> {
+    Ok(sqlx::query!(
+        r#"
+        WITH boost_records AS(
+            DELETE FROM recommendation_boosts 
+            WHERE recommendation_id = $1 AND user_id = $2
+            RETURNING recommendation_id
         )
-        .execute(&mut **txn)
-        .await?;
-        Ok(true)
-    } else {
-        Ok(false)
-    }
+        UPDATE recommendations
+        SET boost_number = recommendations.boost_number-1
+        WHERE id = $1
+        "#,
+        recommendation_id,
+        profile_id
+    )
+    .execute(pool)
+    .await?
+    .rows_affected()
+        == 1)
 }
 
 pub async fn get_profile_auth_details(
