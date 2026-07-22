@@ -91,7 +91,11 @@
 80. **Add another column for spirit table to store the token count** - this is added because when a new star is added then we increment this count same for any incremental engagement if a decremental engagement is made we decrement the count if the decremental count reaches to zero then we delete the row and decrease the spirit in future it will help us to evaluate the engagemnt between two profiles and can be used for giveaways or super fan profiles to boost engagement. - ✅
 81. **Add the discussion feature tables posts(title,content,author,total_reactions,Set_id,created_at,updated_at), comments(content,author,Optional<work_id>,path,ID)** - ✅
 82. **add wall_post reactions junction table and hndle the emoji validation in the domain logic** - ✅
-    <!-- --- Completed migration 13 --- -->
+    <!-- --- Completed migration 13 & Discussion/Domain Integration --- -->
+    * **Domain Models & Validation**: Built and verified 29 domain types (`Emoji`, `DiscussionPostTitle`, `DiscussionPostContent`, `DiscussionCommentContent`, `WallPostLine`, `RecommendationNotes`, `SocialProfile`, `FilmCertification`, `FilmDuration`, `RoleName`, `PermissionName`, etc.).
+    * **Application Layer Integration**: Wired domain types into request DTOs (`src/models/requests/`) and Axum handlers (`src/routes/`).
+    * **XSS Defense-in-Depth**: Implemented executable script tag rejection (`<script>`, `<iframe>`, `javascript:`, `onerror=`, `onload=`) across text-based content domain types.
+    * **Discussion CRUD Routes & Mutations**: Completed creation, update, and deletion handlers and SQL mutations for discussion posts and comments (`src/routes/sets.rs`, `src/db/mutations/sets.rs`).
 83. **Remove total_reactions column from the discussion_posts** - **Just rename it to total comments**
 84. **Add the Not null constraint on the set_id for the discussion_posts**
 85. **Add indexes** - {Profile - user_name},{posts-artist_id,posts - created_at + id},{Edits,Scripts,Posters - post_id}
