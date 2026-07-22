@@ -94,7 +94,7 @@ pub async fn delete_work_star(
     Ok(artist)
 }
 
-pub async fn insert_wall_post(pool: &PgPool, data: WallPost) -> Result<WallPost, ApiError> {
+pub async fn insert_new_wall_post(pool: &PgPool, data: WallPost) -> Result<WallPost, ApiError> {
     let mut tx = pool.begin().await?;
     let wall_post = sqlx::query_as!(
         WallPost,
@@ -136,8 +136,37 @@ pub async fn insert_wall_post(pool: &PgPool, data: WallPost) -> Result<WallPost,
     Ok(wall_post)
 }
 
+pub async fn delete_wall_post_by_id(pool: &PgPool, post_id: Uuid) -> Result<Uuid, ApiError> {
+    Ok(sqlx::query_scalar!(
+        r#"
+        DELETE FROM wall_posts WHERE id = $1
+        RETURNING id;
+        "#,
+        post_id,
+    )
+    .fetch_one(pool)
+    .await?)
+}
+
+pub async fn delete_wall_post_reaction(
+    txn: &mut sqlx::Transaction<'_, sqlx::Postgres>,
+    post_id: Uuid,
+    user_id: Uuid,
+) -> Result<bool, ApiError> {
+    sqlx::query!(
+        r#"
+        DELETE FROM wall_post_reactions WHERE wall_post_id = $1 AND profile_id = $2;
+        "#,
+        post_id,
+        user_id,
+    )
+    .fetch_one(&mut **txn)
+    .await?;
+    Ok(true)
+}
+
 pub async fn insert_wall_post_reaction(
-    pool: &PgPool,
+    txn: &mut sqlx::Transaction<'_, sqlx::Postgres>,
     post_id: Uuid,
     user_id: Uuid,
     reaction: String,
@@ -150,7 +179,7 @@ pub async fn insert_wall_post_reaction(
         user_id,
         reaction,
     )
-    .fetch_one(pool)
+    .fetch_one(&mut **txn)
     .await?;
     Ok(true)
 }

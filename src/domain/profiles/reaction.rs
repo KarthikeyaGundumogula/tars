@@ -58,8 +58,8 @@ impl AsRef<str> for Emoji {
 }
 
 impl fmt::Display for Emoji {
-    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-        write!(f, "{}", self.0)
+    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+        f.write_str(&self.0)
     }
 }
 

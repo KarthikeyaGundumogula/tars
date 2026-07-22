@@ -2,7 +2,7 @@ use serde::Deserialize;
 use uuid::Uuid;
 
 use crate::{
-    domain::{ScriptThought, WorkTitle},
+    domain::{ScriptThought, WallPostLine, WorkTitle},
     models::db::work::{EditFormat, PosterFormat, SupportedPlatforms},
 };
 
@@ -36,7 +36,7 @@ pub struct UploadScriptReq {
 
 #[derive(Deserialize)]
 pub struct NewWallPostReq {
-    pub text_line: Option<String>,
+    pub text_line: Option<WallPostLine>,
     pub work_id: Option<Uuid>,
     pub original_id: Option<Uuid>,
     pub recommendation_id: Option<Uuid>,

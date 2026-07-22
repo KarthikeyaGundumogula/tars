@@ -29,7 +29,7 @@ impl AsRef<str> for OriginalDescription {
 
 impl fmt::Display for OriginalDescription {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        write!(f, "{}", self.0)
+        f.write_str(&self.0)
     }
 }
 

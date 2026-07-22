@@ -104,12 +104,12 @@ pub async fn update_profile_details(
             RETURNING id
         "#,
         data.stage_name.as_ref().map(|s| s.as_str()),
-        data.tag_line,
-        data.youtube_profile,
-        data.twitter_profile,
-        data.instagram_profile,
-        data.profile_picture,
-        data.color_theme,
+        data.tag_line.as_ref().map(|s| s.as_str()),
+        data.youtube_profile.as_ref().map(|s| s.as_str()),
+        data.twitter_profile.as_ref().map(|s| s.as_str()),
+        data.instagram_profile.as_ref().map(|s| s.as_str()),
+        data.profile_picture.as_deref(),
+        data.color_theme.as_ref().map(|s| s.as_str()),
         id
     )
     .fetch_optional(pool)

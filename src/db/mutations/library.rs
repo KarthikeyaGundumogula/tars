@@ -188,7 +188,7 @@ pub async fn update_recommendation(
     )
     .fetch_one(&mut *txn)
     .await?;
-    if let Some(_) = data.score {
+    if data.score.is_some() {
         sqlx::query!(
             "
             WITH new_peak AS (

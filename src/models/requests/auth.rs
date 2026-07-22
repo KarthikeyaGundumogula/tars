@@ -1,7 +1,7 @@
 use serde::{Deserialize, Serialize};
 use uuid::Uuid;
 
-use crate::domain::{Handle, HexColor, Password, StageName, TagLine};
+use crate::domain::{Handle, HexColor, Password, SocialProfile, StageName, TagLine};
 
 #[derive(Deserialize)]
 pub struct ProfileSignupReq {
@@ -9,9 +9,9 @@ pub struct ProfileSignupReq {
     pub tag_line: TagLine,
     pub password: Password,
     pub profile_picture: String,
-    pub youtube_profile: Option<String>,
-    pub twitter_profile: Option<String>,
-    pub instagram_profile: Option<String>,
+    pub youtube_profile: Option<SocialProfile>,
+    pub twitter_profile: Option<SocialProfile>,
+    pub instagram_profile: Option<SocialProfile>,
     pub stage_name: StageName,
     pub color_theme: HexColor,
 }

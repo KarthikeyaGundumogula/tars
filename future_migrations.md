@@ -77,7 +77,7 @@
 68. **Add Not null to the role_name in the profiles table** - ✅
 69. **For implmenting the spread we need to use the welford algorith we need new columns in the originals table for film surge scores with storing avg and number of values and the m2** - ✅
 70. **Rename the work_likes to the work_stars** - ✅
-    <!-- --- completed migration 11 -->
+    <!-- --- completed migration 11 --- -->
 71. **Add not null constraint to the created at on wall_posts table** - ✅
 72. **Add a new column normalized score for library entry** - ✅
 73. **add a column on wallposts to include the recommendations and originals** - ✅
@@ -87,8 +87,11 @@
 77. **Delelte work quotes table we dont need another table to get the quotes** - we already have a separate table for the work pins and works quotes is an redundant table because it is underthe hood a work pin just with an extra line so we will use the same table to store the pins and quotes  - ✅
 78. **create a junction table to store the profile spirit** - right now the profile spirit is how many unique personalities interacted with the profile not neccesrly follows so we store a one way relationship like the primary key is user1->user2's work means user1 interacted with user2's work and user2 is the artist that count as spirit 1. - ✅
     <!-- ---Completed migration 11 and 12--- -->
+79. **Remove the star recommendations table** - use this for boosted recommendations because boostnig is supporting right, wall framing is showing the love and saving is for future references what is the point of starring - ✅
 80. **Add another column for spirit table to store the token count** - this is added because when a new star is added then we increment this count same for any incremental engagement if a decremental engagement is made we decrement the count if the decremental count reaches to zero then we delete the row and decrease the spirit in future it will help us to evaluate the engagemnt between two profiles and can be used for giveaways or super fan profiles to boost engagement. - ✅
-81. **Remove the star recommendations table** - use this for boosted recommendations because boostnig is supporting right, wall framing is showing the love and saving is for future references what is the point of starring - ✅
-82. **Add the discussion feature tables posts(title,content,author,total_reactions,Set_id,created_at,updated_at), comments(content,author,Optional<work_id>,path,ID)** - ✅
-83. **add wall_post reactions junction table and hndle the emoji validation in the domain logic** - ✅
+81. **Add the discussion feature tables posts(title,content,author,total_reactions,Set_id,created_at,updated_at), comments(content,author,Optional<work_id>,path,ID)** - ✅
+82. **add wall_post reactions junction table and hndle the emoji validation in the domain logic** - ✅
+    <!-- --- Completed migration 13 --- -->
+83. **Remove total_reactions column from the discussion_posts** - **Just rename it to total comments**
+84. **Add the Not null constraint on the set_id for the discussion_posts**
 85. **Add indexes** - {Profile - user_name},{posts-artist_id,posts - created_at + id},{Edits,Scripts,Posters - post_id}

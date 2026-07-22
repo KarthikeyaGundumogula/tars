@@ -90,16 +90,16 @@ pub struct Script {
 
 #[derive(sqlx::FromRow, Serialize, Debug)]
 pub struct WallPost {
-    pub id:Uuid,
-    pub artist_id:Uuid,
+    pub id: Uuid,
+    pub artist_id: Uuid,
     pub work_id: Option<Uuid>,
     pub text_line: Option<String>,
     pub original_id: Option<Uuid>,
     pub recommendation_id: Option<Uuid>,
     pub total_views: i64,
     pub total_saves: i64,
-    pub created_at:DateTime<Utc>,
-    pub updated_at:DateTime<Utc>
+    pub created_at: DateTime<Utc>,
+    pub updated_at: DateTime<Utc>,
 }
 
 impl Resource for Work {
@@ -119,5 +119,25 @@ impl Resource for Work {
         .await?
         .ok_or(crate::errors::ApiError::NotFound)?;
         Ok(Some((work.artist_id, work)))
+    }
+}
+
+impl Resource for WallPost {
+    async fn fetch_by_id(
+        db: &sqlx::PgPool,
+        resource_id: Uuid,
+    ) -> Result<Option<(Uuid, Self)>, crate::errors::ApiError>
+    where
+        Self: Send,
+    {
+        let wall_post = sqlx::query_as!(
+            WallPost,
+            r#"SELECT id, artist_id, work_id, text_line, original_id, recommendation_id, total_views, total_saves, created_at, updated_at FROM wall_posts WHERE id = $1"#,
+            resource_id
+        )
+        .fetch_optional(db)
+        .await?
+        .ok_or(crate::errors::ApiError::NotFound)?;
+        Ok(Some((wall_post.artist_id, wall_post)))
     }
 }

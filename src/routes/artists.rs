@@ -5,20 +5,30 @@ use axum::{
     extract::State,
     routing::{delete, post},
 };
+use chrono::Utc;
 use tracing::instrument;
+use uuid::Uuid;
 
 use crate::{
     AppState, db::mutations::{
         artists::{
-            decrement_spirit_tokens, delete_boost_recommendation, delete_favorite, delete_save_recommendation, increment_spirit_relation, insert_boost_recommendation, insert_new_favorite, insert_save_recommendation, update_profile_details,
-        }, works::{delete_work_save, delete_work_star, insert_work_save, insert_work_star},
+            decrement_spirit_tokens, delete_boost_recommendation, delete_favorite,
+            delete_save_recommendation, increment_spirit_relation, insert_boost_recommendation,
+            insert_new_favorite, insert_save_recommendation, update_profile_details,
+        }, works::{
+            delete_wall_post_by_id, delete_wall_post_reaction, delete_work_save, delete_work_star, insert_new_wall_post, insert_wall_post_reaction, insert_work_save, insert_work_star,
+        },
     }, errors::ApiError, models::{
+        db::work::WallPost,
         requests::{
-            artist::{FavoriteActionReq, UpdateProfileReq},
-            works::EntityAction,
+            artist::{FavoriteActionReq, ReactionReq, UpdateProfileReq},
+            works::{EntityAction, NewWallPostReq},
         },
         response::{LibraryResponse, ProfileResponse, WorkResponse},
-    }, services::{auth_service::extractor::Artist, json_extractor::AppJson},
+    }, services::{
+        auth_service::extractor::{Artist, OwnedResourceOrAdmin},
+        json_extractor::AppJson,
+    },
 };
 
 #[instrument(name = "update profile details", skip(app, user, data),fields(profile_id = %user.profile_id.to_string()))]
@@ -153,16 +163,57 @@ async fn unsave_recommendation_handler(
     Ok(LibraryResponse::UnSavedRecommendation(true))
 }
 
-async fn add_reaction_handler() {
-    todo!()
+#[instrument(name = "new wall post",skip(app,data),err,fields(artist_id = user.profile_id.to_string()))]
+async fn create_new_wall_post_handler(
+    State(app): State<Arc<AppState>>,
+    Artist(user): Artist,
+    AppJson(data): AppJson<NewWallPostReq>,
+) -> Result<WorkResponse, ApiError> {
+    let wall_post = WallPost {
+        id: Uuid::new_v4(),
+        artist_id: user.profile_id,
+        work_id: data.work_id,
+        text_line: data.text_line.map(|t| t.to_string()),
+        original_id: data.original_id,
+        recommendation_id: data.recommendation_id,
+        total_views: 0,
+        total_saves: 0,
+        created_at: Utc::now(),
+        updated_at: Utc::now(),
+    };
+    let res = insert_new_wall_post(&app.db_pool, wall_post).await?;
+    Ok(WorkResponse::NewWallPostCreated(res.id))
 }
 
-async fn remove_reaction_handler() {
-    todo!()
+async fn delete_wall_post_handler(
+    State(app): State<Arc<AppState>>,
+    OwnedResourceOrAdmin { resource_id, .. }: OwnedResourceOrAdmin<WallPost>,
+) -> Result<WorkResponse, ApiError> {
+    let res = delete_wall_post_by_id(&app.db_pool, resource_id).await?;
+    Ok(WorkResponse::WallPostDeleted(res))
 }
 
-async fn delete_wall_post_handler() {
-    todo!()
+async fn add_reaction_handler(
+    State(app): State<Arc<AppState>>,
+    Artist(user): Artist,
+    AppJson(data): AppJson<ReactionReq>,
+) -> Result<WorkResponse, ApiError> {
+    let mut txn = app.db_pool.begin().await?;
+    insert_wall_post_reaction(&mut txn, data.wall_post_id, user.profile_id, data.reaction.to_string()).await?;
+    //TODO! In the later phases when we think if the wall experiment succeeds we will enable spirit triggering here also okay for now let's dont add this cheap reactions to the spirit system
+    txn.commit().await?;
+    Ok(WorkResponse::ReactionAdded)
+}
+
+async fn remove_reaction_handler(
+    State(app): State<Arc<AppState>>,
+    Artist(user): Artist,
+    AppJson(data): AppJson<ReactionReq>,
+) -> Result<WorkResponse, ApiError> {
+    let mut txn = app.db_pool.begin().await?;
+    delete_wall_post_reaction(&mut txn, data.wall_post_id, user.profile_id).await?;
+    txn.commit().await?;
+    Ok(WorkResponse::ReactionRemoved)
 }
 
 pub fn router() -> Router<Arc<AppState>> {
@@ -187,7 +238,11 @@ pub fn router() -> Router<Arc<AppState>> {
         )
         .route("/star_work", post(star_work_handler))
         .route("/unstar_work", delete(dislike_work_handler))
+        .route("/new/wall_post", post(create_new_wall_post_handler))
+        .route(
+            "/delete/wall_post/{resource_id}",
+            delete(delete_wall_post_handler),
+        )
         .route("/add_reaction", post(add_reaction_handler))
         .route("/remove_reaction", post(remove_reaction_handler))
-        .route("/delete/wall_post", delete(delete_wall_post_handler))
 }

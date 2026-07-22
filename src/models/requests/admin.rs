@@ -1,4 +1,4 @@
-use crate::domain::{Handle, Password};
+use crate::domain::{Handle, Password, PermissionName, RoleName};
 use serde::Deserialize;
 use uuid::Uuid;
 
@@ -10,30 +10,30 @@ pub struct AdminAuthRequest {
 
 #[derive(Deserialize, Debug)]
 pub struct CreateRoleRequest {
-    pub name: String,
+    pub name: RoleName,
     pub description: Option<String>,
 }
 
 #[derive(Deserialize, Debug)]
 pub struct CreatePermissionRequest {
-    pub name: String,
+    pub name: PermissionName,
     pub description: Option<String>,
 }
 
 #[derive(Deserialize, Debug)]
 pub struct AssignPermissionRequest {
-    pub permission: String,
-    pub role: String,
+    pub permission: PermissionName,
+    pub role: RoleName,
 }
 
 #[derive(Deserialize, Debug)]
 pub struct RevokePermissionRequest {
-    pub permission: String,
-    pub role: String,
+    pub permission: PermissionName,
+    pub role: RoleName,
 }
 
-#[derive(Deserialize,Debug)]
-pub struct UpdateProfileRoleReq{
+#[derive(Deserialize, Debug)]
+pub struct UpdateProfileRoleReq {
     pub profile_id: Uuid,
-    pub new_role:String
+    pub new_role: RoleName,
 }

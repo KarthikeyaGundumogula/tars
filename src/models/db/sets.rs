@@ -34,6 +34,31 @@ pub struct SetMember {
     pub created_at: DateTime<Utc>,
 }
 
+#[derive(sqlx::FromRow, Serialize, Deserialize, Debug)]
+pub struct DiscussionPost {
+    pub id: Uuid,
+    pub set_id: Option<Uuid>, // TODO add the not null constraint
+    pub author_id: Option<Uuid>,
+    pub title: String,
+    pub content: String,
+    pub total_reactions: i64, // TODO will be removed
+    pub work_id: Option<Uuid>,
+    pub created_at: DateTime<Utc>,
+    pub updated_at: DateTime<Utc>,
+    pub last_active: DateTime<Utc>,
+}
+
+#[derive(sqlx::FromRow, Serialize, Deserialize, Debug)]
+pub struct DiscussionComment {
+    pub id: Uuid,
+    pub discussion_post_id: Uuid,
+    pub author_id: Option<Uuid>,
+    pub parent_id: Option<Uuid>,
+    pub content: String,
+    pub created_at: DateTime<Utc>,
+    pub updated_at: DateTime<Utc>,
+}
+
 impl Resource for Set {
     async fn fetch_by_id(
         db: &sqlx::PgPool,
@@ -51,6 +76,52 @@ impl Resource for Set {
         .await?
         .ok_or(crate::errors::ApiError::NotFound)?;
         Ok(Some((set.curator, set)))
+    }
+}
+
+impl Resource for DiscussionComment {
+    async fn fetch_by_id(
+        db: &sqlx::PgPool,
+        resource_id: Uuid,
+    ) -> Result<Option<(Uuid, Self)>, ApiError>
+    where
+        Self: Send,
+    {
+        let discussion_comment = sqlx::query_as!(
+            DiscussionComment,
+            r#"SELECT id, discussion_post_id, author_id, parent_id, content, created_at, updated_at FROM discussion_comments WHERE id = $1"#,
+            resource_id
+        )
+        .fetch_optional(db)
+        .await?
+        .ok_or(crate::errors::ApiError::NotFound)?;
+        match discussion_comment.author_id {
+            Some(id) => Ok(Some((id, discussion_comment))),
+            None => Err(ApiError::BadRequest("post not found".to_string())),
+        }
+    }
+}
+
+impl Resource for DiscussionPost {
+    async fn fetch_by_id(
+        db: &sqlx::PgPool,
+        resource_id: Uuid,
+    ) -> Result<Option<(Uuid, Self)>, ApiError>
+    where
+        Self: Send,
+    {
+        let discussion_post = sqlx::query_as!(
+            DiscussionPost,
+            r#"SELECT id, set_id, author_id, title, content, total_reactions, work_id, created_at, updated_at, last_active FROM discussion_post WHERE id = $1"#,
+            resource_id
+        )
+        .fetch_optional(db)
+        .await?
+        .ok_or(crate::errors::ApiError::NotFound)?;
+        match discussion_post.author_id {
+            Some(id) => Ok(Some((id, discussion_post))),
+            None => Err(ApiError::BadRequest("post not found".to_string())),
+        }
     }
 }
 

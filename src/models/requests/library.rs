@@ -2,7 +2,7 @@ use serde::Deserialize;
 use uuid::Uuid;
 
 use crate::{
-    domain::LibraryThought,
+    domain::{LibraryThought, RecommendationNotes},
     models::db::library::{LibraryEntryType, WatchlistStatus},
 };
 
@@ -16,7 +16,7 @@ pub struct LibraryEntryReq {
     pub status: WatchlistStatus,
     pub entry_type: LibraryEntryType,
     pub episode_id: Option<Uuid>,
-    pub surge_score:Option<i64>,
+    pub surge_score: Option<i64>,
 }
 
 #[derive(Deserialize)]
@@ -29,15 +29,15 @@ pub struct UpdateLibraryEntryReq {
 
 #[derive(Deserialize)]
 pub struct NewRecommendationReq {
-    pub lines: String,
+    pub lines: RecommendationNotes,
     pub original_id: Uuid,
     pub score: i64,
 }
 
 #[derive(Deserialize)]
 pub struct UpdateRecommendationReq {
-    pub lines: Option<String>,
-    pub score: Option<i64>
+    pub lines: Option<RecommendationNotes>,
+    pub score: Option<i64>,
 }
 
 #[derive(Deserialize)]

@@ -30,10 +30,13 @@ pub enum WorkResponse {
     WorkUpdated(Uuid),
     WorkDeleted(Uuid),
     NewWallPostCreated(Uuid),
+    WallPostDeleted(Uuid),
     AddedWorkStar(bool),
     RemovedWorkStar(bool),
     AddedWorkSave(bool),
     RemovedWorkSave(bool),
+    ReactionAdded,
+    ReactionRemoved
 }
 
 impl IntoResponse for WorkResponse {
@@ -49,6 +52,9 @@ impl IntoResponse for WorkResponse {
                 (StatusCode::OK, Json(serde_json::json!({"id": id}))).into_response()
             }
             Self::NewWallPostCreated(id) => {
+                (StatusCode::OK, Json(serde_json::json!({"id": id}))).into_response()
+            }
+            Self::WallPostDeleted(id) => {
                 (StatusCode::OK, Json(serde_json::json!({"id": id}))).into_response()
             }
             Self::AddedWorkStar(status) => (
@@ -69,6 +75,16 @@ impl IntoResponse for WorkResponse {
             Self::RemovedWorkSave(status) => (
                 StatusCode::OK,
                 Json(serde_json::json!({"Is_unsaved": status})),
+            )
+                .into_response(),
+            Self::ReactionAdded => (
+                StatusCode::OK,
+                Json(serde_json::json!({"Reaction_added": true})),
+            )
+                .into_response(),
+            Self::ReactionRemoved => (
+                StatusCode::OK,
+                Json(serde_json::json!({"Reaction_removed": true})),
             )
                 .into_response(),
         }

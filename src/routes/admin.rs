@@ -33,7 +33,7 @@ async fn create_new_role_handler(
     let res = insert_new_user_role(
         &app.db_pool,
         UserRole {
-            name: data.name,
+            name: data.name.to_string(),
             description: data.description,
             created_at: chrono::Utc::now(),
         },
@@ -51,7 +51,7 @@ async fn create_new_permission_handler(
     let res = insert_new_permission(
         &app.db_pool,
         Permission {
-            name: data.name,
+            name: data.name.to_string(),
             description: data.description,
             created_at: chrono::Utc::now(),
         },
@@ -66,7 +66,7 @@ async fn assign_new_permission_handlr(
     AdminUser(_): AdminUser,
     Json(data): Json<AssignPermissionRequest>,
 ) -> Result<AdminResponse, ApiError> {
-    let _ = insert_permission_for_role(&app.db_pool, data.role, data.permission).await?;
+    let _ = insert_permission_for_role(&app.db_pool, data.role.to_string(), data.permission.to_string()).await?;
     Ok(AdminResponse::PermissionAssigned)
 }
 
@@ -76,7 +76,7 @@ async fn revoke_permission_handler(
     AdminUser(_): AdminUser,
     Json(data): Json<RevokePermissionRequest>,
 ) -> Result<AdminResponse, ApiError> {
-    let res = delete_permission_for_role(&app.db_pool, data.role, data.permission).await?;
+    let res = delete_permission_for_role(&app.db_pool, data.role.to_string(), data.permission.to_string()).await?;
     Ok(AdminResponse::PermissionRevoked(res))
 }
 
@@ -86,7 +86,7 @@ async fn update_profile_role_handler(
     AdminUser(_): AdminUser,
     Json(data): Json<UpdateProfileRoleReq>,
 ) -> Result<AdminResponse, ApiError> {
-    let _ = update_profile_role(&app.db_pool, data.new_role, data.profile_id).await?;
+    let _ = update_profile_role(&app.db_pool, data.new_role.to_string(), data.profile_id).await?;
     Ok(AdminResponse::ProfileRoleUpdated)
 }
 

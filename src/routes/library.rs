@@ -89,7 +89,7 @@ async fn create_new_recommendation_handler(
         id: Uuid::new_v4(),
         original_id: data.original_id,
         artist_id: user.profile_id,
-        notes: Some(data.lines),
+        notes: Some(data.lines.to_string()),
         created_at: Utc::now(),
         updated_at: Utc::now(),
         surge_score: data.score,

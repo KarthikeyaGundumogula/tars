@@ -28,7 +28,7 @@ impl WorkTitle {
 
 impl fmt::Display for WorkTitle {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        write!(f, "{}", self.0)
+        f.write_str(&self.0)
     }
 }
 
